@@ -1,0 +1,71 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import prisma from '@/utils/prisma';
+
+// API route for analytics summary with custom date range
+export async function GET(req: NextRequest) {
+  // Parse query parameters
+  const { searchParams } = new URL(req.url);
+  const start = searchParams.get('start');
+  const end = searchParams.get('end');
+
+  // Validate date range
+  if (!start || !end) {
+    return NextResponse.json({ error: 'Missing start or end date.' }, { status: 400 });
+  }
+
+  // Authenticate user
+  const session = await getServerSession(authOptions);
+  if (!session || !session.user) {
+    return NextResponse.json({ error: 'Not authenticated.' }, { status: 401 });
+  }
+
+  try {
+    const userId = session.user.id;
+    // Fetch profile views in date range
+    const profileViews = await prisma.analytics.count({
+      where: {
+        userId,
+        type: 'profile_view',
+        timestamp: {
+          gte: new Date(start),
+          lte: new Date(end + 'T23:59:59.999Z'),
+        },
+      },
+    });
+    // Fetch per-link click counts in date range
+    const linkClicks = await prisma.analytics.groupBy({
+      by: ['linkId'],
+      where: {
+        userId,
+        type: 'link_click',
+        linkId: { not: null },
+        timestamp: {
+          gte: new Date(start),
+          lte: new Date(end + 'T23:59:59.999Z'),
+        },
+      },
+      _count: { linkId: true },
+    });
+    // Fetch link titles for the user's links
+    const links = await prisma.link.findMany({
+      where: { userId },
+      select: { id: true, title: true },
+    });
+    const linkTitleMap = Object.fromEntries(links.map(l => [l.id, l.title]));
+    // Only include clicks for valid (non-null) linkIds
+    const perLinkClicks = linkClicks
+      .filter(lc => lc.linkId !== null)
+      .map(lc => ({
+        linkId: lc.linkId!,
+        title: linkTitleMap[lc.linkId as string] || '(untitled)',
+        clicks: lc._count.linkId,
+      }));
+    // Return analytics summary
+    return NextResponse.json({ profileViews, perLinkClicks });
+  } catch (err) {
+    // Optionally log error: console.error('Error fetching analytics summary:', err);
+    return NextResponse.json({ error: 'Failed to fetch analytics.' }, { status: 500 });
+  }
+} 
