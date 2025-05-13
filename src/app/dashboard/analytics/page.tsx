@@ -31,6 +31,8 @@ const AnalyticsDashboard = async () => {
   let perLinkClicks: { linkId: string; title: string; clicks: number }[] = [];
   let error = null;
   let isPremium = false;
+  // Type for grouped link click result from Prisma
+  type LinkClickGroup = { linkId: string | null; _count: { linkId: number } };
   try {
     const userId = session.user.id;
     // Fetch premium status
@@ -66,11 +68,11 @@ const AnalyticsDashboard = async () => {
       where: { userId },
       select: { id: true, title: true },
     });
-    const linkTitleMap = Object.fromEntries(links.map(l => [l.id, l.title]));
+    const linkTitleMap = Object.fromEntries(links.map((l: { id: string; title: string }) => [l.id, l.title]));
     // Only include clicks for valid (non-null) linkIds
     perLinkClicks = linkClicks
-      .filter(lc => lc.linkId !== null)
-      .map(lc => ({
+      .filter((lc: LinkClickGroup) => lc.linkId !== null)
+      .map((lc: LinkClickGroup) => ({
         linkId: lc.linkId!,
         title: linkTitleMap[lc.linkId as string] || '(untitled)',
         clicks: lc._count.linkId,
@@ -87,7 +89,8 @@ const AnalyticsDashboard = async () => {
     <>
       {/* Show Go Premium banner for non-premium users */}
       <PremiumBanner isPremium={isPremium} />
-      <h1 className="text-3xl font-bold mb-6">Analytics Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-6">Analytics</h1>
+      
       {/* Hybrid: Pass initial data and date range to client component */}
       <AnalyticsDashboardClient
         initialData={initialData}

@@ -7,20 +7,46 @@ import { useEffect, useState } from "react";
 // SVG icons for navigation links
 const icons = {
   dashboard: (
-    <svg width="20" height="20" fill="none" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 13a2 2 0 0 1 2-2h2v4H5a2 2 0 0 1-2-2v0zm6-6V3a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4h-6zm8 2a2 2 0 0 0-2-2h-2v8h2a2 2 0 0 0 2-2V9zm-8 2V7H5a2 2 0 0 0-2 2v2h6z" stroke="#555" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="3" y="13" width="4" height="8" rx="1" fill="#555" />
+      <rect x="9" y="9" width="4" height="12" rx="1" fill="#555" />
+      <rect x="15" y="5" width="4" height="16" rx="1" fill="#555" />
+    </svg>
+  ),
+  analytics: (
+    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 17V9m4 8V5m4 12v-6m4 6v-2m4 2V3" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
   ),
   profile: (
-    <svg width="20" height="20" fill="none" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="7" r="4" stroke="#555" strokeWidth="1.5"/><path d="M3 17a7 7 0 0 1 14 0" stroke="#555" strokeWidth="1.5" strokeLinecap="round"/></svg>
+    <svg
+      width="20"
+      height="20"
+      fill="none"
+      viewBox="0 0 20 20"
+      aria-hidden="true"
+    >
+      <circle cx="10" cy="7" r="4" stroke="#555" strokeWidth="1.5" />
+      <path
+        d="M3 17a7 7 0 0 1 14 0"
+        stroke="#555"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
   ),
   settings: (
-    <svg width="20" height="20" fill="none" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3" stroke="#555" strokeWidth="1.5"/><path d="M17.5 10a7.5 7.5 0 0 0-.2-1.7l1.6-1.2a1 1 0 0 0 .2-1.4l-1.5-2.6a1 1 0 0 0-1.3-.4l-1.6.6a7.5 7.5 0 0 0-1.5-.9l-.2-1.7A1 1 0 0 0 11 2h-2a1 1 0 0 0-1 .9l-.2 1.7a7.5 7.5 0 0 0-1.5.9l-1.6-.6a1 1 0 0 0-1.3.4L1.9 7.2a1 1 0 0 0 .2 1.4l1.6 1.2a7.5 7.5 0 0 0 0 3.4l-1.6 1.2a1 1 0 0 0-.2 1.4l1.5 2.6a1 1 0 0 0 1.3.4l1.6-.6a7.5 7.5 0 0 0 1.5.9l.2 1.7A1 1 0 0 0 9 18h2a1 1 0 0 0 1-.9l.2-1.7a7.5 7.5 0 0 0 1.5-.9l1.6.6a1 1 0 0 0 1.3-.4l1.5-2.6a1 1 0 0 0-.2-1.4l-1.6-1.2c.1-.6.1-1.1.1-1.7z" stroke="#555" strokeWidth="1.5"/></svg>
+    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="3" stroke="#555" strokeWidth="2" />
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 8.6 15a1.65 1.65 0 0 0-1.82-.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 15 8.6a1.65 1.65 0 0 0 1.82.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 15z" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   ),
 };
 
 /**
- * MainNav - Navigation bar for logged-in users
+ * MainNav - Vertical sidebar navigation for logged-in users
  * Shows Dashboard, Profile, Settings, and Sign Out links, each with an icon
- * Only renders if user is authenticated
+ * Logo at the top, username under logo, sign out at bottom
  */
 export default function MainNav() {
   const { data: session, status } = useSession();
@@ -35,7 +61,11 @@ export default function MainNav() {
     const fetchPremium = async () => {
       if (session?.user?.email) {
         try {
-          const res = await fetch(`/api/profile/is-premium?email=${encodeURIComponent(session.user.email)}`);
+          const res = await fetch(
+            `/api/profile/is-premium?email=${encodeURIComponent(
+              session.user.email
+            )}`
+          );
           const data = await res.json();
           setIsPremium(!!data.premium);
         } catch {
@@ -54,7 +84,9 @@ export default function MainNav() {
     setLoadingPortal(true);
     setPortalError("");
     try {
-      const res = await fetch("/api/stripe/create-portal-session", { method: "POST" });
+      const res = await fetch("/api/stripe/create-portal-session", {
+        method: "POST",
+      });
       const data = await res.json();
       if (data.url) {
         window.location.href = data.url;
@@ -70,18 +102,55 @@ export default function MainNav() {
   // Navigation links
   const navLinks = [
     { href: "/dashboard", label: "Dashboard", icon: icons.dashboard },
+    { href: "/dashboard/analytics", label: "Analytics", icon: icons.analytics },
     { href: "/profile", label: "Profile", icon: icons.profile },
     { href: "/settings", label: "Settings", icon: icons.settings },
   ];
 
   return (
-    <nav className="w-full bg-white border-b mb-6 shadow-sm">
-      <ul className="flex gap-6 items-center px-6 py-3 max-w-4xl mx-auto">
-        {navLinks.map(link => (
+    <nav className="flex flex-col h-full min-h-screen">
+      {/* Logo and user info */}
+      <div className="flex flex-col items-center py-8 border-b">
+        {/* Logo */}
+        <div className="flex items-center gap-2">
+          <div className="flex h-5 w-5 items-center justify-center rounded-md bg-gradient-to-br from-indigo-600 to-purple-600">
+            <span className="text-xs font-bold text-white">LB</span>
+          </div>
+          <span className="text-md font-semibold">LinkInBio</span>
+        </div>
+
+        {/* Avatar */}
+        <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-300 flex items-center justify-center mt-10 mb-2">
+          {session?.user?.image ? (
+            <img
+              src={session.user.image}
+              alt="User avatar"
+              className="w-full h-full object-cover"
+            />
+          ) : null}
+        </div>
+
+        {/* Username */}
+        <div className="text-sm font-semibold text-gray-700 mt-2">
+          {session?.user?.name || session?.user?.email || "User"}
+        </div>
+
+        {/* Email */}
+        <div className="text-sm font-semibold text-gray-700 mt-2">
+          {session?.user?.email || session?.user?.email || "Email"}
+        </div>
+
+
+      </div>
+      {/* Navigation links */}
+      <ul className="flex flex-col gap-2 mt-8">
+        {navLinks.map((link) => (
           <li key={link.href}>
             <Link
               href={link.href}
-              className={`flex items-center gap-2 px-2 py-1 rounded hover:bg-gray-100 transition text-gray-800 font-medium ${pathname.startsWith(link.href) ? "bg-gray-100" : ""}`}
+              className={`flex items-center gap-3 px-4 py-2 rounded hover:bg-gray-100 transition text-gray-800 font-medium ${
+                pathname.startsWith(link.href) ? "bg-gray-100" : ""
+              }`}
             >
               {link.icon}
               <span>{link.label}</span>
@@ -93,28 +162,64 @@ export default function MainNav() {
           <li>
             <button
               onClick={handleManageSubscription}
-              className="flex items-center gap-2 px-2 py-1 rounded bg-green-100 text-green-800 font-medium hover:bg-green-200 transition"
+              className="flex items-center gap-2 px-4 py-2 rounded bg-green-100 text-green-800 font-medium hover:bg-green-200 transition"
               disabled={loadingPortal}
               title="Manage your premium subscription"
             >
-              <svg width="20" height="20" fill="none" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm0 3v4l3 3" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              <svg
+                width="20"
+                height="20"
+                fill="none"
+                viewBox="0 0 20 20"
+                aria-hidden="true"
+              >
+                <path
+                  d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm0 3v4l3 3"
+                  stroke="#16a34a"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
               {loadingPortal ? "Loading..." : "Manage Subscription"}
             </button>
-            {portalError && <div className="text-red-500 text-xs mt-1">{portalError}</div>}
+            {portalError && (
+              <div className="text-red-500 text-xs mt-1">{portalError}</div>
+            )}
           </li>
         )}
-        <li className="ml-auto">
-          <button
-            onClick={() => signOut({ callbackUrl: "/api/auth/signin" })}
-            className="flex items-center gap-2 px-2 py-1 rounded hover:bg-red-100 text-red-600 font-medium transition"
-            title="Sign out"
-          >
-            {/* Simple sign out icon */}
-            <svg width="20" height="20" fill="none" viewBox="0 0 20 20" aria-hidden="true"><path d="M13 16v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1" stroke="#e53e3e" strokeWidth="1.5"/><path d="M17 10H7m0 0l3-3m-3 3l3 3" stroke="#e53e3e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            <span>Sign Out</span>
-          </button>
-        </li>
       </ul>
+      {/* Divider and Sign Out button */}
+      {/* <hr className="my-4 border-gray-200" /> */}
+      <div className="my-8 px-4 border-t">
+        <button
+          onClick={() => signOut({ callbackUrl: "/api/auth/signin" })}
+          className="flex items-center gap-2 w-full px-4 py-2 rounded hover:bg-red-100 text-red-600 font-medium transition"
+          title="Sign out"
+        >
+          <svg
+            width="20"
+            height="20"
+            fill="none"
+            viewBox="0 0 20 20"
+            aria-hidden="true"
+          >
+            <path
+              d="M13 16v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1"
+              stroke="#e53e3e"
+              strokeWidth="1.5"
+            />
+            <path
+              d="M17 10H7m0 0l3-3m-3 3l3 3"
+              stroke="#e53e3e"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <span>Sign Out</span>
+        </button>
+      </div>
     </nav>
   );
-} 
+}

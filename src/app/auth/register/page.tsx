@@ -34,12 +34,12 @@ export default function RegisterPage() {
       setError(data.error);
     } else {
       setSuccess("Registration successful! Redirecting to sign in...");
-      setTimeout(() => router.push("/api/auth/signin"), 1500);
+      setTimeout(() => router.push("/auth/signin"), 1500);
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
+    <div className="flex flex-col items-center justify-center bg-gray-50 p-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow p-8 space-y-6">
         <h1 className="text-2xl font-bold text-center">Create your account</h1>
         <form className="space-y-4" onSubmit={handleRegister}>
@@ -122,7 +122,7 @@ export default function RegisterPage() {
         </form>
         <div className="text-center text-sm mt-2">
           Already have an account?{' '}
-          <a href="/api/auth/signin" className="text-blue-600 hover:underline">Sign in</a>
+          <a href="/auth/signin" className="text-blue-600 hover:underline">Sign in</a>
         </div>
       </div>
     </div>

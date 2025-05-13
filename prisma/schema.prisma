@@ -91,6 +91,7 @@ model Analytics {
   timestamp   DateTime  @default(now())
   abTestGroup String?
   referrer    String?
+  ip          String?
   country     String?
   link        Link?     @relation(fields: [linkId], references: [id], onDelete: SetNull)
   user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)

@@ -80,6 +80,7 @@ export async function POST(req: NextRequest) {
         country: country || null,
         linkId: null, // Not associated with a specific link
         abTestGroup: null,
+        ip: ip || null,
       },
     });
     return NextResponse.json({ success: true });

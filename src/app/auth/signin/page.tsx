@@ -31,9 +31,11 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
+    <div className="flex flex-col items-center justify-center bg-gray-50 p-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow p-8 space-y-6">
-        <h1 className="text-2xl font-bold text-center">Sign in to your account</h1>
+        <h1 className="text-2xl font-bold text-center">
+          Sign in to your account
+        </h1>
         {/* OAuth Providers */}
         <div className="flex flex-col gap-3">
           {googleEnabled && (
@@ -62,7 +64,10 @@ export default function SignInPage() {
         {/* Email/Password Form */}
         <form className="space-y-4" onSubmit={handleCredentialsSignIn}>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
@@ -73,11 +78,14 @@ export default function SignInPage() {
               required
               className="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <input
@@ -88,7 +96,7 @@ export default function SignInPage() {
               required
               className="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           {error && <div className="text-red-500 text-sm">{error}</div>}
@@ -102,10 +110,12 @@ export default function SignInPage() {
         </form>
         {/* Add a link to registration or password reset here if needed */}
         <div className="text-center text-sm mt-2">
-          Don&apos;t have an account?{' '}
-          <a href="/auth/register" className="text-blue-600 hover:underline">Register</a>
+          Don&apos;t have an account?{" "}
+          <a href="/auth/register" className="text-blue-600 hover:underline">
+            Register
+          </a>
         </div>
       </div>
     </div>
   );
-} 
+}

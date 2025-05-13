@@ -88,6 +88,7 @@ export async function POST(req: NextRequest) {
         abTestGroup: abTestGroup || null,
         referrer: referrer || null,
         country: country || null,
+        ip: ip || null,
       },
     });
     return NextResponse.json({ success: true });
