@@ -45,6 +45,10 @@ export default async function DashboardPage() {
   let rawRate = uniqueVisitors > 0 ? (totalClicks / uniqueVisitors) * 100 : 0;
   rawRate = Math.min(rawRate, 100); // Cap at 100%
   const conversionRate = `${Math.round(rawRate)}%`;
+  // Total Profile Views (all time)
+  const totalProfileViews = await prisma.analytics.count({
+    where: { userId: user.id, type: 'profile_view' },
+  });
 
   // SVG icons
   const linkIcon = (
@@ -59,6 +63,9 @@ export default async function DashboardPage() {
   const conversionIcon = (
     <svg width="20" height="20" fill="none" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17v-2a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v2" stroke="#555" strokeWidth="2" strokeLinecap="round"/><circle cx="12" cy="7" r="4" stroke="#555" strokeWidth="2"/></svg>
   );
+  const profileViewsIcon = (
+    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" stroke="#555" strokeWidth="2"/><path d="M2 20c0-4 4-7 10-7s10 3 10 7" stroke="#555" strokeWidth="2" strokeLinecap="round"/></svg>
+  );
 
   return (
     <>
@@ -68,8 +75,9 @@ export default async function DashboardPage() {
       <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
 
       {/* Stat boxes row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 mb-8">
         <StatBox title="Total Links" value={totalLinks} icon={linkIcon} />
+        <StatBox title="Total Profile Views" value={totalProfileViews} icon={profileViewsIcon} />
         <StatBox title="Total Clicks" value={totalClicks} icon={clickIcon} />
         <StatBox title="Unique Visitors" value={uniqueVisitors} icon={visitorIcon} />
         <StatBox title="Conversion Rate" value={conversionRate} icon={conversionIcon} />

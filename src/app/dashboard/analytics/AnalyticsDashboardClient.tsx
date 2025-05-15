@@ -363,8 +363,9 @@ const AnalyticsDashboardClient: React.FC<AnalyticsDashboardClientProps> = ({
       {loading && <div className="text-blue-500 mb-4">Loading...</div>}
       {error && <div className="text-red-500 mb-4">{error}</div>}
       {/* Stat boxes row (copied from dashboard) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 mb-8">
         <StatBox title="Total Links" value={statBox.totalLinks} icon={linkIcon} />
+        <StatBox title="Total Profile Views" value={data.profileViews} icon={visitorIcon} />
         <StatBox title="Total Clicks" value={statBox.totalClicks} icon={clickIcon} />
         <StatBox title="Unique Visitors" value={statBox.uniqueVisitors} icon={visitorIcon} />
         <StatBox title="Conversion Rate" value={statBox.conversionRate} icon={conversionIcon} />
@@ -372,10 +373,6 @@ const AnalyticsDashboardClient: React.FC<AnalyticsDashboardClientProps> = ({
       {/* Analytics Data Display */}
       {!loading && !error && (
         <>
-          <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-2">Total Profile Views</h2>
-            <div className="text-4xl font-bold text-blue-700">{data.profileViews}</div>
-          </div>
           {/* Top Performing Links and Link Clicks in side-by-side boxes */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <PanelBox title="Top Performing Links">
