@@ -40,8 +40,8 @@ export default async function DashboardPage() {
     select: { ip: true },
   });
   const uniqueVisitors = uniqueVisitorRecords.length;
-  // Conversion Rate
-  // Calculate conversion rate as a percentage, capped at 100% and rounded to nearest integer
+  // Click Rate
+  // Calculate click rate as a percentage, capped at 100% and rounded to nearest integer
   let rawRate = uniqueVisitors > 0 ? (totalClicks / uniqueVisitors) * 100 : 0;
   rawRate = Math.min(rawRate, 100); // Cap at 100%
   const conversionRate = `${Math.round(rawRate)}%`;
@@ -80,7 +80,7 @@ export default async function DashboardPage() {
         <StatBox title="Total Profile Views" value={totalProfileViews} icon={profileViewsIcon} />
         <StatBox title="Total Clicks" value={totalClicks} icon={clickIcon} />
         <StatBox title="Unique Visitors" value={uniqueVisitors} icon={visitorIcon} />
-        <StatBox title="Conversion Rate" value={conversionRate} icon={conversionIcon} />
+        <StatBox title="Click Rate" value={conversionRate} icon={conversionIcon} />
       </div>
 
       {/* Links management section */}

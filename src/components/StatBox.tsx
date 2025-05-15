@@ -2,7 +2,7 @@ import React from "react";
 
 interface StatBoxProps {
   title: string;
-  value: string | number;
+  value: React.ReactNode;
   icon?: React.ReactNode;
 }
 

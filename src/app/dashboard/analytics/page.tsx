@@ -97,7 +97,7 @@ const AnalyticsDashboard = async () => {
     select: { ip: true },
   });
   const uniqueVisitors = uniqueVisitorRecords.length;
-  // Conversion Rate
+  // Click Rate
   let rawRate = uniqueVisitors > 0 ? (totalClicks / uniqueVisitors) * 100 : 0;
   rawRate = Math.min(rawRate, 100);
   const conversionRate = `${Math.round(rawRate)}%`;
