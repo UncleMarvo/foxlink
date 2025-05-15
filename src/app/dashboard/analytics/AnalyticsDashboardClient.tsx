@@ -7,6 +7,8 @@ import AnalyticsReferrerTable from './AnalyticsReferrerTable';
 import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import StatBox from '@/components/StatBox';
+import PanelBox from '@/components/PanelBox';
 
 // Types for analytics data
 interface LinkClick {
@@ -26,6 +28,10 @@ interface AnalyticsDashboardClientProps {
   initialStartDate: string; // ISO date string (YYYY-MM-DD)
   initialEndDate: string;   // ISO date string (YYYY-MM-DD)
   isPremium: boolean;
+  totalLinks: number;
+  totalClicks: number;
+  uniqueVisitors: number;
+  conversionRate: string;
 }
 
 /**
@@ -64,12 +70,23 @@ const AnalyticsDashboardClient: React.FC<AnalyticsDashboardClientProps> = ({
   initialStartDate,
   initialEndDate,
   isPremium,
+  totalLinks: initialTotalLinks,
+  totalClicks: initialTotalClicks,
+  uniqueVisitors: initialUniqueVisitors,
+  conversionRate: initialConversionRate,
 }) => {
   // State for date range
   const [startDate, setStartDate] = useState(initialStartDate);
   const [endDate, setEndDate] = useState(initialEndDate);
   // State for analytics data
   const [data, setData] = useState<AnalyticsData>(initialData);
+  // State for StatBox values
+  const [statBox, setStatBox] = useState({
+    totalLinks: initialTotalLinks,
+    totalClicks: initialTotalClicks,
+    uniqueVisitors: initialUniqueVisitors,
+    conversionRate: initialConversionRate,
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -117,6 +134,13 @@ const AnalyticsDashboardClient: React.FC<AnalyticsDashboardClientProps> = ({
       })
       .then((json) => {
         setData(json);
+        // Update StatBox values from API response
+        setStatBox({
+          totalLinks: json.totalLinks,
+          totalClicks: json.totalClicks,
+          uniqueVisitors: json.uniqueVisitors,
+          conversionRate: json.conversionRate,
+        });
         setLoading(false);
       })
       .catch((err) => {
@@ -276,8 +300,22 @@ const AnalyticsDashboardClient: React.FC<AnalyticsDashboardClientProps> = ({
     doc.save(`analytics_report_${startDate}_to_${endDate}.pdf`);
   }
 
+  // SVG icons (copied from dashboard)
+  const linkIcon = (
+    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a5 5 0 0 1 0-7l2-2a5 5 0 0 1 7 7l-1 1" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M14 10a5 5 0 0 1 0 7l-2 2a5 5 0 0 1-7-7l1-1" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+  );
+  const clickIcon = (
+    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19v-7m0 0l-3 3m3-3l3 3" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><circle cx="12" cy="12" r="10" stroke="#555" strokeWidth="2"/></svg>
+  );
+  const visitorIcon = (
+    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" stroke="#555" strokeWidth="2"/><path d="M2 20c0-4 4-7 10-7s10 3 10 7" stroke="#555" strokeWidth="2" strokeLinecap="round"/></svg>
+  );
+  const conversionIcon = (
+    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17v-2a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v2" stroke="#555" strokeWidth="2" strokeLinecap="round"/><circle cx="12" cy="7" r="4" stroke="#555" strokeWidth="2"/></svg>
+  );
+
   return (
-    <div className="max-w-2xl mx-auto py-10 px-4">
+    <div className="py-10 px-4">
       {/* Preset Date Range Buttons */}
       <div className="mb-4 flex flex-wrap gap-2">
         {presets.map((preset) => {
@@ -324,6 +362,13 @@ const AnalyticsDashboardClient: React.FC<AnalyticsDashboardClientProps> = ({
       {/* Loading/Error States */}
       {loading && <div className="text-blue-500 mb-4">Loading...</div>}
       {error && <div className="text-red-500 mb-4">{error}</div>}
+      {/* Stat boxes row (copied from dashboard) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+        <StatBox title="Total Links" value={statBox.totalLinks} icon={linkIcon} />
+        <StatBox title="Total Clicks" value={statBox.totalClicks} icon={clickIcon} />
+        <StatBox title="Unique Visitors" value={statBox.uniqueVisitors} icon={visitorIcon} />
+        <StatBox title="Conversion Rate" value={statBox.conversionRate} icon={conversionIcon} />
+      </div>
       {/* Analytics Data Display */}
       {!loading && !error && (
         <>
@@ -331,54 +376,54 @@ const AnalyticsDashboardClient: React.FC<AnalyticsDashboardClientProps> = ({
             <h2 className="text-xl font-semibold mb-2">Total Profile Views</h2>
             <div className="text-4xl font-bold text-blue-700">{data.profileViews}</div>
           </div>
-          {/* Top Performing Links Section */}
-          <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
-              Top Performing Links
-              <span className="text-yellow-500 text-lg">🏆</span>
-            </h2>
-            <ul className="divide-y divide-gray-200">
-              {topLinks.map((link, idx) => (
-                <li key={link.linkId} className="py-2 flex justify-between items-center">
-                  <span className="font-medium flex items-center gap-2">
-                    {idx === 0 && <span className="text-yellow-500">★</span>}
-                    {link.title}
-                  </span>
-                  <span className="text-blue-700 font-bold">{link.clicks}</span>
-                </li>
-              ))}
-            </ul>
-            {!isPremium && sortedLinks.length > 3 && (
-              <div className="mt-2 text-xs text-gray-500">
-                Upgrade to premium to see your top 5 links!
-              </div>
-            )}
-          </div>
-          <div>
-            <h2 className="text-xl font-semibold mb-2">Link Clicks</h2>
-            {data.perLinkClicks.length === 0 ? (
-              <div className="text-gray-500">No link clicks yet.</div>
-            ) : (
+          {/* Top Performing Links and Link Clicks in side-by-side boxes */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <PanelBox title="Top Performing Links">
               <ul className="divide-y divide-gray-200">
-                {data.perLinkClicks.map((link) => (
-                  <li key={link.linkId} className="py-3 flex justify-between items-center">
-                    <span className="font-medium">{link.title}</span>
+                {topLinks.map((link, idx) => (
+                  <li key={link.linkId} className="py-2 flex justify-between items-center">
+                    <span className="font-medium flex items-center gap-2">
+                      {idx === 0 && <span className="text-yellow-500">★</span>}
+                      {link.title}
+                    </span>
                     <span className="text-blue-700 font-bold">{link.clicks}</span>
                   </li>
                 ))}
               </ul>
-            )}
+              {!isPremium && sortedLinks.length > 3 && (
+                <div className="mt-2 text-xs text-gray-500">
+                  Upgrade to premium to see your top 5 links!
+                </div>
+              )}
+            </PanelBox>
+            <PanelBox title="Link Clicks">
+              {data.perLinkClicks.length === 0 ? (
+                <div className="text-gray-500">No link clicks yet.</div>
+              ) : (
+                <ul className="divide-y divide-gray-200">
+                  {data.perLinkClicks.map((link) => (
+                    <li key={link.linkId} className="py-3 flex justify-between items-center">
+                      <span className="font-medium">{link.title}</span>
+                      <span className="text-blue-700 font-bold">{link.clicks}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </PanelBox>
           </div>
           {/* Time Series Chart Below Summary Stats */}
           <div className="mb-24">
             <AnalyticsTimeSeriesChart startDate={startDate} endDate={endDate} />
           </div>
-          {/* Geographic Analytics Table */}
-          <div>
-            <AnalyticsGeographyTable startDate={startDate} endDate={endDate} />
+          {/* Geographic Analytics and Referrer Analytics in side-by-side boxes */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <PanelBox title="Geographic Analytics">
+              <AnalyticsGeographyTable startDate={startDate} endDate={endDate} />
+            </PanelBox>
+            <PanelBox title="Referrer Analytics">
+              <AnalyticsReferrerTable startDate={startDate} endDate={endDate} />
+            </PanelBox>
           </div>
-          {/* Referrer Analytics Table */}
-          <AnalyticsReferrerTable startDate={startDate} endDate={endDate} />
           {/* Export Buttons */}
           <div className="mb-4 flex justify-end gap-2">
             <button

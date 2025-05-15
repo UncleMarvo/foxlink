@@ -103,8 +103,8 @@ export default function MainNav() {
   const navLinks = [
     { href: "/dashboard", label: "Dashboard", icon: icons.dashboard },
     { href: "/dashboard/analytics", label: "Analytics", icon: icons.analytics },
-    { href: "/profile", label: "Profile", icon: icons.profile },
-    { href: "/settings", label: "Settings", icon: icons.settings },
+    { href: "/dashboard/profile", label: "Profile", icon: icons.profile },
+    { href: "/dashboard/settings", label: "Settings", icon: icons.settings },
   ];
 
   return (

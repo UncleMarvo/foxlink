@@ -46,10 +46,10 @@ export default function AnalyticsReferrerTable({ startDate, endDate }: { startDa
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-200 bg-white">
           <thead>
-            <tr className="bg-gray-50">
-              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700 border-b">Referrer</th>
-              <th className="px-4 py-2 text-right text-sm font-semibold text-gray-700 border-b">Profile Views</th>
-              <th className="px-4 py-2 text-right text-sm font-semibold text-gray-700 border-b">Link Clicks</th>
+            <tr className="bg-gray-50 border-b border-gray-200">
+              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Referrer</th>
+              <th className="px-4 py-2 text-right text-sm font-semibold text-gray-700">Profile Views</th>
+              <th className="px-4 py-2 text-right text-sm font-semibold text-gray-700">Link Clicks</th>
             </tr>
           </thead>
           <tbody>
@@ -59,10 +59,10 @@ export default function AnalyticsReferrerTable({ startDate, endDate }: { startDa
               </tr>
             ) : (
               data.map(row => (
-                <tr key={row.referrer}>
-                  <td className="px-4 py-2 border-b text-gray-800">{row.referrer}</td>
-                  <td className="px-4 py-2 border-b text-right">{row.profileViews}</td>
-                  <td className="px-4 py-2 border-b text-right">{row.linkClicks}</td>
+                <tr key={row.referrer} className="bg-gray-50 border-b border-gray-200">
+                  <td className="px-4 py-2 text-gray-800">{row.referrer}</td>
+                  <td className="px-4 py-2 text-right">{row.profileViews}</td>
+                  <td className="px-4 py-2 text-right">{row.linkClicks}</td>
                 </tr>
               ))
             )}

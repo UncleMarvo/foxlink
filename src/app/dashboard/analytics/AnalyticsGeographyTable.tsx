@@ -41,15 +41,15 @@ export default function AnalyticsGeographyTable({ startDate, endDate }: { startD
   if (error) return <div className="text-red-500">{error}</div>;
 
   return (
-    <div className="w-full mt-24">
+    <div className="w-full mt-12">
       <h2 className="text-xl font-semibold mb-4">Geographic Analytics</h2>
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-200 bg-white">
           <thead>
-            <tr className="bg-gray-50">
-              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700 border-b">Country</th>
-              <th className="px-4 py-2 text-right text-sm font-semibold text-gray-700 border-b">Profile Views</th>
-              <th className="px-4 py-2 text-right text-sm font-semibold text-gray-700 border-b">Link Clicks</th>
+            <tr className="bg-gray-50 border-b border-gray-200">
+              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Country</th>
+              <th className="px-4 py-2 text-right text-sm font-semibold text-gray-700">Profile Views</th>
+              <th className="px-4 py-2 text-right text-sm font-semibold text-gray-700">Link Clicks</th>
             </tr>
           </thead>
           <tbody>
@@ -59,10 +59,10 @@ export default function AnalyticsGeographyTable({ startDate, endDate }: { startD
               </tr>
             ) : (
               data.map(row => (
-                <tr key={row.country}>
-                  <td className="px-4 py-2 border-b text-gray-800">{row.country}</td>
-                  <td className="px-4 py-2 border-b text-right">{row.profileViews}</td>
-                  <td className="px-4 py-2 border-b text-right">{row.linkClicks}</td>
+                <tr key={row.country} className="bg-gray-50 border-b border-gray-200">
+                  <td className="px-4 py-2 text-gray-800">{row.country}</td>
+                  <td className="px-4 py-2 text-right">{row.profileViews}</td>
+                  <td className="px-4 py-2 text-right">{row.linkClicks}</td>
                 </tr>
               ))
             )}

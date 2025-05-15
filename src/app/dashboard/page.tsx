@@ -6,6 +6,7 @@ import SignOutButton from '@/components/SignOutButton';
 import prisma from '@/utils/prisma';
 import PremiumBanner from '@/components/PremiumBanner';
 import StatBox from '@/components/StatBox';
+import LinksTable from '@/components/dashboard/LinksTable';
 
 export default async function DashboardPage() {
   // Get the current session (server-side)
@@ -73,6 +74,9 @@ export default async function DashboardPage() {
         <StatBox title="Unique Visitors" value={uniqueVisitors} icon={visitorIcon} />
         <StatBox title="Conversion Rate" value={conversionRate} icon={conversionIcon} />
       </div>
+
+      {/* Links management section */}
+      <LinksTable />
     </>
   );
 } 

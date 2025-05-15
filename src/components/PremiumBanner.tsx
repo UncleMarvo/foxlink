@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 
 // You may want to pass these as props or use env vars in a real app
 const MONTHLY_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_PREMIUM_MONTHLY_PRICE_ID!;
@@ -33,27 +34,20 @@ export default function PremiumBanner({ isPremium }: { isPremium: boolean }) {
     setLoading(false);
   };
 
+  // Banner layout: text left, button right
   return (
-    <div className="w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white p-4 rounded-lg mb-6 flex flex-col items-center shadow">
-      <div className="text-lg font-bold mb-1">Upgrade to Premium</div>
-      <div className="text-sm mb-3">Unlock advanced analytics and features. Cancel anytime.</div>
-      <div className="flex gap-4 mb-2">
-        <button
-          className="px-4 py-2 bg-white text-blue-700 rounded font-semibold hover:bg-blue-100 transition"
-          onClick={() => handleCheckout(MONTHLY_PRICE_ID)}
-          disabled={loading}
-        >
-          {loading ? "Loading..." : "Go Premium (Monthly)"}
-        </button>
-        <button
-          className="px-4 py-2 bg-yellow-400 text-blue-900 rounded font-semibold hover:bg-yellow-300 transition"
-          onClick={() => handleCheckout(YEARLY_PRICE_ID)}
-          disabled={loading}
-        >
-          {loading ? "Loading..." : "Go Premium (Yearly) - Save 20%"}
-        </button>
+    <div className="w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white p-4 rounded-lg mb-6 flex items-center justify-between shadow">
+      {/* Banner text on the left */}
+      <div>
+        <div className="text-lg font-bold mb-1">Upgrade to Premium</div>
+        <div className="text-sm">Unlock advanced analytics and features. Cancel anytime.</div>
       </div>
-      {error && <div className="text-red-200 text-sm mt-1">{error}</div>}
+      {/* Upgrade button on the right */}
+      <Link href="/dashboard/upgrade">
+        <button className="px-6 py-2 bg-white text-blue-700 rounded font-semibold hover:bg-blue-100 transition shadow">
+          Upgrade to Premium
+        </button>
+      </Link>
     </div>
   );
 } 

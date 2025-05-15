@@ -62,19 +62,28 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model LinkType {
+  id    String  @id @default(cuid())
+  name  String  @unique // e.g. "website"
+  label String          // e.g. "Website"
+  color String          // Tailwind class or hex code for UI
+  links Link[]
+}
+
 model Link {
   id            String        @id @default(cuid())
   userId        String
   title         String
   url           String
   icon          String?
-  type          String        // e.g., social, website, contact
+  typeId        String
+  type          LinkType      @relation(fields: [typeId], references: [id])
   rotationType  RotationType  @default(always)
-  weight        Int?          // For weighted rotation
-  scheduleStart DateTime?     // For scheduled rotation
-  scheduleEnd   DateTime?     // For scheduled rotation
+  weight        Int?
+  scheduleStart DateTime?
+  scheduleEnd   DateTime?
   isActive      Boolean       @default(true)
-  order         Int           // For reordering
+  order         Int
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)

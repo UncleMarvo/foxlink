@@ -62,8 +62,38 @@ export async function GET(req: NextRequest) {
         title: linkTitleMap[lc.linkId as string] || '(untitled)',
         clicks: lc._count.linkId,
       }));
+    // Fetch total links created in date range
+    const totalLinks = await prisma.link.count({
+      where: {
+        userId,
+        createdAt: {
+          gte: new Date(start),
+          lte: new Date(end + 'T23:59:59.999Z'),
+        },
+      },
+    });
+    // Fetch total clicks in date range
+    const totalClicks = perLinkClicks.reduce((acc, l) => acc + l.clicks, 0);
+    // Fetch unique visitors (distinct IPs for profile views in range)
+    const uniqueVisitorRecords = await prisma.analytics.findMany({
+      where: {
+        userId,
+        type: 'profile_view',
+        timestamp: {
+          gte: new Date(start),
+          lte: new Date(end + 'T23:59:59.999Z'),
+        },
+      },
+      distinct: 'ip',
+      select: { ip: true },
+    });
+    const uniqueVisitors = uniqueVisitorRecords.length;
+    // Conversion Rate
+    let rawRate = uniqueVisitors > 0 ? (totalClicks / uniqueVisitors) * 100 : 0;
+    rawRate = Math.min(rawRate, 100);
+    const conversionRate = `${Math.round(rawRate)}%`;
     // Return analytics summary
-    return NextResponse.json({ profileViews, perLinkClicks });
+    return NextResponse.json({ profileViews, perLinkClicks, totalLinks, totalClicks, uniqueVisitors, conversionRate });
   } catch (err) {
     // Optionally log error: console.error('Error fetching analytics summary:', err);
     return NextResponse.json({ error: 'Failed to fetch analytics.' }, { status: 500 });

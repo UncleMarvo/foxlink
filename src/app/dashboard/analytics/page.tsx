@@ -85,6 +85,23 @@ const AnalyticsDashboard = async () => {
   // Prepare initial analytics data for the client component
   const initialData = { profileViews, perLinkClicks, error };
 
+  // --- Compute stats for StatBox panels (like dashboard) ---
+  // Total Links
+  const totalLinks = await prisma.link.count({ where: { userId: session.user.id } });
+  // Total Clicks (all time)
+  const totalClicks = await prisma.analytics.count({ where: { userId: session.user.id, type: 'link_click' } });
+  // Unique Visitors (distinct IPs for profile views, all time)
+  const uniqueVisitorRecords = await prisma.analytics.findMany({
+    where: { userId: session.user.id, type: 'profile_view' },
+    distinct: 'ip',
+    select: { ip: true },
+  });
+  const uniqueVisitors = uniqueVisitorRecords.length;
+  // Conversion Rate
+  let rawRate = uniqueVisitors > 0 ? (totalClicks / uniqueVisitors) * 100 : 0;
+  rawRate = Math.min(rawRate, 100);
+  const conversionRate = `${Math.round(rawRate)}%`;
+
   return (
     <>
       {/* Show Go Premium banner for non-premium users */}
@@ -97,6 +114,11 @@ const AnalyticsDashboard = async () => {
         initialStartDate={initialStartDate}
         initialEndDate={initialEndDate}
         isPremium={isPremium}
+        // Pass stat box values
+        totalLinks={totalLinks}
+        totalClicks={totalClicks}
+        uniqueVisitors={uniqueVisitors}
+        conversionRate={conversionRate}
       />
     </>
   );
