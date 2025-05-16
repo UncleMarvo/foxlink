@@ -115,6 +115,15 @@ model Feedback {
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model UserConfigs {
+  id                      String   @id @default(cuid())
+  user_id                 String   @unique
+  theme                   String   @default("oceanBreeze")
+  font_size               String   @default("medium")
+  show_background_pattern Boolean  @default(true)
+  updated_at              DateTime @default(now())
+}
+
 enum Role {
   USER
   ADMIN

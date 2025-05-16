@@ -76,7 +76,7 @@ export default function SignInPage() {
               type="email"
               autoComplete="email"
               required
-              className="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="p-2 mt-1 block w-full rounded border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -94,7 +94,7 @@ export default function SignInPage() {
               type="password"
               autoComplete="current-password"
               required
-              className="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="p-2 mt-1 block w-full rounded border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />

@@ -12,18 +12,14 @@ import { useRouter } from "next/navigation";
 export default function DangerZone() {
   const [isLoading, setIsLoading] = useState(false); // For delete account
   const [isExporting, setIsExporting] = useState(false); // For export data
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const router = useRouter();
 
   // Handle account deletion
   const handleDeleteAccount = async () => {
-    if (
-      !confirm(
-        "Are you sure you want to delete your account? This action cannot be undone."
-      )
-    ) {
-      return;
-    }
     setIsLoading(true);
+    setDeleteLoading(true);
     try {
       // Call backend API to delete account
       const res = await fetch("/api/profile/delete-account", {
@@ -43,6 +39,7 @@ export default function DangerZone() {
       );
     } finally {
       setIsLoading(false);
+      setDeleteLoading(false);
     }
   };
 
@@ -117,12 +114,36 @@ export default function DangerZone() {
           </p>
         </div>
         <button
-          onClick={handleDeleteAccount}
+          onClick={() => setShowConfirm(true)}
           disabled={isLoading}
           className="ml-4 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
         >
           {isLoading ? <span>Deleting...</span> : "Delete Account"}
         </button>
+        {showConfirm && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+            <div className="bg-white rounded-lg shadow p-6 max-w-sm w-full">
+              <h3 className="text-lg font-bold text-red-600 mb-2">Are you sure?</h3>
+              <p className="mb-4 text-gray-700">This will permanently delete your account and all data. This cannot be undone.</p>
+              <div className="flex gap-4 justify-end">
+                <button
+                  className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300"
+                  onClick={() => setShowConfirm(false)}
+                  disabled={deleteLoading}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700"
+                  onClick={handleDeleteAccount}
+                  disabled={deleteLoading}
+                >
+                  {deleteLoading ? "Deleting..." : "Yes, Delete"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
