@@ -28,6 +28,7 @@ model User {
   role              Role       @default(USER)
   analytics         Analytics[]
   stripeCustomerId  String?     // Stripe customer ID for billing
+  socialMedia       SocialMedia[]
 }
 
 model Account {
@@ -122,6 +123,29 @@ model UserConfigs {
   font_size               String   @default("medium")
   show_background_pattern Boolean  @default(true)
   updated_at              DateTime @default(now())
+}
+
+model SocialMedia {
+  id                String   @id @default(cuid())
+  user_id           String   @unique
+  twitter_url       String?  @default("")
+  twitter_visible   Boolean  @default(true)
+  facebook_url      String?  @default("")
+  facebook_visible  Boolean  @default(true)
+  instagram_url     String?  @default("")
+  instagram_visible Boolean  @default(true)
+  linkedin_url      String?  @default("")
+  linkedin_visible  Boolean  @default(true)
+  youtube_url       String?  @default("")
+  youtube_visible   Boolean  @default(true)
+  tiktok_url        String?  @default("")
+  tiktok_visible    Boolean  @default(true)
+  github_url        String?  @default("")
+  github_visible    Boolean  @default(true)
+  twitch_url        String?  @default("")
+  twitch_visible    Boolean  @default(true)
+  updated_at        DateTime @default(now())
+  user              User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 enum Role {

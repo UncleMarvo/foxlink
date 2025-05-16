@@ -1,4 +1,11 @@
 import { useState } from "react";
+import {
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/Card";
 
 export default function AccountSettings() {
   // Form state
@@ -42,7 +49,12 @@ export default function AccountSettings() {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold">Account</h2>
+      <CardHeader>
+        <CardTitle>Account</CardTitle>
+        <CardDescription>
+          Manage your account settings.
+        </CardDescription>
+      </CardHeader>
 
       <div className="w-full max-w-md bg-white rounded-lg shadow p-8 space-y-6">
         {/* Change Password Form */}
