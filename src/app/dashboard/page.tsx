@@ -72,7 +72,17 @@ export default async function DashboardPage() {
       {/* Show Go Premium banner for non-premium users */}
       <PremiumBanner isPremium={isPremium} />
 
-      <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
+      {/* Page Header */}
+      <div className="md:flex md:items-center md:justify-between mb-6">
+        <div className="min-w-0 flex-1">
+          <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+            Dashboard
+          </h2>
+          <p className="mt-1 text-sm text-gray-500">
+            Your dashboard to manage your links and analytics.
+          </p>
+        </div>
+      </div>
 
       {/* Stat boxes row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 mb-8">

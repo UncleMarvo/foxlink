@@ -76,7 +76,7 @@ export const authOptions: AuthOptions = {
       // Fetch the latest user data from the database
       const dbUser = await prisma.user.findUnique({
         where: { email: session.user.email ?? undefined },
-        select: { id: true, name: true, email: true, image: true, bio: true },
+        select: { id: true, name: true, email: true, image: true, bio: true, username: true },
       });
       if (dbUser && typeof session.user === 'object') {
         session.user.id = dbUser.id;
@@ -84,12 +84,16 @@ export const authOptions: AuthOptions = {
         session.user.image = dbUser.image ?? undefined;
         // @ts-expect-error: bio is a custom field not in the default NextAuth user type
         session.user.bio = dbUser.bio ?? undefined;
+        // @ts-expect-error: username is a custom field not in the default NextAuth user type
+        session.user.username = dbUser.username ?? undefined;
       }
       return session;
     },
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        // @ts-expect-error: username is a custom field not in the default NextAuth user type
+        token.username = user.username ?? undefined;
       }
       return token;
     },

@@ -1,6 +1,7 @@
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ModalProvider } from "@/components/providers/modal-provider";
+import { Toaster } from "sonner";
 import AuthProvider from "@/components/AuthProvider";
 
 export const metadata = {
@@ -16,6 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="bg-light-bg dark:bg-dark-bg min-h-screen">
+        <Toaster />
         <AuthProvider>
           <ThemeProvider
             attribute="class"

@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
   const name = formData.get('name') as string;
   const bio = formData.get('bio') as string;
   const avatarFile = formData.get('avatar') as File | null;
+  const avatarUrlFromForm = formData.get('avatarUrl') as string | null;
 
   let avatarUrl: string | undefined = undefined;
 
@@ -36,7 +37,11 @@ export async function POST(req: NextRequest) {
   // Update user in the database
   try {
     const updateData: any = { name, bio };
-    if (avatarUrl) updateData.image = avatarUrl;
+    if (avatarUrl) {
+      updateData.image = avatarUrl;
+    } else if (avatarUrlFromForm) {
+      updateData.image = avatarUrlFromForm;
+    }
     await prisma.user.update({
       where: { email: session.user.email },
       data: updateData,
