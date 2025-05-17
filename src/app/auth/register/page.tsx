@@ -53,7 +53,7 @@ export default function RegisterPage() {
               type="text"
               autoComplete="name"
               required
-              className="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="p-2 mt-1 block w-full rounded border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
               value={name}
               onChange={e => setName(e.target.value)}
             />
@@ -68,7 +68,7 @@ export default function RegisterPage() {
               type="email"
               autoComplete="email"
               required
-              className="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="p-2 mt-1 block w-full rounded border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
               value={email}
               onChange={e => setEmail(e.target.value)}
             />
@@ -83,7 +83,7 @@ export default function RegisterPage() {
               type="password"
               autoComplete="new-password"
               required
-              className="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="p-2 mt-1 block w-full rounded border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
               value={password}
               onChange={e => setPassword(e.target.value)}
             />
@@ -101,7 +101,7 @@ export default function RegisterPage() {
               minLength={3}
               maxLength={20}
               autoComplete="username"
-              className="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="p-2 mt-1 block w-full rounded border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
               value={username}
               onChange={e => setUsername(e.target.value)}
             />

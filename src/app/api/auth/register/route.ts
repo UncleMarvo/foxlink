@@ -1,6 +1,52 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
 import { hash } from 'bcryptjs';
+import { randomUUID } from 'crypto';
+import { Resend } from 'resend';
+
+// Helper to send verification email
+async function sendVerificationEmail(userEmail: string) {
+  const token = randomUUID();
+  // Set expiry from env or default to 60 minutes
+  const expiresMinutes = Number(process.env.EMAIL_VERIFICATION_TOKEN_EXPIRES_MINUTES) || 60;
+  const expires = new Date(Date.now() + expiresMinutes * 60 * 1000);
+
+  // Store token in VerificationToken table
+  await prisma.verificationToken.create({
+    data: {
+      identifier: userEmail,
+      token,
+      expires,
+    },
+  });
+
+  // Send email using Resend
+  const verificationUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/verify?token=${token}&email=${encodeURIComponent(userEmail)}`;
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  await resend.emails.send({
+    from: 'Your App <onboarding@yourdomain.com>',
+    to: userEmail,
+    subject: 'Verify your email',
+    html: `<p>Click <a href="${verificationUrl}">here</a> to verify your email address.</p>`,
+  });
+
+  /*
+  // SMTP code (commented out for future use)
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT),
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+  await transporter.sendMail({
+    to: userEmail,
+    subject: 'Verify your email',
+    html: `<p>Click <a href="${verificationUrl}">here</a> to verify your email address.</p>`,
+  });
+  */
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -32,9 +78,12 @@ export async function POST(req: NextRequest) {
         email,
         password: hashed,
         username,
+        emailVerified: null, // Explicitly set as unverified
       },
     });
-    return NextResponse.json({ success: true });
+    // Send verification email
+    await sendVerificationEmail(email);
+    return NextResponse.json({ success: true, message: 'Registration successful. Please check your email to verify your account.' });
   } catch (err) {
     return NextResponse.json({ error: 'Registration failed.' }, { status: 500 });
   }

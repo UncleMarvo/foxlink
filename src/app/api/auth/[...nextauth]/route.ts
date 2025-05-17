@@ -68,6 +68,18 @@ export const authOptions: AuthOptions = {
     strategy: 'jwt', // Use JWT for stateless sessions
   },
   callbacks: {
+    async signIn({ user, account, credentials }) {
+      // Only enforce for credentials provider
+      if (account?.provider === 'credentials') {
+        const dbUser = await prisma.user.findUnique({ where: { email: user.email ?? undefined } });
+        if (!dbUser?.emailVerified) {
+          // Block login if not verified
+          throw new Error('Please verify your email before logging in.');
+        }
+      }
+      // Allow OAuth users (Google, GitHub, etc.)
+      return true;
+    },
     async session({ session, token }) {
       // Type guard for session.user
       if (!session.user || !session.user.email) {
@@ -82,9 +94,7 @@ export const authOptions: AuthOptions = {
         session.user.id = dbUser.id;
         session.user.name = dbUser.name ?? undefined;
         session.user.image = dbUser.image ?? undefined;
-        // @ts-expect-error: bio is a custom field not in the default NextAuth user type
         session.user.bio = dbUser.bio ?? undefined;
-        // @ts-expect-error: username is a custom field not in the default NextAuth user type
         session.user.username = dbUser.username ?? undefined;
       }
       return session;
@@ -92,7 +102,6 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        // @ts-expect-error: username is a custom field not in the default NextAuth user type
         token.username = user.username ?? undefined;
       }
       return token;

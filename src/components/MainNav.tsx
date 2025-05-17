@@ -193,7 +193,7 @@ export default function MainNav() {
       {/* <hr className="my-4 border-gray-200" /> */}
       <div className="my-8 px-4 border-t">
         <button
-          onClick={() => signOut({ callbackUrl: "/api/auth/signin" })}
+          onClick={() => signOut({ callbackUrl: "/auth/signin" })}
           className="flex items-center gap-2 w-full px-4 py-2 rounded hover:bg-red-100 text-red-600 font-medium transition"
           title="Sign out"
         >
