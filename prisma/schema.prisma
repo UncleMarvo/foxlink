@@ -29,6 +29,7 @@ model User {
   analytics         Analytics[]
   stripeCustomerId  String?     // Stripe customer ID for billing
   socialMedia       SocialMedia[]
+  passwordResetTokens PasswordResetToken[]
 }
 
 model Account {
@@ -149,6 +150,16 @@ model SocialMedia {
   bluesky_visible   Boolean  @default(true)
   updated_at        DateTime @default(now())
   user              User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  token     String   @unique
+  expires   DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
 
 enum Role {

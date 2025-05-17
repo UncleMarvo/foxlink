@@ -139,8 +139,6 @@ export default function MainNav() {
         <div className="text-sm font-semibold text-gray-700 mt-2">
           {session?.user?.email || session?.user?.email || "Email"}
         </div>
-
-
       </div>
       {/* Navigation links */}
       <ul className="flex flex-col gap-2 mt-8">
@@ -157,6 +155,24 @@ export default function MainNav() {
             </Link>
           </li>
         ))}
+        {/* Admin link: Only visible to users with role 'ADMIN' or 'SUPER_ADMIN' */}
+        {session?.user?.role === 'ADMIN' || session?.user?.role === 'SUPER_ADMIN' ? (
+          <li>
+            {/* This link is only shown to admin users. */}
+            <Link
+              href="/admin"
+              className={`flex items-center gap-3 px-4 py-2 rounded hover:bg-indigo-100 transition text-indigo-800 font-semibold ${
+                pathname.startsWith('/admin') ? 'bg-indigo-100' : ''
+              }`}
+            >
+              {/* Simple shield icon for admin */}
+              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3l7 4v5c0 5.25-3.5 9.74-7 11-3.5-1.26-7-5.75-7-11V7l7-4z" stroke="#6366f1" strokeWidth="1.5" strokeLinejoin="round" fill="#eef2ff"/>
+              </svg>
+              <span>Admin</span>
+            </Link>
+          </li>
+        ) : null}
         {/* Manage Subscription for premium users */}
         {isPremium && (
           <li>

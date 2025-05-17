@@ -107,6 +107,12 @@ export default function SignInPage() {
           >
             {loading ? "Signing in..." : "Sign in with Email"}
           </button>
+          {/* Forgot Password link for users who need to reset their password */}
+          <p className="text-center text-sm mt-2">
+            <a href="/auth/forgot-password" className="text-blue-600 hover:underline">
+              Forgot your password?
+            </a>
+          </p>
         </form>
         {/* Add a link to registration or password reset here if needed */}
         <div className="text-center text-sm mt-2">
