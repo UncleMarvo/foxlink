@@ -162,6 +162,7 @@ export default function AppearanceSetting() {
             )}
           />
 
+          {/* Background Pattern Toggle */}
           <div className="space-y-4">
             <FormField
               control={form.control}
@@ -187,6 +188,53 @@ export default function AppearanceSetting() {
               )}
             />
           </div>
+
+          {/* Font Size Selector */}
+          <FormField
+            control={form.control}
+            name="fontSize"
+            render={({ field }) => (
+              <FormItem className="space-y-1">
+                <FormLabel>Font Size</FormLabel>
+                <FormDescription>
+                  Choose the font size for your public link page.
+                </FormDescription>
+                <FormMessage />
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="flex flex-row gap-4 pt-2"
+                >
+                  {fontSizes.map((size) => (
+                    <FormItem key={size.value} className="flex flex-col items-center cursor-pointer">
+                      <FormLabel className={cn(
+                        "flex flex-col items-center p-2 rounded border transition-all w-20 sm:w-12 md:w-15 lg:w-20",
+                        field.value === size.value
+                          ? "border-blue-600 bg-blue-50 shadow"
+                          : "border-gray-300 bg-white hover:bg-gray-50"
+                      )}>
+                        <FormControl>
+                          <RadioGroupItem value={size.value} className="sr-only" />
+                        </FormControl>
+                        {/* Sample text in the corresponding size */}
+                        <span
+                          className={cn(
+                            "block font-semibold",
+                            size.value === "small" && "text-base",
+                            size.value === "medium" && "text-xl",
+                            size.value === "large" && "text-3xl"
+                          )}
+                        >
+                          Aa
+                        </span>
+                        <span className="mt-1 text-sm sm:text-xs">{size.label}</span>
+                      </FormLabel>
+                    </FormItem>
+                  ))}
+                </RadioGroup>
+              </FormItem>
+            )}
+          />
         </CardContent>
 
         <CardFooter>

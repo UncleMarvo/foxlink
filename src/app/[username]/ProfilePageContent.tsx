@@ -28,9 +28,16 @@ const ProfilePageContent: React.FC<ProfilePageContentProps> = ({ user, socialLin
       : {}),
   };
 
+  // Map font_size to Tailwind class
+  const fontSizeClass = userConfigs?.font_size === "small"
+    ? "text-base"
+    : userConfigs?.font_size === "large"
+    ? "text-xl"
+    : "text-lg"; // default to medium
+
   return (
     <div
-      className="flex flex-col items-center min-h-screen py-8 px-4 w-full"
+      className={"flex flex-col items-center min-h-screen py-8 px-4 w-full " + fontSizeClass}
       style={backgroundStyle}
     >
       {/* Track profile page view */}
@@ -78,7 +85,7 @@ const ProfilePageContent: React.FC<ProfilePageContentProps> = ({ user, socialLin
       </div>
       {/* Links (client component for analytics tracking) */}
       <div className="w-full max-w-xl mt-6">
-        <PublicLinksList links={user.links} themeColors={colors} />
+        <PublicLinksList links={user.links} themeColors={colors} fontSize={userConfigs?.font_size || "medium"} />
       </div>
     </div>
   );

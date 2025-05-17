@@ -81,7 +81,7 @@ const ProfilePage = async ({ params }: ProfilePageProps) => {
   const themeName = userConfigs?.theme || 'OceanBreeze';
 
   return (
-    <ThemeProvider initialTheme={themeName}>
+    <ThemeProvider initialTheme={themeName as any}>
       <ProfilePageContent user={user} socialLinks={socialLinks} userConfigs={userConfigs} />
     </ThemeProvider>
   );
