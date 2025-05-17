@@ -48,6 +48,27 @@ export async function GET(req: NextRequest) {
       },
       _count: { linkId: true },
     });
+    // Fetch social media click counts by platform in date range
+    const socialMediaClicksRaw = await prisma.analytics.groupBy({
+      by: ['platform'],
+      where: {
+        userId,
+        type: 'link_click',
+        linkId: null,
+        platform: { not: null },
+        timestamp: {
+          gte: new Date(start),
+          lte: new Date(end + 'T23:59:59.999Z'),
+        },
+      },
+      _count: { platform: true },
+    });
+    // Convert to object: { platform: count }
+    const socialMediaClicks = Object.fromEntries(
+      socialMediaClicksRaw
+        .filter(sm => sm.platform)
+        .map(sm => [sm.platform, sm._count.platform])
+    );
     // Fetch link titles for the user's links
     const links = await prisma.link.findMany({
       where: { userId },
@@ -93,7 +114,7 @@ export async function GET(req: NextRequest) {
     rawRate = Math.min(rawRate, 100);
     const conversionRate = `${Math.round(rawRate)}%`;
     // Return analytics summary
-    return NextResponse.json({ profileViews, perLinkClicks, totalLinks, totalClicks, uniqueVisitors, conversionRate });
+    return NextResponse.json({ profileViews, perLinkClicks, totalLinks, totalClicks, uniqueVisitors, conversionRate, socialMediaClicks });
   } catch (err) {
     // Optionally log error: console.error('Error fetching analytics summary:', err);
     return NextResponse.json({ error: 'Failed to fetch analytics.' }, { status: 500 });

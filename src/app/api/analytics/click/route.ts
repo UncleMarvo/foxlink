@@ -51,10 +51,10 @@ export async function POST(req: NextRequest) {
     }
 
     // Parse and validate input
-    const { linkId, abTestGroup, referrer, country: clientCountry } = await req.json();
+    const { linkId, abTestGroup, referrer, country: clientCountry, platform, username } = await req.json();
 
-    // Validate linkId is present and is a string (could add UUID check if needed)
-    if (!linkId || typeof linkId !== 'string') {
+    // Allow either a valid linkId (for regular links) or a valid platform (for social media clicks)
+    if ((!linkId || typeof linkId !== 'string') && !platform) {
       return NextResponse.json({ error: 'Missing or invalid linkId' }, { status: 400 });
     }
     // Validate optional fields if present
@@ -67,6 +67,10 @@ export async function POST(req: NextRequest) {
     if (clientCountry && typeof clientCountry !== 'string') {
       return NextResponse.json({ error: 'Invalid country' }, { status: 400 });
     }
+    // Validate platform if present
+    if (platform && typeof platform !== 'string') {
+      return NextResponse.json({ error: 'Invalid platform' }, { status: 400 });
+    }
 
     // Server-side geo-IP lookup if country not provided
     let country = clientCountry || null;
@@ -74,21 +78,33 @@ export async function POST(req: NextRequest) {
       country = await getCountryFromRequest(req);
     }
 
-    // Find the link and user
-    const link = await prisma.link.findUnique({ where: { id: linkId } });
-    if (!link) {
-      return NextResponse.json({ error: 'Link not found' }, { status: 404 });
+    // Find the link and user (only for regular link clicks)
+    let userId = null;
+    if (linkId && typeof linkId === 'string') {
+      const link = await prisma.link.findUnique({ where: { id: linkId } });
+      if (!link) {
+        return NextResponse.json({ error: 'Link not found' }, { status: 404 });
+      }
+      userId = link.userId;
+    } else if (platform && username) {
+      // For social media clicks, look up user by username
+      const user = await prisma.user.findUnique({ where: { username } });
+      if (!user) {
+        return NextResponse.json({ error: 'User not found for social media click' }, { status: 404 });
+      }
+      userId = user.id;
     }
     // Create analytics record
     await prisma.analytics.create({
       data: {
-        linkId,
-        userId: link.userId,
+        linkId: linkId && typeof linkId === 'string' ? linkId : null,
+        userId,
         type: 'link_click', // Always 'link_click' for this endpoint
         abTestGroup: abTestGroup || null,
         referrer: referrer || null,
         country: country || null,
         ip: ip || null,
+        platform: platform || null, // Store platform if provided (for social media clicks)
       },
     });
     return NextResponse.json({ success: true });

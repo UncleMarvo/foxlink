@@ -3,6 +3,9 @@ import prisma from '@/utils/prisma';
 import Image from 'next/image';
 import ProfileViewTracker from '@/components/ProfileViewTracker';
 import PublicLinksList from '@/components/PublicLinksList';
+import { SocialMediaLinks } from '@/components/SocialMediaLinks';
+import { ThemeProvider } from '@/app/context/ThemeContext';
+import ProfilePageContent from './ProfilePageContent';
 
 // Type for the page params
 interface ProfilePageProps {
@@ -35,44 +38,52 @@ async function getUserAndLinks(username: string) {
   return user;
 }
 
-// The public profile page component
+// Helper to fetch public social media links for a user by username
+async function getPublicSocialLinks(username: string) {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/profile/social-media/public/${username}`,
+      { cache: 'no-store' }
+    );
+    if (!res.ok) return {};
+    return await res.json();
+  } catch {
+    return {};
+  }
+}
+
+// Helper to fetch user configs (appearance settings) by user id
+async function getUserConfigs(userId: string) {
+  return await prisma.userConfigs.findUnique({
+    where: { user_id: userId },
+    select: { theme: true, font_size: true, show_background_pattern: true },
+  });
+}
+
+// The main server component
 const ProfilePage = async ({ params }: ProfilePageProps) => {
   const awaitedParams = await params;
   const { username } = awaitedParams;
   const user = await getUserAndLinks(username);
+  const socialLinks = await getPublicSocialLinks(username);
+  const userConfigs = user ? await getUserConfigs(user.id) : null;
 
   if (!user) {
     // User not found
-    return <div className="flex flex-col items-center justify-center min-h-screen text-center"><h1 className="text-2xl font-bold">User not found</h1></div>;
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen text-center">
+        <h1 className="text-2xl font-bold">User not found</h1>
+      </div>
+    );
   }
 
+  // Use the user's theme, fallback to 'OceanBreeze'
+  const themeName = userConfigs?.theme || 'OceanBreeze';
+
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gray-50 py-8 px-4">
-      {/* Track profile page view */}
-      <ProfileViewTracker userId={user.id} />
-      {/* Profile info */}
-      <div className="flex flex-col items-center mb-8">
-        {/* Avatar: 100x100px, circular */}
-        {user.image && (
-          <Image
-            src={user.image}
-            alt={user.name || user.username || user.email || "User avatar"}
-            width={100}
-            height={100}
-            className="rounded-full mb-2"
-          />
-        )}
-        {/* Username or email under avatar */}
-        <div className="text-lg font-semibold text-gray-700">
-          {user.username || user.email}
-        </div>
-        {/* Name and bio */}
-        <h1 className="text-2xl font-bold">{user.name || user.username || user.email}</h1>
-        {user.bio && <p className="text-gray-600 mt-2 max-w-md text-center">{user.bio}</p>}
-      </div>
-      {/* Links (client component for analytics tracking) */}
-      <PublicLinksList links={user.links} />
-    </div>
+    <ThemeProvider initialTheme={themeName}>
+      <ProfilePageContent user={user} socialLinks={socialLinks} userConfigs={userConfigs} />
+    </ThemeProvider>
   );
 };
 

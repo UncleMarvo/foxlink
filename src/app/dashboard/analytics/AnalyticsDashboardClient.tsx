@@ -136,10 +136,30 @@ const AnalyticsDashboardClient: React.FC<AnalyticsDashboardClientProps> = ({
       : "0";
   const inactiveLinks = statBox.totalLinks - data.perLinkClicks.length;
 
+  // Platform icon map (copied from SocialMediaLinks for consistency)
+  const platformMeta: Record<
+    string,
+    { icon: React.ElementType; label: string }
+  > = {
+    twitter: { icon: require("react-icons/fa").FaTwitter, label: "Twitter" },
+    facebook: { icon: require("react-icons/fa").FaFacebook, label: "Facebook" },
+    instagram: {
+      icon: require("react-icons/fa").FaInstagram,
+      label: "Instagram",
+    },
+    linkedin: { icon: require("react-icons/fa").FaLinkedin, label: "LinkedIn" },
+    youtube: { icon: require("react-icons/fa").FaYoutube, label: "YouTube" },
+    tiktok: { icon: require("react-icons/fa").FaTiktok, label: "TikTok" },
+    github: { icon: require("react-icons/fa").FaGithub, label: "GitHub" },
+    twitch: { icon: require("react-icons/fa").FaTwitch, label: "Twitch" },
+    bluesky: { icon: require("react-icons/si").SiBluesky, label: "BlueSky" },
+  };
+
+  // Read social media clicks from analytics data
+  const socialMediaClicks = (data as any).socialMediaClicks || {};
+
   // Fetch analytics data when date range changes
   useEffect(() => {
-    // Only fetch if the date range is different from the initial
-    if (startDate === initialStartDate && endDate === initialEndDate) return;
     setLoading(true);
     setError(null);
     fetch(`/api/analytics/summary?start=${startDate}&end=${endDate}`)
@@ -162,7 +182,7 @@ const AnalyticsDashboardClient: React.FC<AnalyticsDashboardClientProps> = ({
         setError(err.message || "Unknown error");
         setLoading(false);
       });
-  }, [startDate, endDate, initialStartDate, initialEndDate]);
+  }, [startDate, endDate]);
 
   // Fetch Most Active Day when date range changes
   useEffect(() => {
@@ -527,6 +547,14 @@ const AnalyticsDashboardClient: React.FC<AnalyticsDashboardClientProps> = ({
       {/* If not premium, show locked analytics sections with upgrade message */}
       {!isPremium ? (
         <>
+          {/* Social Media Clicks by Platform (locked) */}
+          <div className="mb-6">
+            <PanelBox title="Social Media Clicks by Platform">
+              <div className="flex flex-wrap gap-4 items-center">
+                <span className="text-2xl font-bold text-gray-400">—</span>
+              </div>
+            </PanelBox>
+          </div>
           {/* Additional metrics StatBoxes row (locked) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
             <StatBox
@@ -595,6 +623,36 @@ const AnalyticsDashboardClient: React.FC<AnalyticsDashboardClientProps> = ({
       ) : (
         // Premium users: show all analytics data as normal
         <>
+          {/* Social Media Clicks Section */}
+          {Object.keys(socialMediaClicks).length > 0 && (
+            <div className="mb-6">
+              <PanelBox title="Social Media Clicks by Platform">
+                <div className="flex flex-wrap gap-4 items-center">
+                  {Object.entries(socialMediaClicks).map(
+                    ([platform, count]) => {
+                      const meta = platformMeta[platform] || {
+                        icon: null,
+                        label: platform,
+                      };
+                      const Icon = meta.icon;
+                      return (
+                        <div
+                          key={platform}
+                          className="flex items-center gap-2 bg-gray-50 rounded px-3 py-2 shadow-sm"
+                        >
+                          {Icon && <Icon className="text-xl" />}
+                          <span className="font-medium">{meta.label}:</span>
+                          <span className="text-blue-700 font-bold">
+                            {String(count)}
+                          </span>
+                        </div>
+                      );
+                    }
+                  )}
+                </div>
+              </PanelBox>
+            </div>
+          )}
           {/* Additional metrics StatBoxes row */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
             <StatBox title="Avg Clicks per Link" value={avgClicksPerLink} />

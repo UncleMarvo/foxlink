@@ -103,6 +103,7 @@ model Analytics {
   referrer    String?
   ip          String?
   country     String?
+  platform    String?   // New field for social media platform, nullable
   link        Link?     @relation(fields: [linkId], references: [id], onDelete: SetNull)
   user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
 }
@@ -144,6 +145,8 @@ model SocialMedia {
   github_visible    Boolean  @default(true)
   twitch_url        String?  @default("")
   twitch_visible    Boolean  @default(true)
+  bluesky_url       String?  @default("")
+  bluesky_visible   Boolean  @default(true)
   updated_at        DateTime @default(now())
   user              User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }

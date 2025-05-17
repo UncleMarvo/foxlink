@@ -26,64 +26,25 @@ const AnalyticsDashboard = async () => {
   const initialStartDate = formatDate(startDate);
   const initialEndDate = formatDate(endDate);
 
-  // Fetch analytics summary for the default date range
-  let profileViews = 0;
-  let perLinkClicks: { linkId: string; title: string; clicks: number }[] = [];
-  let error = null;
-  let isPremium = false;
-  // Type for grouped link click result from Prisma
-  type LinkClickGroup = { linkId: string | null; _count: { linkId: number } };
-  try {
-    const userId = session.user.id;
-    // Fetch premium status
-    const user = await prisma.user.findUnique({ where: { id: userId }, select: { premium: true } });
-    isPremium = !!user?.premium;
-    // Total profile views in date range
-    profileViews = await prisma.analytics.count({
-      where: {
-        userId,
-        type: 'profile_view',
-        timestamp: {
-          gte: new Date(initialStartDate),
-          lte: new Date(initialEndDate + 'T23:59:59.999Z'),
-        },
-      },
-    });
-    // Per-link click counts (with link titles) in date range
-    const linkClicks = await prisma.analytics.groupBy({
-      by: ['linkId'],
-      where: {
-        userId,
-        type: 'link_click',
-        linkId: { not: null },
-        timestamp: {
-          gte: new Date(initialStartDate),
-          lte: new Date(initialEndDate + 'T23:59:59.999Z'),
-        },
-      },
-      _count: { linkId: true },
-    });
-    // Fetch link titles for the user's links
-    const links = await prisma.link.findMany({
-      where: { userId },
-      select: { id: true, title: true },
-    });
-    const linkTitleMap = Object.fromEntries(links.map((l: { id: string; title: string }) => [l.id, l.title]));
-    // Only include clicks for valid (non-null) linkIds
-    perLinkClicks = linkClicks
-      .filter((lc: LinkClickGroup) => lc.linkId !== null)
-      .map((lc: LinkClickGroup) => ({
-        linkId: lc.linkId!,
-        title: linkTitleMap[lc.linkId as string] || '(untitled)',
-        clicks: lc._count.linkId,
-      }));
-  } catch (err) {
-    error = 'Failed to fetch analytics.';
-    // Optionally log error: console.error('Error fetching analytics summary:', err);
-  }
+  // Fetch premium status (as before)
+  const user = await prisma.user.findUnique({ where: { id: session.user.id }, select: { premium: true } });
+  const isPremium = !!user?.premium;
 
-  // Prepare initial analytics data for the client component
-  const initialData = { profileViews, perLinkClicks, error };
+  // Fetch analytics summary for the default date range from the API route
+  let initialData: { profileViews: number; perLinkClicks: any[]; error: string | null; [key: string]: any } = { profileViews: 0, perLinkClicks: [], error: null };
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
+    const summaryRes = await fetch(
+      `${baseUrl}/api/analytics/summary?start=${initialStartDate}&end=${initialEndDate}`
+    );
+    if (summaryRes.ok) {
+      initialData = await summaryRes.json();
+    } else {
+      initialData.error = 'Failed to fetch analytics summary.';
+    }
+  } catch (err) {
+    initialData.error = 'Failed to fetch analytics summary.';
+  }
 
   // --- Compute stats for StatBox panels (like dashboard) ---
   // Total Links

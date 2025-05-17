@@ -25,6 +25,7 @@ import {
   FaGithub,
   FaTwitch,
 } from "react-icons/fa";
+import { SiBluesky } from "react-icons/si";
 import {
   Form,
   FormControl,
@@ -83,6 +84,12 @@ const platforms = [
     label: "Twitch",
     icon: FaTwitch,
     placeholder: "Twitch URL or username",
+  },
+  {
+    key: "bluesky",
+    label: "BlueSky",
+    icon: SiBluesky,
+    placeholder: "BlueSky URL or handle",
   },
 ];
 
@@ -157,7 +164,7 @@ export default function IntegrationSettings() {
             key={key}
             className="flex items-center gap-4 border-b pb-4 last:border-b-0"
           >
-            <Icon className="w-6 h-6 text-gray-500" />
+            {Icon && <Icon className="w-6 h-6 text-gray-500" />}
             <Controller
               name={`${key}_url`}
               control={control}
