@@ -105,6 +105,12 @@ export default function MainNav() {
     { href: "/dashboard/analytics", label: "Analytics", icon: icons.analytics },
     { href: "/dashboard/profile", label: "Profile", icon: icons.profile },
     { href: "/dashboard/settings", label: "Settings", icon: icons.settings },
+    // Feedback link for all users
+    { href: "/dashboard/feedback", label: "Feedback", icon: (
+      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="#555" strokeWidth="1.5" strokeLinejoin="round" fill="#fff"/>
+      </svg>
+    ) },
   ];
 
   return (
