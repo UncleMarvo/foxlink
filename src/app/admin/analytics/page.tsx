@@ -121,7 +121,7 @@ export default function AdminAnalyticsPage() {
       {loading && <div className="text-blue-600">Loading analytics...</div>}
       {error && <div className="text-red-600">{error}</div>}
       {metrics && !loading && !error && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 max-w-6xl mb-10">
           <div className="bg-white rounded shadow p-6 flex flex-col items-center">
             <div className="text-3xl font-bold text-indigo-600">{metrics.totalUsers}</div>
             <div className="text-gray-700 mt-2">Total Users</div>

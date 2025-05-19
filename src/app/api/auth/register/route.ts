@@ -6,9 +6,13 @@ import { sendVerificationEmail } from '@/lib/email';
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, password, username } = await req.json();
+    const { name, email, password, username, acceptedTerms, termsVersion } = await req.json();
     if (!name || !email || !password || !username) {
       return NextResponse.json({ error: 'All fields are required.' }, { status: 400 });
+    }
+    // Require T&Cs acceptance
+    if (!acceptedTerms || termsVersion !== '1.0') {
+      return NextResponse.json({ error: 'You must accept the latest Terms and Conditions to register.' }, { status: 400 });
     }
     // Username format validation
     const usernamePattern = /^[a-zA-Z0-9_]{3,20}$/;
@@ -35,6 +39,8 @@ export async function POST(req: NextRequest) {
         password: hashed,
         username,
         emailVerified: null, // Explicitly set as unverified
+        acceptedTerms, // Store acceptance from request
+        termsVersion,  // Store version from request
       },
     });
     // Generate verification token

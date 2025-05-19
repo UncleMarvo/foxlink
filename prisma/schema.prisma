@@ -30,6 +30,8 @@ model User {
   stripeCustomerId  String?     // Stripe customer ID for billing
   socialMedia       SocialMedia[]
   passwordResetTokens PasswordResetToken[]
+  acceptedTerms     Boolean    @default(false)
+  termsVersion      String?
 }
 
 model Account {

@@ -10,6 +10,7 @@ export default function RegisterPage() {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const router = useRouter();
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -23,10 +24,15 @@ export default function RegisterPage() {
       setLoading(false);
       return;
     }
+    if (!acceptedTerms) {
+      setError("You must accept the Terms and Conditions to register.");
+      setLoading(false);
+      return;
+    }
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password, username }),
+      body: JSON.stringify({ name, email, password, username, acceptedTerms: true, termsVersion: "1.0" }),
     });
     const data = await res.json();
     setLoading(false);
@@ -109,6 +115,21 @@ export default function RegisterPage() {
               Your username will be used for your public profile link and <strong>cannot be changed later</strong>.
               Only letters, numbers, and underscores. 3-20 characters.
             </p>
+          </div>
+          <div className="flex items-center">
+            <input
+              id="acceptedTerms"
+              name="acceptedTerms"
+              type="checkbox"
+              checked={acceptedTerms}
+              onChange={e => setAcceptedTerms(e.target.checked)}
+              className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              required
+            />
+            <label htmlFor="acceptedTerms" className="ml-2 block text-sm text-gray-700">
+              I have read and accept the{' '}
+              <a href="/terms" className="text-blue-600 hover:underline">Terms and Conditions</a>.
+            </label>
           </div>
           {error && <div className="text-red-500 text-sm">{error}</div>}
           {success && <div className="text-green-600 text-sm">{success}</div>}
