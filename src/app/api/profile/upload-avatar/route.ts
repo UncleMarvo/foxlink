@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../auth/[...nextauth]/route';
 
 // Load env vars
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -10,13 +12,26 @@ const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
 export async function POST(req: NextRequest) {
+  // Authenticate user
+  const session = await getServerSession(authOptions);
+  if (!session || !session.user?.id) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   // Parse the multipart form data
   const formData = await req.formData();
   const file = formData.get('file') as File | null;
-  const userId = formData.get('userId') as string | null;
-
-  if (!file || !userId) {
-    return NextResponse.json({ error: 'Missing file or userId' }, { status: 400 });
+  // Use the authenticated user's ID
+  const userId = session.user.id;
+  if (!file) {
+    return NextResponse.json({ error: 'Missing file' }, { status: 400 });
+  }
+  // Backend validation: only allow JPG/PNG and max 5MB
+  const allowedTypes = ['image/jpeg', 'image/png'];
+  if (!allowedTypes.includes(file.type)) {
+    return NextResponse.json({ error: 'Only JPG and PNG files are allowed.' }, { status: 400 });
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    return NextResponse.json({ error: 'File size must be 5MB or less.' }, { status: 400 });
   }
 
   // Create a unique file path

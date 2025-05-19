@@ -1,9 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../../auth/[...nextauth]/route';
 
 // PATCH /api/admin/feedback/[id]
 // Allows admin to update the feedback response and mark as resolved
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+  // Authenticate user and check admin role
+  const session = await getServerSession(authOptions);
+  if (!session || session.user.role?.toLowerCase() !== 'admin') {
+    // Only admins can access this endpoint
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
   const { id } = params;
   if (!id) {
     return NextResponse.json({ error: 'Missing feedback id.' }, { status: 400 });
@@ -39,6 +47,12 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 // GET /api/admin/feedback/[id]
 // Fetch feedback details by ID for admin view
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+  // Authenticate user and check admin role
+  const session = await getServerSession(authOptions);
+  if (!session || session.user.role?.toLowerCase() !== 'admin') {
+    // Only admins can access this endpoint
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
   const { id } = params;
   if (!id) {
     return NextResponse.json({ error: 'Missing feedback id.' }, { status: 400 });

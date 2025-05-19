@@ -15,6 +15,7 @@ import {
   Legend,
   Filler,
 } from "chart.js";
+import { useSession } from "next-auth/react";
 
 ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Legend, Filler);
 
@@ -32,6 +33,22 @@ interface UserGrowthPoint {
 }
 
 export default function AdminAnalyticsPage() {
+  // Get session info to check if user is admin
+  const { data: session, status } = useSession();
+  // Show loading while session is loading
+  if (status === "loading") return <div>Loading...</div>;
+  // Check if user is admin (case-insensitive)
+  const isAdmin = session?.user?.role?.toLowerCase() === "admin";
+  if (!isAdmin) {
+    // Show access denied message for non-admins
+    return (
+      <div className="text-center mt-20">
+        <h1 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h1>
+        <p className="text-gray-700">You do not have permission to view this page.</p>
+      </div>
+    );
+  }
+
   const [metrics, setMetrics] = useState<AnalyticsMetrics | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

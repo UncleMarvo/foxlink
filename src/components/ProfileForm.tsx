@@ -21,6 +21,16 @@ export default function ProfileForm({ user }: { user: any }) {
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !user?.id) return;
+    // Client-side validation: only allow JPG/PNG and max 5MB
+    const allowedTypes = ['image/jpeg', 'image/png'];
+    if (!allowedTypes.includes(file.type)) {
+      setError('Only JPG and PNG files are allowed.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError('File size must be 5MB or less.');
+      return;
+    }
     setLoading(true);
     setError("");
     setSuccess("");
@@ -28,14 +38,12 @@ export default function ProfileForm({ user }: { user: any }) {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("userId", user.id);
-
       const res = await fetch("/api/profile/upload-avatar", {
         method: "POST",
         body: formData,
       });
       const data = await res.json();
       if (data.error) throw new Error(data.error);
-
       setAvatarUrl(data.publicUrl);
       setSuccess("Avatar uploaded!");
       toast.success("Avatar uploaded!");

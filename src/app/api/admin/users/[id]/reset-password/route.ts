@@ -2,10 +2,19 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
 import crypto from 'crypto';
 import { sendPasswordResetEmail } from '@/lib/email';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../../../auth/[...nextauth]/route';
 
 // POST /api/admin/users/[id]/reset-password
 // Admin triggers a password reset email for a user
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+  // Authenticate user and check admin role
+  const session = await getServerSession(authOptions);
+  if (!session || session.user.role?.toLowerCase() !== 'admin') {
+    // Only admins can access this endpoint
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
   const { id } = params;
   if (!id) {
     return NextResponse.json({ error: 'Missing user id.' }, { status: 400 });
@@ -38,7 +47,8 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
   // Send the password reset email using the new utility
   try {
-    await sendPasswordResetEmail({ to: user.email, resetUrl, expires });
+    // Use user.name if available, otherwise fallback to user.email for username
+    await sendPasswordResetEmail({ to: user.email, username: user.name || user.email, resetUrl, expires });
     return NextResponse.json({ success: true });
   } catch (err) {
     return NextResponse.json({ error: 'Failed to send password reset email.' }, { status: 500 });

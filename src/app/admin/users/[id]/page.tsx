@@ -5,6 +5,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 interface User {
   id: string;
@@ -18,6 +19,22 @@ interface User {
 }
 
 export default function AdminViewUserPage() {
+  // Get session info to check if user is admin
+  const { data: session, status } = useSession();
+  // Show loading while session is loading
+  if (status === "loading") return <div>Loading...</div>;
+  // Check if user is admin (case-insensitive)
+  const isAdmin = session?.user?.role?.toLowerCase() === "admin";
+  if (!isAdmin) {
+    // Show access denied message for non-admins
+    return (
+      <div className="text-center mt-20">
+        <h1 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h1>
+        <p className="text-gray-700">You do not have permission to view this page.</p>
+      </div>
+    );
+  }
+
   // Get the user ID from the route params
   const params = useParams();
   const userId = Array.isArray(params.id) ? params.id[0] : params.id;

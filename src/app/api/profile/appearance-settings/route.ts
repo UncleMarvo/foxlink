@@ -41,6 +41,15 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   console.log("***** DEBUG: Appearance settings:", body);
   const { theme, font_size, show_background_pattern } = body;
+  // Backend validation for allowed values
+  const allowedThemes = ['OceanBreeze', 'ForestRetreat', 'Twilight', 'Amber', 'Azure', 'Sunbeam'];
+  const allowedFontSizes = ['small', 'medium', 'large'];
+  if (!allowedThemes.includes(theme)) {
+    return NextResponse.json({ error: 'Invalid theme selected.' }, { status: 400 });
+  }
+  if (!allowedFontSizes.includes(font_size)) {
+    return NextResponse.json({ error: 'Invalid font size selected.' }, { status: 400 });
+  }
   try {
     await prisma.userConfigs.upsert({
       where: { user_id: session.user.id },
