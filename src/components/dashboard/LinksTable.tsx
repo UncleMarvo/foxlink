@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import LinkEditModal from "./LinkEditModal";
 import LinkViewModal from "./LinkViewModal";
+import { DragDropContext, Droppable, Draggable, DropResult, DroppableProvided, DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
 
 /**
  * LinksTable: Displays a paginated table of user links with actions (view, edit, delete).
@@ -10,7 +11,13 @@ import LinkViewModal from "./LinkViewModal";
  * - Handles modals for create/edit/view.
  * - Handles pagination and disables Add button at link limit.
  */
-const LinksTable: React.FC = () => {
+
+// Add prop type for isPremium
+interface LinksTableProps {
+  isPremium: boolean;
+}
+
+const LinksTable: React.FC<LinksTableProps> = ({ isPremium }) => {
   // State for modals (edit/create/view)
   const [showEditModal, setShowEditModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
@@ -134,6 +141,96 @@ const LinksTable: React.FC = () => {
     );
   };
 
+  // DnD: Handle drag end
+  const handleDragEnd = async (result: DropResult) => {
+    if (!result.destination) return;
+    const reordered = Array.from(links);
+    const [removed] = reordered.splice(result.source.index, 1);
+    reordered.splice(result.destination.index, 0, removed);
+    // Update order in UI
+    setLinks(reordered);
+    // Send new order to backend (by link IDs)
+    await fetch('/api/links/reorder', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ids: reordered.map(l => l.id) }),
+    });
+    // Optionally refetch links
+    await fetchLinks();
+  };
+
+  // If premium, show all links in a scrollable list with DnD
+  const renderTableBody = () => {
+    if (loading) {
+      return <tr><td colSpan={7} className="text-center py-6 text-gray-400">Loading...</td></tr>;
+    }
+    if (error) {
+      return <tr><td colSpan={7} className="text-center py-6 text-red-500">{error}</td></tr>;
+    }
+    if (links.length === 0) {
+      return <tr><td colSpan={7} className="text-center py-6 text-gray-400">No links found.</td></tr>;
+    }
+    if (isPremium) {
+      // DnD enabled: show all links, no pagination
+      return (
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Droppable droppableId="links-table">
+            {(provided: DroppableProvided) => (
+              <tbody ref={provided.innerRef} {...provided.droppableProps}>
+                {links.map((link, idx) => (
+                  <Draggable key={link.id} draggableId={link.id} index={idx}>
+                    {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
+                      <tr
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className={`border-b border-gray-200 ${snapshot.isDragging ? 'bg-blue-50' : ''}`}
+                      >
+                        <td className="px-4 py-2 cursor-move">{link.title}</td>
+                        <td className="px-4 py-2"><a href={link.url} className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">{link.url}</a></td>
+                        <td className="px-4 py-2"><StatusPill isActive={link.isActive} /></td>
+                        <td className="px-4 py-2"><TypePill type={link.type} /></td>
+                        <td className="px-4 py-2"><RotationTypePill rotationType={link.rotationType} /></td>
+                        <td className="px-4 py-2 text-right">{link.clicks ?? 0}</td>
+                        <td className="px-4 py-2 text-center">
+                          <ActionsMenu
+                            onView={() => handleView(link)}
+                            onEdit={() => handleEdit(link)}
+                            onDelete={() => handleDelete(link)}
+                          />
+                        </td>
+                      </tr>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </tbody>
+            )}
+          </Droppable>
+        </DragDropContext>
+      );
+    } else {
+      // Not premium: show paginated, no DnD, with lock/tooltip
+      return pagedLinks.map((link) => (
+        <tr key={link.id} className="border-b border-gray-200">
+          <td className="px-4 py-2">{link.title}</td>
+          <td className="px-4 py-2"><a href={link.url} className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">{link.url}</a></td>
+          <td className="px-4 py-2"><StatusPill isActive={link.isActive} /></td>
+          <td className="px-4 py-2"><TypePill type={link.type} /></td>
+          <td className="px-4 py-2"><RotationTypePill rotationType={link.rotationType} /></td>
+          <td className="px-4 py-2 text-right">{link.clicks ?? 0}</td>
+          <td className="px-4 py-2 text-center">
+            <ActionsMenu
+              onView={() => handleView(link)}
+              onEdit={() => handleEdit(link)}
+              onDelete={() => handleDelete(link)}
+            />
+          </td>
+        </tr>
+      ));
+    }
+  };
+
   return (
     <div className="w-full bg-white border border-gray-200 rounded-lg p-6 mt-8">
       {/* Header Section */}
@@ -171,41 +268,23 @@ const LinksTable: React.FC = () => {
               <th className="px-4 py-2 text-center text-sm font-semibold text-gray-700">Actions</th>
             </tr>
           </thead>
-          <tbody>
-            {loading ? (
-              <tr><td colSpan={6} className="text-center py-6 text-gray-400">Loading...</td></tr>
-            ) : error ? (
-              <tr><td colSpan={6} className="text-center py-6 text-red-500">{error}</td></tr>
-            ) : pagedLinks.length === 0 ? (
-              <tr><td colSpan={6} className="text-center py-6 text-gray-400">No links found.</td></tr>
-            ) : (
-              pagedLinks.map((link) => (
-                <tr key={link.id} className="border-b border-gray-200">
-                  <td className="px-4 py-2">{link.title}</td>
-                  <td className="px-4 py-2"><a href={link.url} className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">{link.url}</a></td>
-                  <td className="px-4 py-2"><StatusPill isActive={link.isActive} /></td>
-                  <td className="px-4 py-2"><TypePill type={link.type} /></td>
-                  <td className="px-4 py-2"><RotationTypePill rotationType={link.rotationType} /></td>
-                  <td className="px-4 py-2 text-right">{link.clicks ?? 0}</td>
-                  <td className="px-4 py-2 text-center">
-                    <ActionsMenu
-                      onView={() => handleView(link)}
-                      onEdit={() => handleEdit(link)}
-                      onDelete={() => handleDelete(link)}
-                    />
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
+          {renderTableBody()}
         </table>
       </div>
       {/* Pagination controls */}
-      {totalPages > 1 && (
+      {/* Only show pagination for non-premium users */}
+      {!isPremium && totalPages > 1 && (
         <div className="flex justify-end mt-4 gap-2">
           <button className="px-3 py-1 rounded border text-sm" disabled={page === 1} onClick={() => setPage(page - 1)}>Prev</button>
           <span className="px-2 py-1 text-sm">Page {page} of {totalPages}</span>
           <button className="px-3 py-1 rounded border text-sm" disabled={page === totalPages} onClick={() => setPage(page + 1)}>Next</button>
+        </div>
+      )}
+      {/* Premium lock/tooltip for DnD */}
+      {!isPremium && (
+        <div className="mt-4 flex items-center gap-2 text-gray-500 text-sm">
+          <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 17v.01M12 13a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 0v4m0 0h.01M12 17h-.01" /></svg>
+          Drag-and-drop reordering is a premium feature. <a href="/dashboard/upgrade" className="text-blue-600 hover:underline ml-1">Upgrade to Premium</a>
         </div>
       )}
       {/* Modals for create/edit/view */}

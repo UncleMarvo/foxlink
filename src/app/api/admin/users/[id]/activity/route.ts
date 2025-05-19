@@ -9,11 +9,19 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     return NextResponse.json({ error: 'Missing user id.' }, { status: 400 });
   }
   try {
-    // Fetch the last 20 analytics events for the user
+    // Parse pagination params
+    const { searchParams } = new URL(req.url);
+    const page = parseInt(searchParams.get('page') || '1', 10);
+    const pageSize = parseInt(searchParams.get('pageSize') || '20', 10);
+    const skip = (page - 1) * pageSize;
+    // Fetch total count
+    const total = await prisma.analytics.count({ where: { userId: id } });
+    // Fetch paginated analytics events for the user
     const activity = await prisma.analytics.findMany({
       where: { userId: id },
       orderBy: { timestamp: 'desc' },
-      take: 20,
+      skip,
+      take: pageSize,
       select: {
         id: true,
         type: true,
@@ -24,7 +32,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
         linkId: true,
       },
     });
-    return NextResponse.json({ activity });
+    return NextResponse.json({ activity, total, page, pageSize });
   } catch (err) {
     return NextResponse.json({ error: 'Failed to fetch user activity.' }, { status: 500 });
   }

@@ -9,12 +9,18 @@ export async function GET(req: NextRequest) {
   if (!session || !session.user?.email) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+  // Check if user is premium
+  const user = await prisma.user.findUnique({ where: { email: session.user.email }, select: { premium: true } });
+  const isPremium = !!user?.premium;
+  const PREMIUM_LINK_LIMIT = 1000; // Set your premium limit here
+  const LINK_LIMIT = isPremium
+    ? PREMIUM_LINK_LIMIT
+    : parseInt(process.env.FREE_PLAN_LINK_LIMIT || '10', 10);
   const links = await prisma.link.findMany({
     where: { user: { email: session.user.email } },
     include: { type: true },
     orderBy: { order: 'asc' },
   });
-  const LINK_LIMIT = parseInt(process.env.FREE_PLAN_LINK_LIMIT || '10', 10);
   return NextResponse.json({ links, linkLimit: LINK_LIMIT });
 }
 
@@ -29,17 +35,23 @@ export async function POST(req: NextRequest) {
   if (!data.title || !data.url) {
     return NextResponse.json({ error: 'Title and URL are required.' }, { status: 400 });
   }
+  // Check if user is premium
+  const user = await prisma.user.findUnique({ where: { email: session.user.email }, select: { premium: true } });
+  const isPremium = !!user?.premium;
+  const PREMIUM_LINK_LIMIT = 1000; // Set your premium limit here
+  const LINK_LIMIT = isPremium
+    ? PREMIUM_LINK_LIMIT
+    : parseInt(process.env.FREE_PLAN_LINK_LIMIT || '10', 10);
   // If creating a weighted link, check total weight
   if (data.rotationType === 'weighted') {
     // Get user
-    const user = await prisma.user.findUnique({ where: { email: session.user.email } });
-    if (!user) {
+    if (!session.user?.id) {
       return NextResponse.json({ error: 'User not found.' }, { status: 404 });
     }
     // Sum all other weighted links for this user
     const links = await prisma.link.findMany({
       where: {
-        userId: user.id,
+        userId: session.user.id,
         rotationType: 'weighted',
       },
     });
@@ -54,8 +66,7 @@ export async function POST(req: NextRequest) {
     _max: { order: true },
   });
   const order = (maxOrder._max.order ?? 0) + 1;
-  // Enforce link limit for free plan users using value from .env
-  const LINK_LIMIT = parseInt(process.env.FREE_PLAN_LINK_LIMIT || '10', 10);
+  // Enforce link limit for user plan
   // Count the user's current links
   const currentLinkCount = await prisma.link.count({
     where: { user: { email: session.user.email } }

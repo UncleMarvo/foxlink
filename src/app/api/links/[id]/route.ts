@@ -67,6 +67,20 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
   if (!link || link.userId !== session.user.id) {
     return NextResponse.json({ error: 'Not found or forbidden' }, { status: 404 });
   }
+  // Store the order and userId before deleting
+  const deletedOrder = link.order;
+  const userId = link.userId;
+  // Delete the link
   await prisma.link.delete({ where: { id: linkId } });
+  // Reorder remaining links: decrement order for all links with order > deletedOrder
+  await prisma.link.updateMany({
+    where: {
+      userId,
+      order: { gt: deletedOrder },
+    },
+    data: {
+      order: { decrement: 1 },
+    },
+  });
   return NextResponse.json({ success: true });
 } 

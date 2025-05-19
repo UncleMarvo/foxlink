@@ -54,6 +54,10 @@ export default function AdminViewUserPage() {
   const [activity, setActivity] = useState<any[]>([]);
   const [activityLoading, setActivityLoading] = useState(false);
   const [activityError, setActivityError] = useState<string | null>(null);
+  // Pagination state for activity log
+  const [activityPage, setActivityPage] = useState(1);
+  const [activityPageSize] = useState(20); // You can make this user-configurable if desired
+  const [activityTotal, setActivityTotal] = useState(0);
 
   const router = useRouter();
 
@@ -77,25 +81,26 @@ export default function AdminViewUserPage() {
       });
   }, [userId]);
 
-  // Fetch user activity log
+  // Fetch user activity log (with pagination)
   useEffect(() => {
     if (!userId) return;
     setActivityLoading(true);
     setActivityError(null);
-    fetch(`/api/admin/users/${userId}/activity`)
+    fetch(`/api/admin/users/${userId}/activity?page=${activityPage}&pageSize=${activityPageSize}`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch user activity");
         return res.json();
       })
       .then((data) => {
         setActivity(data.activity || []);
+        setActivityTotal(data.total || 0);
         setActivityLoading(false);
       })
       .catch((err) => {
         setActivityError(err.message || "Failed to fetch user activity");
         setActivityLoading(false);
       });
-  }, [userId]);
+  }, [userId, activityPage, activityPageSize]);
 
   // Backend integration for Deactivate/Reactivate
   const handleDeactivateReactivate = async () => {
@@ -361,32 +366,66 @@ export default function AdminViewUserPage() {
           )}
 
           {/* User Activity / Audit Log */}
-          <div className="mt-10">
-            <h2 className="text-lg font-semibold mb-2">User Activity / Audit Log</h2>
-            <div className="bg-gray-50 border rounded p-4 text-gray-700">
-              {activityLoading && <div className="text-blue-600">Loading activity...</div>}
-              {activityError && <div className="text-red-600">{activityError}</div>}
-              {!activityLoading && !activityError && activity.length === 0 && (
-                <div className="text-gray-500">No recent activity found.</div>
-              )}
-              {!activityLoading && !activityError && activity.length > 0 && (
-                <ul className="space-y-2">
-                  {activity.map((event) => (
-                    <li key={event.id} className="border-b last:border-b-0 pb-2">
-                      <div>
-                        <span className="font-semibold">{event.type}</span> &mdash; {new Date(event.timestamp).toLocaleString()}
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        {event.platform && <span>Platform: {event.platform} </span>}
-                        {event.referrer && <span>Referrer: {event.referrer} </span>}
-                        {event.country && <span>Country: {event.country} </span>}
-                        {event.linkId && <span>Link ID: {event.linkId}</span>}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
+          <div className="mt-8">
+            <h3 className="text-lg font-bold mb-2">User Activity / Audit Log</h3>
+            {activityLoading ? (
+              <div className="text-gray-500">Loading activity...</div>
+            ) : activityError ? (
+              <div className="text-red-500">{activityError}</div>
+            ) : (
+              <>
+                <table className="min-w-full border border-gray-200 rounded-lg mb-2">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Type</th>
+                      <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Timestamp</th>
+                      <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Referrer</th>
+                      <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Platform</th>
+                      <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Country</th>
+                      <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Link ID</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {activity.length === 0 ? (
+                      <tr><td colSpan={6} className="text-center py-6 text-gray-400">No activity found.</td></tr>
+                    ) : (
+                      activity.map((entry) => (
+                        <tr key={entry.id} className="border-b border-gray-200">
+                          <td className="px-4 py-2">{entry.type}</td>
+                          <td className="px-4 py-2">{new Date(entry.timestamp).toLocaleString()}</td>
+                          <td className="px-4 py-2">{entry.referrer || '-'}</td>
+                          <td className="px-4 py-2">{entry.platform || '-'}</td>
+                          <td className="px-4 py-2">{entry.country || '-'}</td>
+                          <td className="px-4 py-2">{entry.linkId || '-'}</td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+                {/* Pagination controls for activity log */}
+                {activityTotal > activityPageSize && (
+                  <div className="flex justify-end gap-2 mt-2">
+                    <button
+                      className="px-3 py-1 rounded border text-sm"
+                      disabled={activityPage === 1}
+                      onClick={() => setActivityPage(activityPage - 1)}
+                    >
+                      Prev
+                    </button>
+                    <span className="px-2 py-1 text-sm">
+                      Page {activityPage} of {Math.ceil(activityTotal / activityPageSize)}
+                    </span>
+                    <button
+                      className="px-3 py-1 rounded border text-sm"
+                      disabled={activityPage === Math.ceil(activityTotal / activityPageSize)}
+                      onClick={() => setActivityPage(activityPage + 1)}
+                    >
+                      Next
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
       )}

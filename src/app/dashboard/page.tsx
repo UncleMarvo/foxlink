@@ -94,7 +94,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Links management section */}
-      <LinksTable />
+      <LinksTable isPremium={isPremium} />
     </>
   );
 } 

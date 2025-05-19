@@ -21,6 +21,9 @@ export default function AdminUsersPage() {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // State for cleanup feedback
+  const [cleanupLoading, setCleanupLoading] = useState(false);
+  const [cleanupResult, setCleanupResult] = useState<string | null>(null);
 
   // Fetch users from API
   useEffect(() => {
@@ -39,6 +42,24 @@ export default function AdminUsersPage() {
       });
   }, [search, page, pageSize]);
 
+  // Handler for cleanup button
+  const handleCleanup = async () => {
+    setCleanupLoading(true);
+    setCleanupResult(null);
+    try {
+      const res = await fetch('/api/admin/cleanup-activity', { method: 'POST' });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setCleanupResult(`Deleted ${data.deletedCount} entries older than ${new Date(data.cutoffDate).toLocaleDateString()}.`);
+      } else {
+        setCleanupResult(data.error || 'Cleanup failed.');
+      }
+    } catch (err) {
+      setCleanupResult('Cleanup failed.');
+    }
+    setCleanupLoading(false);
+  };
+
   const totalPages = Math.ceil(total / pageSize);
 
   return (
@@ -53,8 +74,19 @@ export default function AdminUsersPage() {
           value={search}
           onChange={e => { setSearch(e.target.value); setPage(1); }}
         />
-        {/* Future: Add button to create user, export, etc. */}
+        {/* Cleanup Old Activity Logs button */}
+        <button
+          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
+          onClick={handleCleanup}
+          disabled={cleanupLoading}
+        >
+          {cleanupLoading ? 'Cleaning...' : 'Cleanup Old Activity Logs'}
+        </button>
       </div>
+      {/* Show cleanup result message */}
+      {cleanupResult && (
+        <div className="mb-4 text-sm text-blue-700 bg-blue-100 rounded p-2">{cleanupResult}</div>
+      )}
       {/* Loading/Error States */}
       {loading && <div className="text-blue-600 mb-4">Loading users...</div>}
       {error && <div className="text-red-600 mb-4">{error}</div>}
