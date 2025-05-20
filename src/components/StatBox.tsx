@@ -8,7 +8,7 @@ interface StatBoxProps {
 
 const StatBox: React.FC<StatBoxProps> = ({ title, value, icon }) => {
   return (
-    <div className="flex flex-col items-start justify-center border border-gray-300 bg-white rounded-lg shadow p-6 min-w-[160px] min-h-[100px]">
+    <div className="flex flex-col items-start justify-center border border-gray-300 bg-white rounded-lg shadow p-6 min-w-[160px] min-h-[100px] sm:min-w-[80px] sm:min-h-[80px] md:min-w-[100px] md:min-h-[100px]">
       <div className="flex items-center gap-2 text-sm font-medium text-gray-500 mb-2">
         {icon && <span className="text-lg">{icon}</span>}
         <span>{title}</span>
@@ -18,4 +18,4 @@ const StatBox: React.FC<StatBoxProps> = ({ title, value, icon }) => {
   );
 };
 
-export default StatBox; 
+export default StatBox;

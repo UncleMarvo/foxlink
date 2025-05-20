@@ -14,44 +14,62 @@ export default function LandingPage() {
       <LandingNavbar />
 
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative overflow-hidden">
-          <div className="container relative z-10 mx-auto flex flex-col items-center px-4 py-10 text-center md:py-22">
-            <div className="absolute -top-24 left-1/2 h-[500px] w-[800px] -translate-x-1/2 bg-gradient-to-br from-indigo-100/20 via-purple-100/20 to-pink-100/20 blur-3xl" />
-            <h1 className="mb-6 max-w-4xl bg-gradient-to-br from-gray-900 to-gray-700 bg-clip-text text-4xl font-bold tracking-tight text-transparent sm:text-5xl md:text-6xl">
-              One Link to Share All Your Content
-            </h1>
-            <p className="mb-8 max-w-2xl text-lg text-gray-600 md:text-xl">
-              Create a customizable page that showcases your links, social
-              profiles, and content in one place. Share a single link in your
-              bio to connect your audience to everything you do.
-            </p>
-            <div className="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
-              <Button
-                size="lg"
-                className="bg-gradient-to-br from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
-                asChild
-              >
-                <Link href="/register">
-                  Get Started <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" asChild>
-                <Link href="#features">Learn More</Link>
-              </Button>
+        {/* Hero Section with Image Side-by-Side */}
+        <section className="relative overflow-hidden py-10 md:py-22">
+          <div className="container relative z-10 mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-12 px-4 text-center md:text-left">
+            {/* Hero Content (left on desktop) */}
+            <div className="w-full md:w-1/2 flex flex-col items-center md:items-start">
+              <div className="absolute -top-24 left-1/2 h-[500px] w-[800px] -translate-x-1/2 bg-gradient-to-br from-indigo-100/20 via-purple-100/20 to-pink-100/20 blur-3xl pointer-events-none" />
+              <h1 className="mb-6 max-w-4xl bg-gradient-to-br from-gray-900 to-gray-700 bg-clip-text text-4xl font-bold tracking-tight text-transparent sm:text-5xl md:text-6xl">
+                One Link to Share All Your Content
+              </h1>
+              <p className="mb-8 max-w-2xl text-lg text-gray-600 md:text-xl">
+                Create a customizable page that showcases your links, social
+                profiles, and content in one place. Share a single link in your
+                bio to connect your audience to everything you do.
+              </p>
+              <div className="flex flex-col w-full space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0 md:justify-start justify-center">
+                <Button
+                  size="xl"
+                  variant="default"
+                  className="text-white bg-indigo-600 hover:bg-indigo-400"
+                  asChild
+                >
+                  <Link
+                    href="/auth/register"
+                    className="flex items-center justify-center"
+                  >
+                    Get Started <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button
+                  size="xl"
+                  variant="outline"
+                  className="border-gray-500 bg-gray-100 text-indigo-600 hover:bg-white/10"
+                  asChild
+                >
+                  <Link
+                    href="#features"
+                    className="flex items-center justify-center"
+                  >
+                    Learn More
+                  </Link>
+                </Button>
+              </div>
             </div>
-          </div>
-          <div className="container mx-auto px-4 pb-20">
-            <div className="relative mx-auto max-w-4xl overflow-hidden rounded-xl border bg-white shadow-xl">
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5" />
-              <Image
-                src="/placeholder.svg?height=600&width=1200"
-                width={1200}
-                height={600}
-                alt="LinkInBio Dashboard Preview"
-                className="w-full"
-                priority
-              />
+            {/* Image (right on desktop) */}
+            <div className="w-full md:w-1/2 flex justify-center">
+              <div className="relative mx-auto max-w-xl overflow-hidden rounded-xl border bg-white shadow-xl">
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 pointer-events-none" />
+                <Image
+                  src="/placeholder.svg?height=600&width=1200"
+                  width={600}
+                  height={300}
+                  alt="LinkInBio Dashboard Preview"
+                  className="w-full h-auto rounded-xl shadow-lg"
+                  priority
+                />
+              </div>
             </div>
           </div>
         </section>
@@ -280,10 +298,7 @@ export default function LandingPage() {
         </section>
 
         {/* Pricing Section */}
-        <section
-          id="pricing"
-          className="py-10 md:py-22"
-        >
+        <section id="pricing" className="py-10 md:py-22">
           <div className="container mx-auto px-4">
             <div className="mb-16 text-center">
               <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
@@ -311,22 +326,30 @@ export default function LandingPage() {
               </p>
               <div className="flex flex-col justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
                 <Button
-                  size="lg"
+                  size="xl"
                   variant="default"
                   className="bg-white text-indigo-600 hover:bg-gray-100"
                   asChild
                 >
-                  <Link href="/register">
+                  <Link
+                    href="/register"
+                    className="flex items-center justify-center"
+                  >
                     Get Started <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
                 <Button
-                  size="lg"
+                  size="xl"
                   variant="outline"
                   className="border-white text-white hover:bg-white/10"
                   asChild
                 >
-                  <Link href="#features">Learn More</Link>
+                  <Link
+                    href="#features"
+                    className="flex items-center justify-center"
+                  >
+                    Learn More
+                  </Link>
                 </Button>
               </div>
             </div>

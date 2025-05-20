@@ -66,16 +66,6 @@ export function LandingFooter() {
               </li>
               <li>
                 <Link href="#" className="text-sm text-gray-600 hover:text-indigo-600">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-sm text-gray-600 hover:text-indigo-600">
-                  Careers
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-sm text-gray-600 hover:text-indigo-600">
                   Contact
                 </Link>
               </li>

@@ -3,8 +3,9 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import AppearanceSettings from "@/app/dashboard/settings/appearance-setting";
-import IntegrationSettings from "@/app/dashboard/settings/integration-setting";
+import IntegrationSettings from "@/app/dashboard/settings/integration-setting"; 
 import AccountSettings from "@/app/dashboard/settings/account-setting";
+import CampaignSettings from "@/app/dashboard/settings/campaign-setting"; 
 /**
  * SettingsPage - Account settings for the user
  * Includes a Change Password form
@@ -39,6 +40,9 @@ export default function SettingsPage() {
           <TabsTrigger value="account" className="">
             Account
           </TabsTrigger>
+          <TabsTrigger value="campaigns" className="">
+            Campaigns
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="appearance">
           <Card>
@@ -51,8 +55,13 @@ export default function SettingsPage() {
           </Card>
         </TabsContent>
         <TabsContent value="account">
-        <Card>
+          <Card>
             <AccountSettings />
+          </Card>
+        </TabsContent>
+        <TabsContent value="campaigns">
+          <Card>
+            <CampaignSettings />
           </Card>
         </TabsContent>
       </Tabs>

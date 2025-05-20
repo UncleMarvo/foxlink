@@ -31,11 +31,29 @@ async function getUserAndLinks(username: string) {
           id: true,
           title: true,
           url: true,
+          rotationType: true,
+          scheduleStart: true,
+          scheduleEnd: true,
         },
       },
     },
   });
-  return user;
+  if (!user) return null;
+  return {
+    ...user,
+    links: user.links.filter(link => {
+      if (link.rotationType === 'scheduled') {
+        const now = new Date();
+        const start = link.scheduleStart ? new Date(link.scheduleStart) : null;
+        const end = link.scheduleEnd ? new Date(link.scheduleEnd) : null;
+        return (
+          (!start || now >= start) &&
+          (!end || now <= end)
+        );
+      }
+      return true;
+    })
+  };
 }
 
 // Helper to fetch public social media links for a user by username
@@ -66,7 +84,7 @@ const ProfilePage = async ({ params }: ProfilePageProps) => {
   const { username } = awaitedParams;
   const user = await getUserAndLinks(username);
   const socialLinks = await getPublicSocialLinks(username);
-  const userConfigs = user ? await getUserConfigs(user.id) : null;
+  const userConfigs = user && user.id ? await getUserConfigs(user.id) : null;
 
   if (!user) {
     // User not found

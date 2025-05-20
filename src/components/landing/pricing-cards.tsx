@@ -19,47 +19,26 @@ export function PricingCards() {
         monthly: "$0",
         annually: "$0",
       },
-      features: ["1 custom link page", "5 links", "Basic analytics", "Mobile-optimized pages"],
+      features: ["5 links", "Basic analytics", "Mobile-optimized pages"],
       cta: "Get Started",
       popular: false,
     },
     {
-      name: "Pro",
+      name: "Premium",
       description: "For creators who want more customization",
       price: {
-        monthly: "$9",
-        annually: "$7",
+        monthly: "$3.99",
+        annually: "$39.99",
       },
       features: [
-        "Unlimited link pages",
         "Unlimited links",
         "Advanced analytics",
         "Custom themes",
         "Remove LinkInBio branding",
-        "Priority support",
       ],
-      cta: "Start Free Trial",
+      cta: "Get Started",
       popular: true,
-    },
-    {
-      name: "Business",
-      description: "For teams and businesses",
-      price: {
-        monthly: "$29",
-        annually: "$24",
-      },
-      features: [
-        "Everything in Pro",
-        "Team collaboration",
-        "Multiple admin accounts",
-        "API access",
-        "Custom domains",
-        "Advanced integrations",
-        "Dedicated support",
-      ],
-      cta: "Contact Sales",
-      popular: false,
-    },
+    }
   ]
 
   return (
@@ -72,7 +51,7 @@ export function PricingCards() {
         </span>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-6 w-[70%] sm:w-[90%] md:w-[70%] md:grid-cols-2 mx-auto">
         {plans.map((plan) => (
           <Card
             key={plan.name}

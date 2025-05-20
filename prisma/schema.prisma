@@ -32,6 +32,7 @@ model User {
   passwordResetTokens PasswordResetToken[]
   acceptedTerms     Boolean    @default(false)
   termsVersion      String?
+  userCampaigns     UserCampaign[]
 }
 
 model Account {
@@ -174,4 +175,29 @@ enum RotationType {
   random
   weighted
   scheduled
+}
+
+model Campaign {
+  id          String      @id @default(cuid())
+  name        String
+  description String
+  type        String      // e.g. "marketing", "feature", "survey"
+  active      Boolean     @default(true)
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  userCampaigns UserCampaign[]
+}
+
+model UserCampaign {
+  id         String    @id @default(cuid())
+  userId     String
+  campaignId String
+  optIn      Boolean   @default(false)
+  optedAt    DateTime  @default(now())
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  campaign   Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, campaignId])
 } 

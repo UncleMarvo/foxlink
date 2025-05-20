@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/mode-toggle"
+import { ModeToggle } from "@/components/mode-toggle";
 
 export function LandingNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,26 +34,20 @@ export function LandingNavbar() {
           >
             Pricing
           </Link>
-          <Link
-            href="#"
-            className="text-sm font-medium text-gray-700 hover:text-indigo-600"
-          >
-            Blog
-          </Link>
-          <Link
-            href="#"
-            className="text-sm font-medium text-gray-700 hover:text-indigo-600"
-          >
-            Help
-          </Link>
         </nav>
 
         <div className="hidden items-center gap-4 md:flex">
           <ModeToggle />
-          <Button variant="default" asChild>
+          <Button 
+            variant="default" 
+            className="text-white bg-indigo-600 hover:bg-indigo-400"
+            asChild>
             <Link href="/auth/signin">Log in</Link>
           </Button>
-          <Button variant="outline" asChild>
+          <Button 
+            variant="outline" 
+            className="border-gray-500 bg-gray-100 text-indigo-600 hover:bg-white/10"
+            asChild>
             <Link href="/auth/register">Sign up</Link>
           </Button>
         </div>
@@ -114,7 +108,10 @@ export function LandingNavbar() {
                 </Link>
               </Button>
               <Button variant="ghost" asChild>
-                <Link href="/auth/register" onClick={() => setIsMenuOpen(false)}>
+                <Link
+                  href="/auth/register"
+                  onClick={() => setIsMenuOpen(false)}
+                >
                   Sign up
                 </Link>
               </Button>

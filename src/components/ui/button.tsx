@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../utils/cn"; // Utility for merging class names (see note below)
 
@@ -9,14 +10,11 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        // Primary (filled) button
-        // default: "bg-red-500 text-white",
         default: `
           border border-light-secondary text-light-primary bg-light-bg 
           dark:border-dark-secondary dark:text-dark-bg dark:bg-dark-primary 
           hover:bg-light-secondary dark:hover:bg-dark-secondary
         `,
-        // Outline button
         outline: `
           border border-light-secondary text-light-secondary bg-light-bg
           dark:border-dark-secondary dark:text-dark-bg dark:bg-dark-secondary
@@ -30,6 +28,7 @@ const buttonVariants = cva(
         default: "h-10 py-2 px-4",
         sm: "h-9 px-3 rounded-md",
         lg: "h-11 px-8 rounded-md",
+        xl: "h-13 px-12 rounded-md",
         icon: "h-10 w-10",
       },
     },
@@ -48,7 +47,7 @@ export interface ButtonProps
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? "span" : "button";
+    const Comp = asChild ? Slot : "button";
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
