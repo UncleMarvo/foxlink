@@ -96,12 +96,12 @@ export function LandingFooter() {
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-gray-600 hover:text-indigo-600">
+                <Link href="/cookies" className="text-sm text-gray-600 hover:text-indigo-600">
                   Cookie Policy
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-gray-600 hover:text-indigo-600">
+                <Link href="/gdpr" className="text-sm text-gray-600 hover:text-indigo-600">
                   GDPR
                 </Link>
               </li>

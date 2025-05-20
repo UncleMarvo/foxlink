@@ -48,16 +48,10 @@ export default function PrivacyPage() {
           <p className="mb-4">We share data with the following third parties:</p>
           <ul className="list-disc pl-6 mb-4 space-y-2">
             <li><strong>Stripe:</strong> For processing payments and managing subscriptions. Stripe processes and stores payment information according to PCI DSS standards.</li>
-            <li><strong>Analytics:</strong> We use our own self-hosted analytics solution to track usage patterns, which means your data is stored directly on our servers and is not shared with third-party analytics providers.</li>
-            <li><strong>Cloud Infrastructure Providers:</strong> Our service is hosted on cloud infrastructure, which may include:
-              <ul className="list-disc pl-6 mt-2">
-                <li>Supabase: For database and authentication services</li>
-                <li>Resend: For email communications</li>
-                <li>Vercel/Next.js: For application hosting and delivery</li>
-              </ul>
-            </li>
+            <li><strong>Cloud Service Providers:</strong> For secure storage of user content (such as profile images), hosting, and email delivery.</li>
+            <li><strong>Authentication and Database:</strong> Your account and application data are stored securely and authentication is handled using industry-standard methods.</li>
           </ul>
-          <p className="mb-4">These service providers are bound by strict data protection agreements and only process your data as necessary to provide their services. We do not sell your personal information to third parties.</p>
+          <p className="mb-4">All providers are reputable and bound by strict data protection agreements. We do not sell your personal information to third parties.</p>
         </section>
 
         <section>
