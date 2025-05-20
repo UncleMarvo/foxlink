@@ -29,8 +29,8 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
         </div>
         <ModeToggle />
       </header>
-      <main className="flex flex-1 items-center justify-center p-4 md:p-8">
-        <div className="w-full max-w-md space-y-6">{children}</div>
+      <main className="flex flex-1 p-4 md:p-8">
+        <div className="w-full max-w-full sm:max-w-md md:max-w-lg lg:max-w-full space-y-6">{children}</div>
       </main>
       <footer className="border-t py-4 text-center text-sm text-muted-foreground">
         <p>&copy; {new Date().getFullYear()} LinkInBio. All rights reserved.</p>

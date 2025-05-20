@@ -86,12 +86,12 @@ export function LandingFooter() {
             <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-900">Legal</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="text-sm text-gray-600 hover:text-indigo-600">
+                <Link href="/privacy" className="text-sm text-gray-600 hover:text-indigo-600">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-gray-600 hover:text-indigo-600">
+                <Link href="/terms" className="text-sm text-gray-600 hover:text-indigo-600">
                   Terms of Service
                 </Link>
               </li>
