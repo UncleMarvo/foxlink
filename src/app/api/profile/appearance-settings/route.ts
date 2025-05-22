@@ -24,9 +24,9 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json(
     config || {
-      theme: 'oceanBreeze',
-      font_size: 'medium',
-      show_background_pattern: true,
+      theme: process.env.DEFAULT_THEME || 'oceanBreeze',
+      font_size: process.env.DEFAULT_FONT_SIZE || 'medium',
+      show_background_pattern: (process.env.DEFAULT_SHOW_BACKGROUND_PATTERN === 'true'),
     }
   );
 }

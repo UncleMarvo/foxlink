@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
 
-// Helper to get country from IP using ipapi.co
+// Helper to get country from IP using geo-IP API
 async function getCountryFromRequest(req: NextRequest): Promise<string | null> {
   const forwarded = req.headers.get('x-forwarded-for');
   const ip = forwarded ? forwarded.split(',')[0].trim() : null;
   if (!ip || ip === '127.0.0.1' || ip === '::1' || ip === 'unknown') return null;
+  const geoipApiUrl = process.env.GEOIP_API_URL || 'https://ipapi.co/';
   try {
-    const res = await fetch(`https://ipapi.co/${ip}/json/`);
+    const res = await fetch(`${geoipApiUrl}${ip}/json/`);
     if (!res.ok) return null;
     const data = await res.json();
     return data.country || null;
@@ -36,8 +37,8 @@ export async function POST(req: NextRequest) {
     // Note: req.ip is not available in Next.js API routes, so we use x-forwarded-for
     const ip = req.headers.get('x-forwarded-for') || 'unknown';
     const now = Date.now();
-    const windowMs = 60 * 1000; // 1 minute
-    const maxRequests = 10;
+    const windowMs = parseInt(process.env.RATE_LIMIT_WINDOW_MS || '60000', 10); // 1 minute default
+    const maxRequests = parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '10', 10);
     let entry = rateLimitMap.get(ip);
     if (!entry || now - entry.firstRequestTimestamp > windowMs) {
       // New window
