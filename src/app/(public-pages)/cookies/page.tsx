@@ -20,6 +20,7 @@ export default function CookiesPage() {
           <ul className="list-disc pl-6 mb-4 space-y-2">
             <li><strong>Staying logged in:</strong> We use cookies to remember who you are after you sign in, so you don't have to log in every time you visit.</li>
             <li><strong>Keeping things secure:</strong> Some cookies help protect your account from sneaky stuff (like CSRF attacks).</li>
+            <li><strong>Understanding how our service is used:</strong> We use cookies to collect analytics about how people use our site (like which links are clicked or how many people view a profile). This helps us improve our service. All analytics data is stored and processed by us, and is <strong>not shared with third parties</strong>.</li>
           </ul>
           <p className="mb-4">That's it! We don't use cookies for ads, marketing, or to follow you around the internet. No third-party tracking cookies here.</p>
         </section>
