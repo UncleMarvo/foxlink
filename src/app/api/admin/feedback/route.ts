@@ -3,6 +3,8 @@ import prisma from '@/utils/prisma';
 import { Prisma } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]/route';
+import { reportError } from '@/lib/errorHandler';
+import { CriticalError } from '@/lib/errors';
 
 // GET /api/admin/feedback?search=&page=1&pageSize=20
 // Returns a paginated list of feedback entries for admins
@@ -63,6 +65,26 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ feedback: feedbackWithStatus, total, page, pageSize });
   } catch (err) {
+    await reportError({
+      error: err as Error,
+      endpoint: '/api/admin/feedback',
+      method: req.method,
+    });
     return NextResponse.json({ error: 'Failed to fetch feedback.' }, { status: 500 });
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const data = await req.json();
+    const feedback = await prisma.feedback.create({ data });
+    return NextResponse.json({ feedback });
+  } catch (err) {
+    await reportError({
+      error: err as Error,
+      endpoint: '/api/admin/feedback',
+      method: req.method,
+    });
+    return NextResponse.json({ error: 'Failed to process request' }, { status: 500 });
   }
 } 

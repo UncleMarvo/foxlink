@@ -3,6 +3,8 @@ import prisma from '@/utils/prisma';
 import { Prisma } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]/route';
+import { reportError } from '@/lib/errorHandler';
+import { CriticalError } from '@/lib/errors';
 
 // GET /api/admin/users?search=&page=1&pageSize=20
 export async function GET(req: NextRequest) {
@@ -28,27 +30,36 @@ export async function GET(req: NextRequest) {
       }
     : {};
 
-  // Fetch users with pagination
-  const [users, total] = await Promise.all([
-    prisma.user.findMany({
-      where,
-      orderBy: { createdAt: 'desc' },
-      skip: (page - 1) * pageSize,
-      take: pageSize,
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        emailVerified: true,
-        premium: true,
-        createdAt: true,
-        updatedAt: true,
-        // If you have an isActive or deactivatedAt field, include it here
-      },
-    }),
-    prisma.user.count({ where }),
-  ]);
+  try {
+    // Fetch users with pagination
+    const [users, total] = await Promise.all([
+      prisma.user.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true,
+          emailVerified: true,
+          premium: true,
+          createdAt: true,
+          updatedAt: true,
+          // If you have an isActive or deactivatedAt field, include it here
+        },
+      }),
+      prisma.user.count({ where }),
+    ]);
 
-  return NextResponse.json({ users, total, page, pageSize });
+    return NextResponse.json({ users, total, page, pageSize });
+  } catch (err) {
+    await reportError({
+      error: err as Error,
+      endpoint: '/api/admin/users',
+      method: req.method,
+    });
+    return NextResponse.json({ error: 'Failed to process request' }, { status: 500 });
+  }
 } 

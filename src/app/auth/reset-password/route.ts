@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Find the reset token in the database
-  const resetToken = await prisma.PasswordResetToken.findUnique({ where: { token } });
+  const resetToken = await prisma.passwordResetToken.findUnique({ where: { token } });
   if (!resetToken || resetToken.used || resetToken.expires < new Date()) {
     return NextResponse.json({ success: false, error: 'Invalid or expired token.' }, { status: 400 });
   }
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
   });
 
   // Mark the token as used
-  await prisma.PasswordResetToken.update({
+  await prisma.passwordResetToken.update({
     where: { token },
     data: { used: true },
   });

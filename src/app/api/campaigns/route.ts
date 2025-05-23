@@ -2,6 +2,8 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/route';
 import prisma from '@/utils/prisma';
 import { NextRequest, NextResponse } from 'next/server';
+import { reportError } from '@/lib/errorHandler';
+import { CriticalError } from '@/lib/errors';
 
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -26,5 +28,14 @@ export async function GET(req: NextRequest) {
     const userCampaign = userCampaigns.find(uc => uc.campaignId === campaign.id);
     return { ...campaign, optIn: userCampaign?.optIn || false };
   });
-  return NextResponse.json(campaignsWithOptIn);
+  try {
+    return NextResponse.json(campaignsWithOptIn);
+  } catch (err) {
+    await reportError({
+      error: err as Error,
+      endpoint: '/api/campaigns',
+      method: req.method,
+    });
+    return NextResponse.json({ error: 'Failed to process request' }, { status: 500 });
+  }
 } 

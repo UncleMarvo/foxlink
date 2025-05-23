@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
+import { reportError } from '@/lib/errorHandler';
+import { CriticalError } from '@/lib/errors';
 
 // Helper to get country from IP using geo-IP API
 async function getCountryFromRequest(req: NextRequest): Promise<string | null> {
@@ -96,22 +98,37 @@ export async function POST(req: NextRequest) {
       userId = user.id;
     }
     // Create analytics record
-    await prisma.analytics.create({
-      data: {
-        linkId: linkId && typeof linkId === 'string' ? linkId : null,
-        userId,
-        type: 'link_click', // Always 'link_click' for this endpoint
-        abTestGroup: abTestGroup || null,
-        referrer: referrer || null,
-        country: country || null,
-        ip: ip || null,
-        platform: platform || null, // Store platform if provided (for social media clicks)
-      },
-    });
+    try {
+      await prisma.analytics.create({
+        data: {
+          linkId: linkId && typeof linkId === 'string' ? linkId : null,
+          userId,
+          type: 'link_click', // Always 'link_click' for this endpoint
+          abTestGroup: abTestGroup || null,
+          referrer: referrer || null,
+          country: country || null,
+          ip: ip || null,
+          platform: platform || null, // Store platform if provided (for social media clicks)
+        },
+      });
+    } catch (err) {
+      // If analytics creation fails, treat as critical error
+      await reportError({
+        error: new CriticalError('Failed to create analytics record: ' + (err as Error).message),
+        endpoint: '/api/analytics/click',
+        method: 'POST',
+        additionalContext: { linkId, userId, abTestGroup, referrer, country, ip, platform, username }
+      });
+      return NextResponse.json({ error: 'Failed to record click' }, { status: 500 });
+    }
     return NextResponse.json({ success: true });
   } catch (err) {
-    // Log the error for debugging
-    console.error('Error recording analytics click:', err);
+    // Log and report all other errors
+    await reportError({
+      error: err as Error,
+      endpoint: '/api/analytics/click',
+      method: 'POST',
+    });
     return NextResponse.json({ error: 'Failed to record click' }, { status: 500 });
   }
 } 

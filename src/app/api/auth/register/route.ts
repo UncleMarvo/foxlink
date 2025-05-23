@@ -3,6 +3,8 @@ import prisma from '@/utils/prisma';
 import { hash } from 'bcryptjs';
 import { randomUUID } from 'crypto';
 import { sendVerificationEmail } from '@/lib/email';
+import { reportError } from '@/lib/errorHandler';
+import { CriticalError } from '@/lib/errors';
 
 export async function POST(req: NextRequest) {
   try {
@@ -60,6 +62,11 @@ export async function POST(req: NextRequest) {
     await sendVerificationEmail({ to: email, verificationUrl });
     return NextResponse.json({ success: true, message: 'Registration successful. Please check your email to verify your account.' });
   } catch (err) {
-    return NextResponse.json({ error: 'Registration failed.' }, { status: 500 });
+    await reportError({
+      error: err as Error,
+      endpoint: '/api/auth/register',
+      method: req.method,
+    });
+    return NextResponse.json({ error: 'Failed to process request' }, { status: 500 });
   }
 } 

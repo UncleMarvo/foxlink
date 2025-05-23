@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import prisma from '@/utils/prisma';
+import { reportError } from '@/lib/errorHandler';
+import { CriticalError } from '@/lib/errors';
 
 // GET: Return analytics grouped by country for the authenticated user
 export async function GET(req: NextRequest) {
@@ -57,8 +59,11 @@ export async function GET(req: NextRequest) {
       linkClicks: linkClicksData,
     });
   } catch (err) {
-    // Log the error for debugging
-    console.error('Error fetching geographic analytics:', err);
+    await reportError({
+      error: err as Error,
+      endpoint: '/api/analytics/geography',
+      method: req.method,
+    });
     return NextResponse.json({ error: 'Failed to fetch geographic analytics' }, { status: 500 });
   }
 } 

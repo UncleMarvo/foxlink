@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
+import { reportError } from '@/lib/errorHandler';
+import { CriticalError } from '@/lib/errors';
 
 // Helper to get country from IP using geo-IP API
 async function getCountryFromRequest(req: NextRequest): Promise<string | null> {
@@ -73,21 +75,36 @@ export async function POST(req: NextRequest) {
     }
 
     // Create analytics record for profile view
-    await prisma.analytics.create({
-      data: {
-        userId,
-        type: 'profile_view',
-        referrer: referrer || null,
-        country: country || null,
-        linkId: null, // Not associated with a specific link
-        abTestGroup: null,
-        ip: ip || null,
-      },
-    });
+    try {
+      await prisma.analytics.create({
+        data: {
+          userId,
+          type: 'profile_view',
+          referrer: referrer || null,
+          country: country || null,
+          linkId: null, // Not associated with a specific link
+          abTestGroup: null,
+          ip: ip || null,
+        },
+      });
+    } catch (err) {
+      // If analytics creation fails, treat as critical error
+      await reportError({
+        error: new CriticalError('Failed to create analytics record: ' + (err as Error).message),
+        endpoint: '/api/analytics/view',
+        method: 'POST',
+        additionalContext: { userId, referrer, country, ip }
+      });
+      return NextResponse.json({ error: 'Failed to record profile view' }, { status: 500 });
+    }
     return NextResponse.json({ success: true });
   } catch (err) {
-    // Log the error for debugging
-    console.error('Error recording profile view:', err);
+    // Log and report all other errors
+    await reportError({
+      error: err as Error,
+      endpoint: '/api/analytics/view',
+      method: 'POST',
+    });
     return NextResponse.json({ error: 'Failed to record profile view' }, { status: 500 });
   }
 } 

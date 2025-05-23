@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import prisma from '@/utils/prisma';
+import { reportError } from '@/lib/errorHandler';
+import { CriticalError } from '@/lib/errors';
 
 // Helper to get YYYY-MM-DD string from Date
 function formatDate(date: Date) {
@@ -76,8 +78,11 @@ export async function GET(req: NextRequest) {
       linkClicks,
     });
   } catch (err) {
-    // Log the error for debugging
-    console.error('Error fetching time-based analytics:', err);
+    await reportError({
+      error: err as Error,
+      endpoint: '/api/analytics/timeseries',
+      method: req.method,
+    });
     return NextResponse.json({ error: 'Failed to fetch time-based analytics' }, { status: 500 });
   }
 } 

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import prisma from '@/utils/prisma';
+import { reportError } from '@/lib/errorHandler';
+import { CriticalError } from '@/lib/errors';
 
 // API route for analytics summary with custom date range
 export async function GET(req: NextRequest) {
@@ -116,7 +118,11 @@ export async function GET(req: NextRequest) {
     // Return analytics summary
     return NextResponse.json({ profileViews, perLinkClicks, totalLinks, totalClicks, uniqueVisitors, conversionRate, socialMediaClicks });
   } catch (err) {
-    // Optionally log error: console.error('Error fetching analytics summary:', err);
-    return NextResponse.json({ error: 'Failed to fetch analytics.' }, { status: 500 });
+    await reportError({
+      error: err as Error,
+      endpoint: '/api/analytics/summary',
+      method: req.method,
+    });
+    return NextResponse.json({ error: 'Failed to fetch analytics summary.' }, { status: 500 });
   }
 } 
