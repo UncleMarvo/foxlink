@@ -8,9 +8,13 @@ export function LandingFooter() {
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-br from-indigo-600 to-purple-600">
-                <span className="text-sm font-bold text-white">LB</span>
-              </div>
+              {/* Replaced text-based logo with fox logo image - now 25% larger for better visibility */}
+              <img
+                src="/logo.png"
+                alt="FoxLink Logo"
+                className="h-10 w-10 object-contain rounded-md"
+                style={{ background: 'white' }}
+              />
               <span className="text-lg font-semibold">FoxLink</span>
             </div>
             <p className="mt-4 text-sm text-gray-600">The easiest way to share all your content with a single link.</p>

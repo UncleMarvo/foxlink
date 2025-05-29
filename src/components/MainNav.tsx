@@ -119,9 +119,13 @@ export default function MainNav() {
       <div className="flex flex-col items-center py-8 border-b">
         {/* Logo */}
         <div className="flex items-center gap-2">
-          <div className="flex h-5 w-5 items-center justify-center rounded-md bg-gradient-to-br from-indigo-600 to-purple-600">
-            <span className="text-xs font-bold text-white">LB</span>
-          </div>
+          {/* Replaced text-based logo with fox logo image - now 25% larger for better visibility */}
+          <img
+            src="/logo.png"
+            alt="FoxLink Logo"
+            className="h-10 w-10 object-contain rounded-md"
+            style={{ background: 'white' }}
+          />
           <span className="text-md font-semibold">FoxLink</span>
         </div>
 

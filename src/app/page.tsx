@@ -61,12 +61,14 @@ export default function LandingPage() {
             <div className="w-full md:w-1/2 flex justify-center">
               <div className="relative mx-auto max-w-xl overflow-hidden rounded-xl border bg-white shadow-xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 pointer-events-none" />
+                {/* Use high-res logo for crisp display on all devices */}
                 <Image
-                  src="/placeholder.svg?height=600&width=1200"
-                  width={600}
-                  height={300}
-                  alt="FoxLink Dashboard Preview"
-                  className="w-full h-auto rounded-xl shadow-lg"
+                  src="/logo_lg.png"
+                  width={480}
+                  height={480}
+                  alt="FoxLink Logo"
+                  sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 30rem"
+                  className="w-full max-w-[30rem] h-auto object-contain rounded-xl shadow-lg mx-auto"
                   priority
                 />
               </div>

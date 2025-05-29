@@ -18,7 +18,7 @@ export default function TermsPage() {
         </p>
       </div>
 
-      <p className="mb-4">
+      <div className="mb-4">
         <p className="text-gray-500 italic">
           Last updated: {new Date().toLocaleDateString()}
         </p>
@@ -150,7 +150,7 @@ export default function TermsPage() {
           If you have any questions about these Terms, please contact us at:
         </p>
         <p className="ml-4">Email: legal@foxlink.com</p>
-      </p>
+      </div>
     </div>
   );
 }

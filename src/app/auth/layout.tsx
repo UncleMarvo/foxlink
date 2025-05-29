@@ -21,9 +21,13 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
             </Link>
           </Button>
           <div className="flex items-center gap-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-indigo-600 to-purple-600">
-              <span className="text-xs font-bold text-white">LB</span>
-            </div>
+            {/* Replaced text-based logo with fox logo image - now 25% larger for better visibility */}
+            <img
+              src="/logo.png"
+              alt="FoxLink Logo"
+              className="h-8 w-8 object-contain rounded-md"
+              style={{ background: 'white' }}
+            />
             <span className="text-sm font-semibold">FoxLink</span>
           </div>
         </div>
