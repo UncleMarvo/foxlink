@@ -20,7 +20,7 @@ export default function TermsPage() {
 
       <div className="mb-4">
         <p className="text-gray-500 italic">
-          Last updated: {new Date().toLocaleDateString()}
+          Last updated: 29/05/2025
         </p>
 
         <h2 className="text-xl font-bold mb-4 mt-4">1. Acceptance of Terms</h2>

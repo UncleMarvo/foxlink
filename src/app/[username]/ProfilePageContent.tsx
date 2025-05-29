@@ -40,6 +40,26 @@ const ProfilePageContent: React.FC<ProfilePageContentProps> = ({ user, socialLin
       className={"flex flex-col items-center min-h-screen py-8 px-4 w-full " + fontSizeClass}
       style={backgroundStyle}
     >
+      {/* Show FoxLink logo in top left for free users only */}
+      {!user.premium && (
+        <a
+          href="/"
+          className="fixed top-4 left-4 z-50 flex flex-col items-center"
+          title="FoxLink homepage"
+        >
+          <Image
+            src="/logo.png"
+            alt="FoxLink Logo"
+            width={80}
+            height={80}
+            className="h-20 w-20 object-contain drop-shadow"
+            priority
+          />
+          <span className="mt-1 text-base font-semibold text-gray-700 bg-white/80 rounded px-2 py-0.5 shadow">
+            FoxLink
+          </span>
+        </a>
+      )}
       {/* Track profile page view */}
       <ProfileViewTracker userId={user.id} />
       {/* Profile info */}

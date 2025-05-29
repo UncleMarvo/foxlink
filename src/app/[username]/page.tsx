@@ -25,6 +25,7 @@ async function getUserAndLinks(username: string) {
       email: true,
       bio: true,
       image: true,
+      premium: true,
       links: {
         orderBy: { order: 'asc' },
         select: {

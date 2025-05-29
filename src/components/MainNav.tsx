@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import Avatar from "@/components/Avatar";
 
 // SVG icons for navigation links
 const icons = {
@@ -131,13 +132,13 @@ export default function MainNav() {
 
         {/* Avatar */}
         <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-300 flex items-center justify-center mt-10 mb-2">
-          {session?.user?.image ? (
-            <img
-              src={session.user.image}
-              alt="User avatar"
-              className="w-full h-full object-cover"
-            />
-          ) : null}
+          <Avatar
+            src={session?.user?.image}
+            alt="User avatar"
+            width={96}
+            height={96}
+            className="w-full h-full object-cover"
+          />
         </div>
 
         {/* Username */}
