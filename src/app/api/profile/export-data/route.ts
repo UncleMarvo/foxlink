@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Content-Disposition': `attachment; filename="linkinbio2_userdata_${session.user.id}.json"`,
+        'Content-Disposition': `attachment; filename="foxlink_userdata_${session.user.id}.json"`,
       },
     });
   } catch (err) {
