@@ -65,7 +65,7 @@ export default function LandingPage() {
                   src="/placeholder.svg?height=600&width=1200"
                   width={600}
                   height={300}
-                  alt="LinkInBio Dashboard Preview"
+                  alt="FoxLink Dashboard Preview"
                   className="w-full h-auto rounded-xl shadow-lg"
                   priority
                 />
@@ -252,7 +252,7 @@ export default function LandingPage() {
                 How It Works
               </h2>
               <p className="mx-auto max-w-2xl text-lg text-gray-600">
-                Get started with LinkInBio in just a few simple steps.
+                Get started with FoxLink in just a few simple steps.
               </p>
             </div>
             <div className="grid gap-8 md:grid-cols-3">
@@ -265,7 +265,7 @@ export default function LandingPage() {
                   Create Your Account
                 </h3>
                 <p className="text-gray-600">
-                  Sign up for LinkInBio and set up your profile with your name,
+                  Sign up for FoxLink and set up your profile with your name,
                   photo, and bio.
                 </p>
               </div>
@@ -289,7 +289,7 @@ export default function LandingPage() {
                 </div>
                 <h3 className="mb-2 text-xl font-semibold">Share Your Page</h3>
                 <p className="text-gray-600">
-                  Share your unique LinkInBio URL on your social media profiles
+                  Share your unique FoxLink URL on your social media profiles
                   and start connecting with your audience.
                 </p>
               </div>
@@ -321,7 +321,7 @@ export default function LandingPage() {
                 Ready to grow your audience?
               </h2>
               <p className="mb-8 text-lg text-white/90">
-                Join thousands of creators who use LinkInBio to connect with
+                Join thousands of creators who use FoxLink to connect with
                 their audience.
               </p>
               <div className="flex flex-col justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">

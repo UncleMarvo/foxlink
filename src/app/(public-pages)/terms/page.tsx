@@ -25,7 +25,7 @@ export default function TermsPage() {
 
         <h2 className="text-xl font-bold mb-4 mt-4">1. Acceptance of Terms</h2>
         <p className="ml-4">
-          By accessing and using LinkInBio, you accept and agree to be bound by
+          By accessing and using FoxLink, you accept and agree to be bound by
           the terms and provision of this agreement.
         </p>
         <p className="ml-4">
@@ -35,7 +35,7 @@ export default function TermsPage() {
 
         <h2 className="text-xl font-bold mb-4 mt-4">2. Description of Service</h2>
         <p className="ml-4">
-          LinkInBio provides a platform for users to create a personalized
+          FoxLink provides a platform for users to create a personalized
           landing page with multiple links. The service allows users to
           customize their profile, add links, and track analytics related to
           link clicks.
@@ -59,7 +59,7 @@ export default function TermsPage() {
         <h2 className="text-xl font-bold mb-4 mt-4">4. Subscription Services</h2>
         <h3 className="text-lg font-bold">4.1 Subscription Plans</h3>
         <p className="ml-4">
-          LinkInBio offers both free and premium subscription plans. Premium
+          FoxLink offers both free and premium subscription plans. Premium
           plans provide access to additional features and capabilities as
           outlined in our pricing page.
         </p>
@@ -129,7 +129,7 @@ export default function TermsPage() {
 
         <h2 className="text-xl font-bold mb-4 mt-4">8. Limitation of Liability</h2>
         <p className="ml-4">
-          In no event shall LinkInBio, nor its directors, employees, partners,
+          In no event shall FoxLink, nor its directors, employees, partners,
           agents, suppliers, or affiliates, be liable for any indirect,
           incidental, special, consequential or punitive damages, including
           without limitation, loss of profits, data, use, goodwill, or other
@@ -149,7 +149,7 @@ export default function TermsPage() {
         <p className="ml-4">
           If you have any questions about these Terms, please contact us at:
         </p>
-        <p className="ml-4">Email: legal@linkinbio.com</p>
+        <p className="ml-4">Email: legal@foxlink.com</p>
       </p>
     </div>
   );

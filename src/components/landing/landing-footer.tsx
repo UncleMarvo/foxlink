@@ -11,7 +11,7 @@ export function LandingFooter() {
               <div className="flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-br from-indigo-600 to-purple-600">
                 <span className="text-sm font-bold text-white">LB</span>
               </div>
-              <span className="text-lg font-semibold">LinkInBio</span>
+              <span className="text-lg font-semibold">FoxLink</span>
             </div>
             <p className="mt-4 text-sm text-gray-600">The easiest way to share all your content with a single link.</p>
             <div className="mt-6 flex space-x-4">
@@ -101,7 +101,7 @@ export function LandingFooter() {
 
         <div className="mt-12 border-t border-gray-200 pt-8">
           <p className="text-center text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} LinkInBio. All rights reserved.
+            &copy; {new Date().getFullYear()} FoxLink. All rights reserved.
           </p>
         </div>
       </div>

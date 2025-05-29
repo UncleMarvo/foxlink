@@ -24,7 +24,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
             <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-indigo-600 to-purple-600">
               <span className="text-xs font-bold text-white">LB</span>
             </div>
-            <span className="text-sm font-semibold">LinkInBio</span>
+            <span className="text-sm font-semibold">FoxLink</span>
           </div>
         </div>
         <ModeToggle />
@@ -33,7 +33,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         <div className="w-full max-w-md space-y-6">{children}</div>
       </main>
       <footer className="border-t py-4 text-center text-sm text-muted-foreground">
-        <p>&copy; {new Date().getFullYear()} LinkInBio. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} FoxLink. All rights reserved.</p>
       </footer>
     </div>
   );

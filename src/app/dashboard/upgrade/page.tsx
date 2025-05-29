@@ -45,7 +45,7 @@ export default function UpgradePage() {
       <div className="w-full max-w-md bg-white rounded-lg shadow p-8 space-y-6 flex flex-col items-center">
         <h1 className="text-2xl font-bold text-center mb-2">Upgrade to Premium</h1>
         <p className="text-gray-700 text-center mb-4">
-          Unlock the full power of LinkInBio with Premium:
+          Unlock the full power of FoxLink with Premium:
         </p>
         {/* Placeholder benefits list */}
         <ul className="list-disc list-inside text-gray-600 text-left mb-6">

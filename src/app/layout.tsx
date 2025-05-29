@@ -6,7 +6,7 @@ import { Toaster } from "sonner";
 import AuthProvider from "@/components/AuthProvider";
 
 export const metadata = {
-  title: "LinkInBio",
+  title: "FoxLink",
   description: "Link In Bio Initial Version",
 };
 

@@ -34,7 +34,7 @@ export function PricingCards() {
         "Unlimited links",
         "Advanced analytics",
         "Custom themes",
-        "Remove LinkInBio branding",
+        "Remove FoxLink branding",
       ],
       cta: "Get Started",
       popular: true,

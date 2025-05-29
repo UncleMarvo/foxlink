@@ -17,7 +17,7 @@ export function LandingNavbar() {
           <div className="flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-br from-indigo-600 to-purple-600">
             <span className="text-sm font-bold text-white">LB</span>
           </div>
-          <span className="text-lg font-semibold">LinkInBio</span>
+          <span className="text-lg font-semibold">FoxLink</span>
         </div>
 
         {/* Desktop Navigation */}

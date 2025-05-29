@@ -122,7 +122,7 @@ export default function MainNav() {
           <div className="flex h-5 w-5 items-center justify-center rounded-md bg-gradient-to-br from-indigo-600 to-purple-600">
             <span className="text-xs font-bold text-white">LB</span>
           </div>
-          <span className="text-md font-semibold">LinkInBio</span>
+          <span className="text-md font-semibold">FoxLink</span>
         </div>
 
         {/* Avatar */}
