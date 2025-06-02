@@ -1,6 +1,6 @@
 import React from 'react';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import prisma from '@/utils/prisma';
 import AnalyticsDashboardClient from './AnalyticsDashboardClient';
 import PremiumBanner from '@/components/PremiumBanner';

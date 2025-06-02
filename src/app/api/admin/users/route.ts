@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
 import { Prisma } from '@prisma/client';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../auth/[...nextauth]/route';
+import { authOptions } from '../../auth/[...nextauth]/authOptions';
 import { reportError } from '@/lib/errorHandler';
 import { CriticalError } from '@/lib/errors';
 
@@ -24,8 +24,8 @@ export async function GET(req: NextRequest) {
   const where = search
     ? {
         OR: [
-          { name: { contains: search, mode: Prisma.QueryMode.insensitive } },
-          { email: { contains: search, mode: Prisma.QueryMode.insensitive } },
+          { name: { contains: search, mode: "insensitive" as const } },
+          { email: { contains: search, mode: "insensitive" as const } },
         ],
       }
     : {};

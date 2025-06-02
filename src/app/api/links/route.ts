@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../auth/[...nextauth]/route';
+import { authOptions } from '../auth/[...nextauth]/authOptions';
 import prisma from '@/utils/prisma';
 import { reportError } from '@/lib/errorHandler';
 import { CriticalError } from '@/lib/errors';
@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
           rotationType: 'weighted',
         },
       });
-      const sum = links.reduce((acc, link) => acc + (link.weight || 0), 0);
+      const sum = links.reduce((acc: number, link: { weight?: number | null }) => acc + (link.weight || 0), 0);
       if (sum + (data.weight || 0) > 100) {
         return NextResponse.json({ error: `Total weight for all weighted links cannot exceed 100. Current sum: ${sum}, this value would make it ${sum + (data.weight || 0)}.` }, { status: 400 });
       }

@@ -7,11 +7,6 @@ import { SocialMediaLinks } from '@/components/SocialMediaLinks';
 import { ThemeProvider } from '@/app/context/ThemeContext';
 import ProfilePageContent from './ProfilePageContent';
 
-// Type for the page params
-interface ProfilePageProps {
-  params: { username: string };
-}
-
 // Helper to fetch user and links by username
 async function getUserAndLinks(username: string) {
   // Fetch user and their links from the database
@@ -42,7 +37,14 @@ async function getUserAndLinks(username: string) {
   if (!user) return null;
   return {
     ...user,
-    links: user.links.filter(link => {
+    links: user.links.filter((link: {
+      id: string;
+      title: string;
+      url: string;
+      rotationType: string;
+      scheduleStart: Date | null;
+      scheduleEnd: Date | null;
+    }) => {
       if (link.rotationType === 'scheduled') {
         const now = new Date();
         const start = link.scheduleStart ? new Date(link.scheduleStart) : null;
@@ -80,9 +82,8 @@ async function getUserConfigs(userId: string) {
 }
 
 // The main server component
-const ProfilePage = async ({ params }: ProfilePageProps) => {
-  const awaitedParams = await params;
-  const { username } = awaitedParams;
+export default async function UsernamePage({ params }: { params: Promise<{ username: string }> }) {
+  const { username } = await params;
   const user = await getUserAndLinks(username);
   const socialLinks = await getPublicSocialLinks(username);
   const userConfigs = user && user.id ? await getUserConfigs(user.id) : null;
@@ -104,6 +105,4 @@ const ProfilePage = async ({ params }: ProfilePageProps) => {
       <ProfilePageContent user={user} socialLinks={socialLinks} userConfigs={userConfigs} />
     </ThemeProvider>
   );
-};
-
-export default ProfilePage; 
+} 

@@ -5,8 +5,8 @@ import { sendPasswordResetEmail } from '@/lib/email';
 
 // POST /api/admin/users/[id]/reset-password
 // Admin triggers a password reset email for a user
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   if (!id) {
     return NextResponse.json({ error: 'Missing user id.' }, { status: 400 });
   }
@@ -38,7 +38,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
   // Send the password reset email using the new utility
   try {
-    await sendPasswordResetEmail({ to: user.email, resetUrl, expires });
+    await sendPasswordResetEmail({ to: user.email, resetUrl, expires, username: user.username || user.email });
     return NextResponse.json({ success: true });
   } catch (err) {
     return NextResponse.json({ error: 'Failed to send password reset email.' }, { status: 500 });

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../auth/[...nextauth]/route';
+import { authOptions } from '../../auth/[...nextauth]/authOptions';
 import prisma from '@/utils/prisma';
 
 export async function GET(req: NextRequest) {
@@ -19,6 +19,6 @@ export async function GET(req: NextRequest) {
     where.NOT = { id: excludeId };
   }
   const links = await prisma.link.findMany({ where });
-  const sum = links.reduce((acc, link) => acc + (link.weight || 0), 0);
+  const sum = links.reduce((acc: number, link: { weight?: number | null }) => acc + (link.weight || 0), 0);
   return NextResponse.json({ sum });
 } 

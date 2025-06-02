@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import prisma from '@/utils/prisma';
 import { reportError } from '@/lib/errorHandler';
 import { CriticalError } from '@/lib/errors';

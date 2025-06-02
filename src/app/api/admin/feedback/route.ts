@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
 import { Prisma } from '@prisma/client';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../auth/[...nextauth]/route';
+import { authOptions } from '../../auth/[...nextauth]/authOptions';
 import { reportError } from '@/lib/errorHandler';
 import { CriticalError } from '@/lib/errors';
 
@@ -25,9 +25,9 @@ export async function GET(req: NextRequest) {
   const where = search
     ? {
         OR: [
-          { message: { contains: search, mode: Prisma.QueryMode.insensitive } as Prisma.StringFilter },
-          { user: { is: { name: { contains: search, mode: Prisma.QueryMode.insensitive } as Prisma.StringFilter } } },
-          { user: { is: { email: { contains: search, mode: Prisma.QueryMode.insensitive } as Prisma.StringFilter } } },
+          { message: { contains: search, mode: "insensitive" as const } },
+          { user: { is: { name: { contains: search, mode: "insensitive" as const } } } },
+          { user: { is: { email: { contains: search, mode: "insensitive" as const } } } },
         ],
       }
     : {};
@@ -58,7 +58,7 @@ export async function GET(req: NextRequest) {
     ]);
 
     // Add status (open/resolved) based on response
-    const feedbackWithStatus = feedback.map(fb => ({
+    const feedbackWithStatus = feedback.map((fb: { response?: string | null; [key: string]: any }) => ({
       ...fb,
       status: fb.response ? 'resolved' : 'open',
     }));

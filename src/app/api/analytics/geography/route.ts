@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import prisma from '@/utils/prisma';
 import { reportError } from '@/lib/errorHandler';
 import { CriticalError } from '@/lib/errors';
@@ -51,8 +51,18 @@ export async function GET(req: NextRequest) {
     });
 
     // Format results as arrays of { country, count }
-    const profileViewsData = profileViews.map(row => ({ country: row.country || 'Unknown', count: row._count.country }));
-    const linkClicksData = linkClicks.map(row => ({ country: row.country || 'Unknown', count: row._count.country }));
+    const profileViewsData = profileViews.map(
+      (row: { country?: string | null; _count: { country: number } }) => ({
+        country: row.country || 'Unknown',
+        count: row._count.country
+      })
+    );
+    const linkClicksData = linkClicks.map(
+      (row: { country?: string | null; _count: { country: number } }) => ({
+        country: row.country || 'Unknown',
+        count: row._count.country
+      })
+    );
 
     return NextResponse.json({
       profileViews: profileViewsData,

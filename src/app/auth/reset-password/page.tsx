@@ -1,19 +1,16 @@
-import React, { useState } from 'react';
+"use client";
+import React, { useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 
-// Reset Password Page
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get('token') || '';
-
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
-
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -45,7 +42,6 @@ export default function ResetPasswordPage() {
       setLoading(false);
     }
   };
-
   return (
     <div className="max-w-md mx-auto mt-16 p-6 bg-white rounded shadow">
       <h1 className="text-2xl font-bold mb-4">Reset Password</h1>
@@ -84,6 +80,14 @@ export default function ResetPasswordPage() {
         </form>
       )}
     </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }
 // This page allows users to securely set a new password using their reset token. 

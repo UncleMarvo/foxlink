@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import prisma from '@/utils/prisma';
 import { reportError } from '@/lib/errorHandler';
 import { CriticalError } from '@/lib/errors';
@@ -51,8 +51,18 @@ export async function GET(req: NextRequest) {
     });
 
     // Format results as arrays of { referrer, count }
-    const profileViewsData = profileViews.map(row => ({ referrer: row.referrer || 'Direct/Unknown', count: row._count.referrer }));
-    const linkClicksData = linkClicks.map(row => ({ referrer: row.referrer || 'Direct/Unknown', count: row._count.referrer }));
+    const profileViewsData = profileViews.map(
+      (row: { referrer?: string | null; _count: { referrer: number } }) => ({
+        referrer: row.referrer || 'Direct/Unknown',
+        count: row._count.referrer
+      })
+    );
+    const linkClicksData = linkClicks.map(
+      (row: { referrer?: string | null; _count: { referrer: number } }) => ({
+        referrer: row.referrer || 'Direct/Unknown',
+        count: row._count.referrer
+      })
+    );
 
     return NextResponse.json({
       profileViews: profileViewsData,

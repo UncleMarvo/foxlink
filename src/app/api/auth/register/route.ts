@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Username must be 3-20 characters, letters, numbers, or underscores only.' }, { status: 400 });
     }
     // Check if username is taken (case-insensitive)
-    const existingUsername = await prisma.user.findFirst({ where: { username: { equals: username, mode: 'insensitive' } } });
+    const existingUsername = await prisma.user.findFirst({ where: { username: { equals: username, mode: 'insensitive' as const } } });
     if (existingUsername) {
       return NextResponse.json({ error: 'Username is already taken.' }, { status: 400 });
     }

@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../auth/[...nextauth]/route';
+import { authOptions } from '../auth/[...nextauth]/authOptions';
 import prisma from '@/utils/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { reportError } from '@/lib/errorHandler';
@@ -24,8 +24,8 @@ export async function GET(req: NextRequest) {
     where: { userId: user.id },
   });
   // Map opt-in status to campaigns
-  const campaignsWithOptIn = campaigns.map(campaign => {
-    const userCampaign = userCampaigns.find(uc => uc.campaignId === campaign.id);
+  const campaignsWithOptIn = campaigns.map((campaign: { id: string; [key: string]: any }) => {
+    const userCampaign = userCampaigns.find((uc: { campaignId: string; optIn?: boolean }) => uc.campaignId === campaign.id);
     return { ...campaign, optIn: userCampaign?.optIn || false };
   });
   try {

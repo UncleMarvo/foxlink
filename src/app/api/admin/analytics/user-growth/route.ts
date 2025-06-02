@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../../auth/[...nextauth]/route';
+import { authOptions } from '../../../auth/[...nextauth]/authOptions';
 
 // GET /api/admin/analytics/user-growth
 // Returns the number of new users per day for the last 30 days
@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
       const key = d.toISOString().slice(0, 10);
       counts[key] = 0;
     }
-    users.forEach((user) => {
+    users.forEach((user: { createdAt: Date }) => {
       const key = user.createdAt.toISOString().slice(0, 10);
       if (counts[key] !== undefined) counts[key]++;
     });

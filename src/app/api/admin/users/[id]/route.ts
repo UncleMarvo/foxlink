@@ -1,17 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../../auth/[...nextauth]/route';
+import { authOptions } from '../../../auth/[...nextauth]/authOptions';
 
 // PATCH /api/admin/users/[id]
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   // Authenticate user and check admin role
   const session = await getServerSession(authOptions);
   if (!session || session.user.role?.toLowerCase() !== 'admin') {
     // Only admins can access this endpoint
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
-  const { id } = params;
+  const { id } = await params;
   const { action } = await req.json();
 
   if (!id || !action) {
@@ -52,14 +52,14 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
 // GET /api/admin/users/[id]
 // Fetch a single user's details for admin view
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   // Authenticate user and check admin role
   const session = await getServerSession(authOptions);
   if (!session || session.user.role?.toLowerCase() !== 'admin') {
     // Only admins can access this endpoint
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
-  const { id } = params;
+  const { id } = await params;
   if (!id) {
     return NextResponse.json({ error: 'Missing user id.' }, { status: 400 });
   }
@@ -85,7 +85,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
 // DELETE /api/admin/users/[id]
 // Admin deletes a user and all related data
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   // Authenticate user and check admin role
   const session = await getServerSession(authOptions);
   if (!session || session.user.role?.toLowerCase() !== 'admin') {
@@ -93,8 +93,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
   // Await params before destructuring (Next.js dynamic API requirement)
-  const awaitedParams = await params;
-  const { id } = awaitedParams;
+  const { id } = await params;
   if (!id) {
     return NextResponse.json({ error: 'Missing user id.' }, { status: 400 });
   }

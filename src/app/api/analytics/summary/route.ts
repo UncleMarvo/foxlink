@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import prisma from '@/utils/prisma';
 import { reportError } from '@/lib/errorHandler';
 import { CriticalError } from '@/lib/errors';
@@ -68,19 +68,19 @@ export async function GET(req: NextRequest) {
     // Convert to object: { platform: count }
     const socialMediaClicks = Object.fromEntries(
       socialMediaClicksRaw
-        .filter(sm => sm.platform)
-        .map(sm => [sm.platform, sm._count.platform])
+        .filter((sm: { platform?: string | null; _count: { platform: number } }) => sm.platform)
+        .map((sm: { platform?: string | null; _count: { platform: number } }) => [sm.platform, sm._count.platform])
     );
     // Fetch link titles for the user's links
     const links = await prisma.link.findMany({
       where: { userId },
       select: { id: true, title: true },
     });
-    const linkTitleMap = Object.fromEntries(links.map(l => [l.id, l.title]));
+    const linkTitleMap = Object.fromEntries(links.map((l: { id: string; title: string }) => [l.id, l.title]));
     // Only include clicks for valid (non-null) linkIds
     const perLinkClicks = linkClicks
-      .filter(lc => lc.linkId !== null)
-      .map(lc => ({
+      .filter((lc: { linkId: string | null; _count: { linkId: number } }) => lc.linkId !== null)
+      .map((lc: { linkId: string | null; _count: { linkId: number } }) => ({
         linkId: lc.linkId!,
         title: linkTitleMap[lc.linkId as string] || '(untitled)',
         clicks: lc._count.linkId,
@@ -96,7 +96,7 @@ export async function GET(req: NextRequest) {
       },
     });
     // Fetch total clicks in date range
-    const totalClicks = perLinkClicks.reduce((acc, l) => acc + l.clicks, 0);
+    const totalClicks = perLinkClicks.reduce((acc: number, l: { clicks: number }) => acc + l.clicks, 0);
     // Fetch unique visitors (distinct IPs for profile views in range)
     const uniqueVisitorRecords = await prisma.analytics.findMany({
       where: {

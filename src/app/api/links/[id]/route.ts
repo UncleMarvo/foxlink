@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../auth/[...nextauth]/route';
+import { authOptions } from '../../auth/[...nextauth]/authOptions';
 import prisma from '@/utils/prisma';
 import { reportError } from '@/lib/errorHandler';
 import { CriticalError } from '@/lib/errors';
 
 // PUT: Update a specific link
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || !session.user?.email) {
@@ -34,7 +34,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
           NOT: { id: linkId },
         },
       });
-      const sum = links.reduce((acc, link) => acc + (link.weight || 0), 0);
+      const sum = links.reduce((acc: number, link: { weight?: number | null }) => acc + (link.weight || 0), 0);
       if (sum + (data.weight || 0) > 100) {
         return NextResponse.json({ error: `Total weight for all weighted links cannot exceed 100. Current sum: ${sum}, this value would make it ${sum + (data.weight || 0)}.` }, { status: 400 });
       }
@@ -67,13 +67,13 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 }
 
 // DELETE: Delete a specific link
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || !session.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const linkId = params.id;
+    const { id: linkId } = await params;
     // Ensure the link belongs to the user
     const link = await prisma.link.findUnique({ where: { id: linkId } });
     if (!link || link.userId !== session.user.id) {

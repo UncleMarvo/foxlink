@@ -19,11 +19,9 @@ const platforms = [
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { username: string } }
+  { params }: { params: Promise<{ username: string }> }
 ) {
-  // Await params before destructuring to avoid Next.js dynamic API error
-  const awaitedParams = await params;
-  const { username } = awaitedParams;
+  const { username } = await params;
   if (!username) {
     return NextResponse.json({ error: 'Username is required.' }, { status: 400 });
   }

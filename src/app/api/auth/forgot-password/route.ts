@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
   const expires = new Date(Date.now() + TOKEN_EXPIRY_MINUTES * 60 * 1000);
 
   // Store the token in the database (PasswordResetToken table)
-  await prisma.PasswordResetToken.create({
+  await prisma.passwordResetToken.create({
     data: {
       userId: user.id,
       token,
@@ -42,7 +42,12 @@ export async function POST(req: NextRequest) {
 
   // Send the password reset email using the new utility
   try {
-    await sendPasswordResetEmail({ to: user.email, resetUrl, expires });
+    await sendPasswordResetEmail({
+      to: user.email ?? "",
+      resetUrl,
+      expires,
+      username: user.username ?? user.email ?? ""
+    });
   } catch (e) {
     // Log error but do not reveal to user
     console.error('Failed to send password reset email:', e);
