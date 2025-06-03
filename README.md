@@ -69,6 +69,7 @@ Set the following environment variables in your production environment (e.g., in
 | Variable                                            | Description                                      |
 |-----------------------------------------------------|--------------------------------------------------|
 | `DATABASE_URL`                                      | Database connection string (Postgres)            |
+| `DATEBASE_URL_NEON`                                 | NEON Database connection in Production (Postgres)|
 | `NEXTAUTH_SECRET`                                   | Secret for NextAuth.js sessions                  |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`         | Google OAuth (optional, for social login)        |
 | `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET`         | GitHub OAuth (optional, for social login)        |
