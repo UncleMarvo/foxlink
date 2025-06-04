@@ -19,6 +19,11 @@ export function LandingFooter() {
             </div>
             <p className="mt-4 text-sm text-gray-600">The easiest way to share all your content with a single link.</p>
             <div className="mt-6 flex space-x-4">
+              {/*
+                Social media links are commented out because there is currently no social media presence.
+                Uncomment and update the hrefs when accounts are created.
+              */}
+              {/**
               <Link href="#" className="text-gray-500 transition-colors hover:text-indigo-600" aria-label="Twitter">
                 <Twitter className="h-5 w-5" />
               </Link>
@@ -31,6 +36,7 @@ export function LandingFooter() {
               <Link href="#" className="text-gray-500 transition-colors hover:text-indigo-600" aria-label="LinkedIn">
                 <Linkedin className="h-5 w-5" />
               </Link>
+              */}
             </div>
           </div>
 
@@ -48,14 +54,26 @@ export function LandingFooter() {
                 </Link>
               </li>
               <li>
+                {/*
+                  'Testimonials' link is commented out because the page does not exist yet.
+                  Uncomment when the page is created.
+                */}
+                {/**
                 <Link href="#" className="text-sm text-gray-600 hover:text-indigo-600">
                   Testimonials
                 </Link>
+                */}
               </li>
               <li>
+                {/*
+                  'FAQ' link is commented out because the page does not exist yet.
+                  Uncomment when the page is created.
+                */}
+                {/**
                 <Link href="#" className="text-sm text-gray-600 hover:text-indigo-600">
                   FAQ
                 </Link>
+                */}
               </li>
             </ul>
           </div>
