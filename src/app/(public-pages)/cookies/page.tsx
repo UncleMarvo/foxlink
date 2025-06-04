@@ -33,7 +33,7 @@ export default function CookiesPage() {
         <section>
           <h2 className="text-2xl font-semibold mb-4">Questions?</h2>
           <p className="mb-4">
-            If you have any questions about cookies (or just want to say hi), drop us a line at <a href="mailto:privacy@yourdomain.com" className="text-blue-600 hover:text-blue-800">privacy@yourdomain.com</a>.
+            If you have any questions about cookies (or just want to say hi), drop us a line at <a href="/contact?subject=Cookies" className="text-blue-600 hover:text-blue-800">contact us</a>.
           </p>
         </section>
         <p className="text-gray-500 text-sm mt-8">Last updated: June 2025</p>

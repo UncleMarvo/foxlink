@@ -4,7 +4,7 @@
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const FROM_ADDRESS = 'Your App <noreply@yourdomain.com>';
+const FROM_ADDRESS = 'FoxLink <noreply@foxlink.bio>';
 
 interface SendPasswordResetEmailParams {
   to: string;

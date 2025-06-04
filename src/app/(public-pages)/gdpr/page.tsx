@@ -52,7 +52,7 @@ export default function GDPRPage() {
         <section>
           <h2 className="text-2xl font-semibold mb-4">Questions or requests?</h2>
           <p className="mb-4">
-            If you want to use any of your rights, or just have a question about your data, email us at <a href="mailto:privacy@yourdomain.com" className="text-blue-600 hover:text-blue-800">privacy@yourdomain.com</a>. We're here to help!
+            If you want to use any of your rights, or just have a question about your data, email us at <a href="/contact?subject=GDPR" className="text-blue-600 hover:text-blue-800">contact us</a>. We're here to help!
           </p>
         </section>
         <p className="text-gray-500 text-sm mt-8">Last updated: June 2025</p>

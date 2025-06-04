@@ -146,10 +146,11 @@ export default function TermsPage() {
         </p>
 
         <h2 className="text-xl font-bold mb-4 mt-4">10. Contact Us</h2>
-        <p className="ml-4">
+        <p className="mb-4">
           If you have any questions about these Terms, please contact us at:
+          <br />
+          <a href="/contact?subject=Terms" className="text-blue-600 hover:text-blue-800">contact us</a>
         </p>
-        <p className="ml-4">Email: legal@foxlink.com</p>
       </div>
     </div>
   );

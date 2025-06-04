@@ -200,4 +200,12 @@ model UserCampaign {
   campaign   Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
 
   @@unique([userId, campaignId])
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  email     String
+  subject   String
+  message   String
+  createdAt DateTime @default(now())
 } 

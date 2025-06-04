@@ -84,9 +84,7 @@ export default function PrivacyPage() {
           <p className="mb-4">
             If you have any questions about this Privacy Policy, please contact us at:
             <br />
-            <a href="mailto:privacy@yourdomain.com" className="text-blue-600 hover:text-blue-800">
-              privacy@yourdomain.com
-            </a>
+            <a href="/contact?subject=Privacy" className="text-blue-600 hover:text-blue-800">contact us</a>
           </p>
         </section>
 
