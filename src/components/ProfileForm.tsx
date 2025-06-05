@@ -65,7 +65,7 @@ export default function ProfileForm({ user }: { user: any }) {
     const res = await fetch("/api/profile/update", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, bio, avatarUrl }),
+      body: JSON.stringify({ name, bio, image: avatarUrl }),
     });
     const data = await res.json();
     setLoading(false);
