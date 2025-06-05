@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
     const email = searchParams.get('email');
 
     if (!token || !email) {
-      return NextResponse.redirect('/auth/verify/error');
+      return NextResponse.redirect(new URL('/auth/verify/error', req.nextUrl.origin));
     }
 
     // Find the verification token
@@ -18,10 +18,10 @@ export async function GET(req: NextRequest) {
       where: { token },
     });
     if (!verificationToken || verificationToken.identifier !== email) {
-      return NextResponse.redirect('/auth/verify/error');
+      return NextResponse.redirect(new URL('/auth/verify/error', req.nextUrl.origin));
     }
     if (verificationToken.expires < new Date()) {
-      return NextResponse.redirect('/auth/verify/error');
+      return NextResponse.redirect(new URL('/auth/verify/error', req.nextUrl.origin));
     }
 
     // Mark user as verified
@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
     await prisma.verificationToken.delete({ where: { token } });
 
     // Redirect to success page
-    return NextResponse.redirect('/auth/verify/success');
+    return NextResponse.redirect(new URL('/auth/verify/success', req.nextUrl.origin));
   } catch (err) {
     await reportError({
       error: err as Error,
