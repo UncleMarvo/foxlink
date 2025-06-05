@@ -61,13 +61,11 @@ export default function ProfileForm({ user }: { user: any }) {
     setLoading(true);
     setError("");
     setSuccess("");
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("bio", bio);
-    formData.append("avatarUrl", avatarUrl); // Use the Supabase public URL
+    // Send JSON instead of FormData
     const res = await fetch("/api/profile/update", {
       method: "POST",
-      body: formData,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, bio, avatarUrl }),
     });
     const data = await res.json();
     setLoading(false);
