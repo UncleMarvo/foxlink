@@ -1,6 +1,8 @@
 # foxlink
 
+
 A modern, production-ready Link in Bio platform built with Next.js 15, TypeScript, Tailwind CSS v4+, NextAuth.js, and Prisma (MS SQL Express).
+
 
 ## Features
 - Next.js 15 (app directory, server components)
