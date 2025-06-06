@@ -16,6 +16,7 @@ export function LandingFooter() {
                 style={{ background: 'white' }}
               />
               <span className="text-lg font-semibold">FoxLink</span>
+              <span className="text-xs text-muted-foreground">(beta)</span>
             </div>
             <p className="mt-4 text-sm text-gray-600">The easiest way to share all your content with a single link.</p>
             <div className="mt-6 flex space-x-4">
@@ -87,7 +88,7 @@ export function LandingFooter() {
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-gray-600 hover:text-indigo-600">
+                <Link href="/contact" className="text-sm text-gray-600 hover:text-indigo-600">
                   Contact
                 </Link>
               </li>

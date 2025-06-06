@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 /**
  * ContactForm component
@@ -8,9 +9,14 @@ import React, { useState } from 'react';
  *   - initialSubject: string (optional, pre-fills the subject field)
  */
 export default function ContactForm({ initialSubject = '' }: { initialSubject?: string }) {
+  // Get session to determine if user is logged in
+  const { data: session } = useSession();
+  const isLoggedIn = !!session?.user;
+
   // Form state
-  const [email, setEmail] = useState('');
-  const [subject, setSubject] = useState(initialSubject);
+  const [name, setName] = useState(session?.user?.name || '');
+  const [email, setEmail] = useState(session?.user?.email || '');
+  const [type, setType] = useState('Feedback');
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [error, setError] = useState('');
@@ -23,9 +29,14 @@ export default function ContactForm({ initialSubject = '' }: { initialSubject?: 
     setError('');
     setLoading(true);
 
-    // Basic validation
-    if (!email || !subject || !message) {
-      setError('All fields are required.');
+    // Validation
+    if (!isLoggedIn && (!name || !email)) {
+      setError('Name and Email are required.');
+      setLoading(false);
+      return;
+    }
+    if (!type || !message) {
+      setError('Type and Message are required.');
       setLoading(false);
       return;
     }
@@ -34,12 +45,20 @@ export default function ContactForm({ initialSubject = '' }: { initialSubject?: 
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, subject, message }),
+        body: JSON.stringify({
+          name: isLoggedIn ? session.user.name : name,
+          email: isLoggedIn ? session.user.email : email,
+          type,
+          message,
+        }),
       });
       if (res.ok) {
         setStatus('success');
-        setEmail('');
-        setSubject(initialSubject);
+        if (!isLoggedIn) {
+          setName('');
+          setEmail('');
+        }
+        setType('Feedback');
         setMessage('');
       } else {
         const data = await res.json();
@@ -56,26 +75,48 @@ export default function ContactForm({ initialSubject = '' }: { initialSubject?: 
 
   return (
     <form onSubmit={handleSubmit} className="max-w-xl mx-auto p-4 border rounded bg-white shadow">
+      {/* Name field: only for anonymous users */}
+      {!isLoggedIn && (
+        <div className="mb-3">
+          <label className="block mb-1 font-medium">Your Name</label>
+          <input
+            type="text"
+            className="w-full border px-2 py-1 rounded"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            required
+          />
+        </div>
+      )}
+      {/* Email field: only for anonymous users */}
+      {!isLoggedIn && (
+        <div className="mb-3">
+          <label className="block mb-1 font-medium">Your Email</label>
+          <input
+            type="email"
+            className="w-full border px-2 py-1 rounded"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
+          />
+        </div>
+      )}
+      {/* Type dropdown: always shown */}
       <div className="mb-3">
-        <label className="block mb-1 font-medium">Your Email</label>
-        <input
-          type="email"
+        <label className="block mb-1 font-medium">Type</label>
+        <select
           className="w-full border px-2 py-1 rounded"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
+          value={type}
+          onChange={e => setType(e.target.value)}
           required
-        />
+        >
+          <option value="Feedback">Feedback</option>
+          <option value="Bug">Bug</option>
+          <option value="Question">Question</option>
+          <option value="Other">Other</option>
+        </select>
       </div>
-      <div className="mb-3">
-        <label className="block mb-1 font-medium">Subject</label>
-        <input
-          type="text"
-          className="w-full border px-2 py-1 rounded"
-          value={subject}
-          onChange={e => setSubject(e.target.value)}
-          required
-        />
-      </div>
+      {/* Message field: always shown */}
       <div className="mb-3">
         <label className="block mb-1 font-medium">Message</label>
         <textarea

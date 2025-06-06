@@ -13,7 +13,10 @@ interface FeedbackDetails {
   response: string | null;
   createdAt: string;
   status: string;
-  user: {
+  type?: string | null;
+  name?: string | null;
+  email?: string | null;
+  user?: {
     id: string;
     name: string | null;
     email: string | null;
@@ -102,7 +105,18 @@ export default function AdminFeedbackDetailsPage() {
       {feedback && !loading && !error && (
         <div className="bg-white rounded shadow p-6">
           <div className="mb-4">
-            <span className="font-semibold">User:</span> {feedback.user?.name || "-"} ({feedback.user?.email || "-"})
+            <span className="font-semibold">Type:</span> {feedback.type || '-'}
+          </div>
+          <div className="mb-4">
+            <span className="font-semibold">User:</span> {feedback.user ? (
+              <>
+                {feedback.user.name || '-'} ({feedback.user.email || '-'})
+              </>
+            ) : (
+              <>
+                {feedback.name || '-'} ({feedback.email || '-'})
+              </>
+            )}
           </div>
           <div className="mb-4">
             <span className="font-semibold">Date:</span> {new Date(feedback.createdAt).toLocaleString()}

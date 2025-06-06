@@ -334,7 +334,7 @@ export default function LandingPage() {
                   asChild
                 >
                   <Link
-                    href="/register"
+                    href="/auth/register"
                     className="flex items-center justify-center"
                   >
                     Get Started <ArrowRight className="ml-2 h-4 w-4" />

@@ -128,6 +128,7 @@ export default function MainNav() {
             style={{ background: 'white' }}
           />
           <span className="text-md font-semibold">FoxLink</span>
+          <span className="text-xs text-muted-foreground">(beta)</span>
         </div>
 
         {/* Avatar */}

@@ -113,12 +113,15 @@ model Analytics {
 }
 
 model Feedback {
-  id        String    @id @default(cuid())
-  userId    String
-  message   String
-  response  String?
-  createdAt DateTime  @default(now())
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         String   @id @default(cuid())
+  userId     String?  // User ID if logged in, null if anonymous
+  user       User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name       String?  // Name if anonymous, null if logged in
+  email      String?  // Email if anonymous, null if logged in
+  type       String?  // Type of feedback (Feedback, Bug, Question, Other)
+  message    String
+  response   String?
+  createdAt  DateTime @default(now())
 }
 
 model UserConfigs {

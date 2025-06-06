@@ -13,7 +13,10 @@ interface FeedbackEntry {
   response: string | null;
   createdAt: string;
   status: string;
-  user: {
+  type?: string | null;
+  name?: string | null;
+  email?: string | null;
+  user?: {
     id: string;
     name: string | null;
     email: string | null;
@@ -85,8 +88,8 @@ export default function AdminFeedbackPage() {
         <table className="min-w-full bg-white rounded shadow border border-gray-200">
           <thead>
             <tr className="bg-gray-100 text-left">
+              <th className="px-4 py-2">Type</th>
               <th className="px-4 py-2">User</th>
-              <th className="px-4 py-2">Email</th>
               <th className="px-4 py-2">Message</th>
               <th className="px-4 py-2">Date</th>
               <th className="px-4 py-2">Status</th>
@@ -96,8 +99,23 @@ export default function AdminFeedbackPage() {
           <tbody>
             {feedback.map((fb) => (
               <tr key={fb.id} className="border-t">
-                <td className="px-4 py-2 font-medium">{fb.user?.name || "-"}</td>
-                <td className="px-4 py-2">{fb.user?.email || "-"}</td>
+                <td className="px-4 py-2 font-medium">{fb.type || '-'}</td>
+                <td className="px-4 py-2">
+                  {fb.user ? (
+                    <>
+                      <span className="font-semibold">{fb.user.name || '-'}</span>
+                      <br />
+                      <span className="text-xs text-gray-500">{fb.user.email || '-'}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="font-semibold">Anonymous</span>
+                      {fb.name && <span>: {fb.name}</span>}
+                      <br />
+                      <span className="text-xs text-gray-500">{fb.email || '-'}</span>
+                    </>
+                  )}
+                </td>
                 <td className="px-4 py-2 max-w-xs truncate" title={fb.message}>{fb.message}</td>
                 <td className="px-4 py-2">{new Date(fb.createdAt).toLocaleString()}</td>
                 <td className="px-4 py-2">
@@ -118,7 +136,7 @@ export default function AdminFeedbackPage() {
               </tr>
             ))}
             {feedback.length === 0 && !loading && (
-              <tr><td colSpan={5} className="text-center py-6 text-gray-400">No feedback found.</td></tr>
+              <tr><td colSpan={6} className="text-center py-6 text-gray-400">No feedback found.</td></tr>
             )}
           </tbody>
         </table>

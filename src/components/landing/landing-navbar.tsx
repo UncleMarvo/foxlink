@@ -3,12 +3,15 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
 
 export function LandingNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session } = useSession();
+  const isLoggedIn = !!session?.user;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b backdrop-blur-md">
@@ -22,6 +25,7 @@ export function LandingNavbar() {
             style={{ background: 'white' }}
           />
           <span className="text-lg font-semibold">FoxLink</span>
+          <span className="text-xs text-muted-foreground">(beta)</span>
         </div>
 
         {/* Desktop Navigation */}
@@ -42,18 +46,32 @@ export function LandingNavbar() {
 
         <div className="hidden items-center gap-4 md:flex">
           <ModeToggle />
-          <Button 
-            variant="default" 
-            className="text-white bg-indigo-600 hover:bg-indigo-400"
-            asChild>
-            <Link href="/auth/signin">Log in</Link>
-          </Button>
-          <Button 
-            variant="outline" 
-            className="border-gray-500 bg-gray-100 text-indigo-600 hover:bg-white/10"
-            asChild>
-            <Link href="/auth/register">Sign up</Link>
-          </Button>
+          {isLoggedIn ? (
+            <Button
+              variant="default"
+              className="text-white bg-indigo-600 hover:bg-indigo-400"
+              asChild
+            >
+              <Link href="/dashboard">Dashboard</Link>
+            </Button>
+          ) : (
+            <>
+              <Button
+                variant="default"
+                className="text-white bg-indigo-600 hover:bg-indigo-400"
+                asChild
+              >
+                <Link href="/auth/signin">Log in</Link>
+              </Button>
+              <Button
+                variant="outline"
+                className="border-gray-500 bg-gray-100 text-indigo-600 hover:bg-white/10"
+                asChild
+              >
+                <Link href="/auth/register">Sign up</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -106,19 +124,29 @@ export function LandingNavbar() {
               Help
             </Link>
             <div className="mt-4 flex flex-col space-y-2 px-3">
-              <Button variant="default" asChild>
-                <Link href="/auth/signin" onClick={() => setIsMenuOpen(false)}>
-                  Log in
-                </Link>
-              </Button>
-              <Button variant="ghost" asChild>
-                <Link
-                  href="/auth/register"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Sign up
-                </Link>
-              </Button>
+              {isLoggedIn ? (
+                <Button variant="default" asChild>
+                  <Link href="/dashboard" onClick={() => setIsMenuOpen(false)}>
+                    Dashboard
+                  </Link>
+                </Button>
+              ) : (
+                <>
+                  <Button variant="default" asChild>
+                    <Link href="/auth/signin" onClick={() => setIsMenuOpen(false)}>
+                      Log in
+                    </Link>
+                  </Button>
+                  <Button variant="ghost" asChild>
+                    <Link
+                      href="/auth/register"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Sign up
+                    </Link>
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>

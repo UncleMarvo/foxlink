@@ -29,6 +29,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
               style={{ background: 'white' }}
             />
             <span className="text-sm font-semibold">FoxLink</span>
+            <span className="text-xs text-muted-foreground">(beta)</span>
           </div>
         </div>
         <ModeToggle />

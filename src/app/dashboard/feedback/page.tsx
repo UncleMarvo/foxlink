@@ -66,7 +66,7 @@ export default function FeedbackPage() {
           </label>
           <textarea
             id="message"
-            className="border rounded p-2 min-h-[100px]"
+            className="border rounded p-2 min-h-[300px]"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             required
