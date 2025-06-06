@@ -76,6 +76,26 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* Beta Banner Section */}
+        <section className="w-full">
+          <div className="container mx-auto px-4 bg-yellow-50 border-l-4 border-yellow-400 p-6 my-8 rounded-lg shadow-sm">
+            <h2 className="text-lg font-bold flex items-center gap-2 text-gray-900">
+              <span role="img" aria-label="rocket">🚀</span>
+              FoxLink is in Beta!
+            </h2>
+            <p className="mt-2 text-gray-800">
+              We're just getting started, and you're an important part of our journey.<br />
+              As an early user, your feedback will help shape FoxLink into the best bio-link platform possible.<br />
+              <strong>See something you'd like improved? Have an idea?</strong>
+              <br />
+              <a href="/contact" className="text-blue-600 underline hover:text-blue-800">Let us know!</a>
+            </p>
+            <p className="mt-2 text-gray-700">
+              Thank you for joining us at the beginning. We're excited to build FoxLink together with you!
+            </p>
+          </div>
+        </section>
+
         {/* Features Section */}
         <section id="features" className="bg-white py-10 md:py-22">
           <div className="container mx-auto px-4">

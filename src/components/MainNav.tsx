@@ -119,7 +119,7 @@ export default function MainNav() {
       {/* Logo and user info */}
       <div className="flex flex-col items-center py-8 border-b">
         {/* Logo */}
-        <div className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
           {/* Replaced text-based logo with fox logo image - now 25% larger for better visibility */}
           <img
             src="/logo.png"
@@ -129,7 +129,7 @@ export default function MainNav() {
           />
           <span className="text-md font-semibold">FoxLink</span>
           <span className="text-xs text-muted-foreground">(beta)</span>
-        </div>
+        </Link>
 
         {/* Avatar */}
         <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-300 flex items-center justify-center mt-10 mb-2">
