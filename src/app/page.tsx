@@ -331,7 +331,7 @@ export default function LandingPage() {
                 your audience today.
               </p>
             </div>
-            <PricingCards />
+            <PricingCards freePlanLinkLimit={parseInt(process.env.FREE_PLAN_LINK_LIMIT || '5', 10)} />
           </div>
         </section>
 
@@ -343,8 +343,7 @@ export default function LandingPage() {
                 Ready to grow your audience?
               </h2>
               <p className="mb-8 text-lg text-white/90">
-                Join thousands of creators who use FoxLink to connect with
-                their audience.
+                Be among the first to join FoxLink and shape the future of creator connections.
               </p>
               <div className="flex flex-col justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
                 <Button

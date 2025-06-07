@@ -8,7 +8,11 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
 
-export function PricingCards() {
+interface PricingCardsProps {
+  freePlanLinkLimit: number;
+}
+
+export function PricingCards({ freePlanLinkLimit }: PricingCardsProps) {
   const [isAnnual, setIsAnnual] = useState(true)
 
   const plans = [
@@ -19,7 +23,11 @@ export function PricingCards() {
         monthly: "$0",
         annually: "$0",
       },
-      features: ["5 links", "Basic analytics", "Mobile-optimized pages"],
+      features: [
+        `${freePlanLinkLimit} links`,
+        "Basic analytics",
+        "Mobile-optimized pages"
+      ],
       cta: "Get Started",
       popular: false,
     },
@@ -71,7 +79,7 @@ export function PricingCards() {
             <CardContent className="flex-1">
               <div className="mb-6">
                 <span className="text-4xl font-bold">{isAnnual ? plan.price.annually : plan.price.monthly}</span>
-                <span className="text-gray-500">/month</span>
+                <span className="text-gray-500">/{isAnnual ? "year" : "month"}</span>
                 {isAnnual && <p className="text-sm text-gray-500">Billed annually</p>}
               </div>
               <ul className="space-y-2">
