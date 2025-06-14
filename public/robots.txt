@@ -12,5 +12,5 @@ Disallow: /dashboard/
 # Disallow auth routes
 Disallow: /auth/
 
-# Sitemap location (to be added later)
-# Sitemap: https://yourdomain.com/sitemap.xml 
+# Sitemap location
+Sitemap: https://foxlink.app/sitemap.xml 
