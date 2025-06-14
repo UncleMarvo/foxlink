@@ -6,6 +6,7 @@ import PublicLinksList from '@/components/PublicLinksList';
 import { SocialMediaLinks } from '@/components/SocialMediaLinks';
 import { ThemeProvider } from '@/app/context/ThemeContext';
 import ProfilePageContent from './ProfilePageContent';
+import { ProfileJsonLd } from '@/components/ProfileJsonLd';
 
 // Helper to fetch user and links by username
 async function getUserAndLinks(username: string) {
@@ -100,9 +101,21 @@ export default async function UsernamePage({ params }: { params: Promise<{ usern
   // Use the user's theme, fallback to 'OceanBreeze'
   const themeName = userConfigs?.theme || 'OceanBreeze';
 
+  // Ensure we have the required data for JSON-LD
+  const displayName = user.name || user.username || '';
+  const avatarUrl = user.image || undefined;
+
   return (
-    <ThemeProvider initialTheme={themeName as any}>
-      <ProfilePageContent user={user} socialLinks={socialLinks} userConfigs={userConfigs} />
-    </ThemeProvider>
+    <>
+      <ProfileJsonLd
+        username={username}
+        displayName={displayName}
+        avatarUrl={avatarUrl}
+        socialLinks={socialLinks}
+      />
+      <ThemeProvider initialTheme={themeName as any}>
+        <ProfilePageContent user={user} socialLinks={socialLinks} userConfigs={userConfigs} />
+      </ThemeProvider>
+    </>
   );
 } 

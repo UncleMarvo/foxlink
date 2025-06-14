@@ -4,10 +4,25 @@ import { ThemeProvider as CustomThemeProvider } from "@/app/context/ThemeContext
 import { ModalProvider } from "@/components/providers/modal-provider";
 import { Toaster } from "sonner";
 import AuthProvider from "@/components/AuthProvider";
+import { JsonLd } from "@/components/JsonLd";
+import { Organization } from "@/utils/jsonld";
 
 export const metadata = {
   title: "FoxLink",
   description: "Link In Bio Initial Version",
+};
+
+// Organization data for JSON-LD
+const organizationData: Organization = {
+  '@type': 'Organization',
+  '@context': 'https://schema.org',
+  name: 'FoxLink',
+  url: process.env.NEXT_PUBLIC_BASE_URL || 'https://foxlink.app',
+  logo: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://foxlink.app'}/logo_lg.png`,
+  sameAs: [
+    'https://twitter.com/foxlink',
+    'https://github.com/foxlink',
+  ],
 };
 
 export default function RootLayout({
@@ -17,6 +32,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <JsonLd data={organizationData} type="Organization" />
+      </head>
       <body className="bg-light-bg dark:bg-dark-bg min-h-screen">
         <Toaster />
         <AuthProvider>
