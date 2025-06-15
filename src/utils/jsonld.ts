@@ -37,6 +37,19 @@ export interface WebSite {
   };
 }
 
+export interface BreadcrumbItem {
+  '@type': 'ListItem';
+  position: number;
+  name: string;
+  item: string;
+}
+
+export interface BreadcrumbList {
+  '@type': 'BreadcrumbList';
+  '@context': 'https://schema.org';
+  itemListElement: BreadcrumbItem[];
+}
+
 // Validation functions
 export function validateOrganization(data: Organization): boolean {
   return (
@@ -77,6 +90,26 @@ export function validateWebSite(data: WebSite): boolean {
       typeof data.potentialAction.target === 'string' &&
       typeof data.potentialAction['query-input'] === 'string'
     ))
+  );
+}
+
+export function validateBreadcrumbItem(item: BreadcrumbItem): boolean {
+  return (
+    item['@type'] === 'ListItem' &&
+    typeof item.position === 'number' &&
+    typeof item.name === 'string' &&
+    typeof item.item === 'string'
+  );
+}
+
+export function validateBreadcrumbList(data: BreadcrumbList): boolean {
+  return (
+    data['@type'] === 'BreadcrumbList' &&
+    Array.isArray(data.itemListElement) &&
+    data.itemListElement.length > 0 &&
+    data.itemListElement.every(validateBreadcrumbItem) &&
+    // Ensure positions are sequential and start from 1
+    data.itemListElement.every((item, index) => item.position === index + 1)
   );
 }
 
