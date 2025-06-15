@@ -66,15 +66,9 @@ export function LandingFooter() {
                 */}
               </li>
               <li>
-                {/*
-                  'FAQ' link is commented out because the page does not exist yet.
-                  Uncomment when the page is created.
-                */}
-                {/**
-                <Link href="#" className="text-sm text-gray-600 hover:text-indigo-600">
+                <Link href="/faq" className="text-sm text-gray-600 hover:text-indigo-600">
                   FAQ
                 </Link>
-                */}
               </li>
             </ul>
           </div>
