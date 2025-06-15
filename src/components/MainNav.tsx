@@ -115,12 +115,14 @@ export default function MainNav() {
   ];
 
   return (
-    <nav className="flex flex-col h-full min-h-screen">
+    <nav 
+      className="flex flex-col h-full min-h-screen"
+      aria-label="Main navigation"
+    >
       {/* Logo and user info */}
-      <div className="flex flex-col items-center py-8 border-b">
+      <div className="p-4 border-b" role="banner">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
-          {/* Replaced text-based logo with fox logo image - now 25% larger for better visibility */}
+        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition" aria-label="Go to homepage">
           <img
             src="/logo.png"
             alt="FoxLink Logo"
@@ -135,7 +137,7 @@ export default function MainNav() {
         <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-300 flex items-center justify-center mt-10 mb-2">
           <Avatar
             src={session?.user?.image}
-            alt="User avatar"
+            alt={`${session?.user?.name || 'User'}'s avatar`}
             width={96}
             height={96}
             className="w-full h-full object-cover"
@@ -152,8 +154,9 @@ export default function MainNav() {
           {session?.user?.email || session?.user?.email || "Email"}
         </div>
       </div>
+
       {/* Navigation links */}
-      <ul className="flex flex-col gap-2 mt-8">
+      <ul className="flex-1 p-4 space-y-2" role="navigation" aria-label="Main menu">
         {navLinks.map((link) => (
           <li key={link.href}>
             <Link
@@ -161,6 +164,7 @@ export default function MainNav() {
               className={`flex items-center gap-3 px-4 py-2 rounded hover:bg-gray-100 transition text-gray-800 font-medium ${
                 pathname.startsWith(link.href) ? "bg-gray-100" : ""
               }`}
+              aria-current={pathname.startsWith(link.href) ? "page" : undefined}
             >
               {link.icon}
               <span>{link.label}</span>
@@ -170,14 +174,13 @@ export default function MainNav() {
         {/* Admin link: Only visible to users with role 'ADMIN' or 'SUPER_ADMIN' */}
         {session?.user?.role === 'ADMIN' || session?.user?.role === 'SUPER_ADMIN' ? (
           <li>
-            {/* This link is only shown to admin users. */}
             <Link
               href="/admin"
               className={`flex items-center gap-3 px-4 py-2 rounded hover:bg-indigo-100 transition text-indigo-800 font-semibold ${
                 pathname.startsWith('/admin') ? 'bg-indigo-100' : ''
               }`}
+              aria-current={pathname.startsWith('/admin') ? "page" : undefined}
             >
-              {/* Simple shield icon for admin */}
               <svg width="20" height="20" fill="none" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 3l7 4v5c0 5.25-3.5 9.74-7 11-3.5-1.26-7-5.75-7-11V7l7-4z" stroke="#6366f1" strokeWidth="1.5" strokeLinejoin="round" fill="#eef2ff"/>
               </svg>
@@ -192,7 +195,7 @@ export default function MainNav() {
               onClick={handleManageSubscription}
               className="flex items-center gap-2 px-4 py-2 rounded bg-green-100 text-green-800 font-medium hover:bg-green-200 transition"
               disabled={loadingPortal}
-              title="Manage your premium subscription"
+              aria-label="Manage your premium subscription"
             >
               <svg
                 width="20"
@@ -212,42 +215,43 @@ export default function MainNav() {
               {loadingPortal ? "Loading..." : "Manage Subscription"}
             </button>
             {portalError && (
-              <div className="text-red-500 text-xs mt-1">{portalError}</div>
+              <div className="text-red-500 text-xs mt-1" role="alert">{portalError}</div>
             )}
           </li>
         )}
-      </ul>
-      {/* Divider and Sign Out button */}
-      {/* <hr className="my-4 border-gray-200" /> */}
-      <div className="my-8 px-4 border-t">
-        <button
-          onClick={() => signOut({ callbackUrl: "/auth/signin" })}
-          className="flex items-center gap-2 w-full px-4 py-2 rounded hover:bg-red-100 text-red-600 font-medium transition"
-          title="Sign out"
-        >
-          <svg
-            width="20"
-            height="20"
-            fill="none"
-            viewBox="0 0 20 20"
-            aria-hidden="true"
+        {/* Divider */}
+        <li className="border-t border-gray-200 my-2"></li>
+        {/* Sign Out link */}
+        <li>
+          <button
+            onClick={() => signOut({ callbackUrl: "/auth/signin" })}
+            className="flex items-center gap-2 w-full px-4 py-2 rounded hover:bg-red-100 text-red-600 font-medium transition"
+            aria-label="Sign out of your account"
           >
-            <path
-              d="M13 16v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1"
-              stroke="#e53e3e"
-              strokeWidth="1.5"
-            />
-            <path
-              d="M17 10H7m0 0l3-3m-3 3l3 3"
-              stroke="#e53e3e"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span>Sign Out</span>
-        </button>
-      </div>
+            <svg
+              width="20"
+              height="20"
+              fill="none"
+              viewBox="0 0 20 20"
+              aria-hidden="true"
+            >
+              <path
+                d="M13 16v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1"
+                stroke="#e53e3e"
+                strokeWidth="1.5"
+              />
+              <path
+                d="M17 10H7m0 0l3-3m-3 3l3 3"
+                stroke="#e53e3e"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <span>Sign Out</span>
+          </button>
+        </li>
+      </ul>
     </nav>
   );
 }
