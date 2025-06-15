@@ -2,6 +2,7 @@ import { AuthOptions } from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import GoogleProvider from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
+import LinkedInProvider from 'next-auth/providers/linkedin';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import prisma from '@/utils/prisma';
 import { compare } from 'bcryptjs';
@@ -24,6 +25,19 @@ if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
     })
   );
 }
+
+if (process.env.LINKEDIN_CLIENT_ID && process.env.LINKEDIN_CLIENT_SECRET) {
+  providers.push(
+    LinkedInProvider({
+      clientId: process.env.LINKEDIN_CLIENT_ID!,
+      clientSecret: process.env.LINKEDIN_CLIENT_SECRET!,
+      authorization: {
+        params: { scope: 'openid profile email' }
+      },
+    })
+  );
+}
+
 providers.push(
   CredentialsProvider({
     name: 'Credentials',
@@ -95,6 +109,6 @@ export const authOptions: AuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: '/api/auth/signin',
+    signIn: '/auth/signin',
   },
 }; 

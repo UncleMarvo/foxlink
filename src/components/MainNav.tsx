@@ -120,7 +120,7 @@ export default function MainNav() {
       aria-label="Main navigation"
     >
       {/* Logo and user info */}
-      <div className="p-4 border-b" role="banner">
+      <div className="flex flex-col items-center p-4 border-b" role="banner">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition" aria-label="Go to homepage">
           <img
