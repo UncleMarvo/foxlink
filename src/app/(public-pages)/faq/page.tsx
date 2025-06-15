@@ -1,6 +1,10 @@
 "use client";
 import React from "react";
+import { Metadata } from "next";
 import { BreadcrumbJsonLd } from "@/components/BreadcrumbJsonLd";
+import { faqMetadata } from "@/app/metadata";
+
+export const metadata: Metadata = faqMetadata;
 
 export default function FAQPage() {
   const breadcrumbItems = [

@@ -1,11 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { Metadata } from "next";
 
 import { Button } from "@/components/ui/button";
 import { LandingNavbar } from "@/components/landing/landing-navbar";
 import { PricingCards } from "@/components/landing/pricing-cards";
 import { LandingFooter } from "@/components/landing/landing-footer";
+import { landingMetadata } from "./metadata";
+
+export const metadata: Metadata = landingMetadata;
 
 export default function LandingPage() {
   return (

@@ -1,6 +1,10 @@
+import { Metadata } from "next";
 import { BreadcrumbJsonLd } from '@/components/BreadcrumbJsonLd';
 import { ProductJsonLd } from '@/app/components/ProductJsonLd';
 import { PricingCards } from '@/components/landing/pricing-cards';
+import { pricingMetadata } from "@/app/metadata";
+
+export const metadata: Metadata = pricingMetadata;
 
 export default function PricingPage() {
   const breadcrumbItems = [
