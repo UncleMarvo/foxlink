@@ -1,7 +1,12 @@
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 
 // Base URL for the application
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://foxlink.bio';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export const landingMetadata: Metadata = {
   title: "FoxLink - One Link to Share All Your Content",

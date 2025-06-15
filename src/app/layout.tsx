@@ -7,9 +7,15 @@ import AuthProvider from "@/components/AuthProvider";
 import { JsonLd } from "@/components/JsonLd";
 import { WebSiteJsonLd } from "@/components/WebSiteJsonLd";
 import { Organization } from "@/utils/jsonld";
+import { Viewport } from "next";
 
 // Base URL for the application
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://foxlink.bio';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export const metadata = {
   title: "FoxLink",
