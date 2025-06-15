@@ -24,6 +24,19 @@ export interface ProfilePage {
   url: string;
 }
 
+export interface WebSite {
+  '@type': 'WebSite';
+  '@context': 'https://schema.org';
+  name: string;
+  url: string;
+  description?: string;
+  potentialAction?: {
+    '@type': 'SearchAction';
+    target: string;
+    'query-input': string;
+  };
+}
+
 // Validation functions
 export function validateOrganization(data: Organization): boolean {
   return (
@@ -50,6 +63,20 @@ export function validateProfilePage(data: ProfilePage): boolean {
     data['@type'] === 'ProfilePage' &&
     typeof data.url === 'string' &&
     validatePerson(data.mainEntity)
+  );
+}
+
+export function validateWebSite(data: WebSite): boolean {
+  return (
+    data['@type'] === 'WebSite' &&
+    typeof data.name === 'string' &&
+    typeof data.url === 'string' &&
+    (!data.description || typeof data.description === 'string') &&
+    (!data.potentialAction || (
+      data.potentialAction['@type'] === 'SearchAction' &&
+      typeof data.potentialAction.target === 'string' &&
+      typeof data.potentialAction['query-input'] === 'string'
+    ))
   );
 }
 

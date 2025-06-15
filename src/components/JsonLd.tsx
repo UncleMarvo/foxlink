@@ -5,7 +5,7 @@ import { safeJsonLdStringify } from '@/utils/jsonld';
 
 interface JsonLdProps {
   data: any;
-  type: 'Organization' | 'Person' | 'ProfilePage';
+  type: 'Organization' | 'Person' | 'ProfilePage' | 'WebSite';
 }
 
 export const JsonLd: React.FC<JsonLdProps> = ({ data, type }) => {
