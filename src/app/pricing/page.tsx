@@ -26,7 +26,7 @@ export default function PricingPage() {
       "Custom themes",
       "Remove FoxLink branding",
     ],
-    isAnnual: true, // Default to annual pricing
+    isAnnual: false, // Default to monthly pricing
   };
 
   return (

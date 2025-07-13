@@ -20,14 +20,18 @@ export default function LandingPage() {
       <main className="flex-1">
         {/* Hero Section with Image Side-by-Side */}
         <section className="relative overflow-hidden py-10 md:py-22">
+          {/* Creative background elements - moved further away and reduced opacity */}
+          <div className="absolute -top-32 left-1/2 h-[600px] w-[900px] -translate-x-1/2 bg-gradient-to-br from-brand-blue/5 via-brand-orange/5 to-cyan-500/5 blur-3xl pointer-events-none animate-pulse" />
+          <div className="absolute top-1/3 right-0 h-64 w-64 bg-gradient-to-br from-purple-500/10 to-cyan-500/10 rounded-full blur-2xl pointer-events-none animate-bounce" style={{animationDuration: '8s'}} />
+          
           <div className="container relative z-10 mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-12 px-4 text-center md:text-left">
             {/* Hero Content (left on desktop) */}
             <div className="w-full md:w-1/2 flex flex-col items-center md:items-start">
-              <div className="absolute -top-24 left-1/2 h-[500px] w-[800px] -translate-x-1/2 bg-gradient-to-br from-indigo-100/20 via-purple-100/20 to-pink-100/20 blur-3xl pointer-events-none" />
-              <h1 className="mb-6 max-w-4xl bg-gradient-to-br from-gray-900 to-gray-700 bg-clip-text text-4xl font-bold tracking-tight text-transparent sm:text-5xl md:text-6xl">
+              {/* Fixed: Removed gradient text effect for better readability */}
+              <h1 className="mb-6 max-w-4xl text-4xl font-bold tracking-tight text-brand-blue sm:text-5xl md:text-6xl">
                 One Link to Share All Your Content
               </h1>
-              <p className="mb-8 max-w-2xl text-lg text-gray-600 md:text-xl">
+              <p className="mb-8 max-w-2xl text-lg text-muted-foreground md:text-xl">
                 Create a customizable page that showcases your links, social
                 profiles, and content in one place. Share a single link in your
                 bio to connect your audience to everything you do.
@@ -36,20 +40,20 @@ export default function LandingPage() {
                 <Button
                   size="xl"
                   variant="default"
-                  className="text-white bg-indigo-600 hover:bg-indigo-400"
+                  className="bg-accent-gradient text-white hover:shadow-lg hover:scale-105 transition-all duration-300"
                   asChild
                 >
                   <Link
                     href="/auth/register"
                     className="flex items-center justify-center"
                   >
-                    Get Started <ArrowRight className="ml-2 h-4 w-4" />
+                    Try for free <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
                 <Button
                   size="xl"
                   variant="outline"
-                  className="border-gray-500 bg-gray-100 text-indigo-600 hover:bg-white/10"
+                  className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white transition-all duration-300"
                   asChild
                 >
                   <Link
@@ -63,8 +67,8 @@ export default function LandingPage() {
             </div>
             {/* Image (right on desktop) */}
             <div className="w-full md:w-1/2 flex justify-center">
-              <div className="relative mx-auto max-w-xl overflow-hidden rounded-xl border bg-white shadow-xl">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 pointer-events-none" />
+              <div className="relative mx-auto max-w-xl overflow-hidden rounded-xl border border-brand-blue/20 bg-white shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105">
+                <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/5 to-brand-orange/5 pointer-events-none" />
                 {/* Use high-res logo for crisp display on all devices */}
                 <Image
                   src="/logo_lg.png"
@@ -82,43 +86,43 @@ export default function LandingPage() {
 
         {/* Beta Banner Section */}
         <section className="w-full">
-          <div className="container mx-auto px-4 bg-yellow-50 border-l-4 border-yellow-400 p-6 my-8 rounded-lg shadow-sm">
-            <h2 className="text-lg font-bold flex items-center gap-2 text-gray-900">
+          <div className="container mx-auto px-4 bg-gradient-to-r from-brand-orange/10 to-cyan-500/10 border-l-4 border-brand-orange p-6 my-8 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+            <h2 className="text-lg font-bold flex items-center gap-2 text-brand-blue">
               <span role="img" aria-label="rocket">🚀</span>
               FoxLink is in Beta!
             </h2>
-            <p className="mt-2 text-gray-800">
+            <p className="mt-2 text-foreground">
               We're just getting started, and you're an important part of our journey.<br />
               As an early user, your feedback will help shape FoxLink into the best bio-link platform possible.<br />
               <strong>See something you'd like improved? Have an idea?</strong>
               <br />
-              <a href="/contact" className="text-blue-600 underline hover:text-blue-800">Let us know!</a>
+              <a href="/contact" className="text-brand-orange underline hover:text-brand-orange/80 transition-colors">Let us know!</a>
             </p>
-            <p className="mt-2 text-gray-700">
+            <p className="mt-2 text-muted-foreground">
               Thank you for joining us at the beginning. We're excited to build FoxLink together with you!
             </p>
           </div>
         </section>
 
         {/* Features Section */}
-        <section id="features" className="bg-white py-10 md:py-22">
+        <section id="features" className="bg-gradient-to-br from-white to-slate-50 py-10 md:py-22">
           <div className="container mx-auto px-4">
             <div className="mb-16 text-center">
-              <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
+              <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl text-brand-blue">
                 Everything you need to connect with your audience
               </h2>
-              <p className="mx-auto max-w-2xl text-lg text-gray-600">
+              <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
                 Powerful features to help you showcase your content and grow
                 your following.
               </p>
             </div>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {/* Feature 1 */}
-              <div className="rounded-xl border bg-white p-6 shadow-sm transition-all hover:shadow-md">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-100 to-purple-100">
+              <div className="rounded-xl border border-brand-blue/10 bg-white p-6 shadow-sm transition-all hover:shadow-lg hover:scale-105 hover:border-brand-orange/30">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-brand-blue/10 to-brand-orange/10">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-indigo-600"
+                    className="h-6 w-6 text-brand-orange"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -131,19 +135,19 @@ export default function LandingPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="mb-2 text-xl font-semibold">Custom Link Page</h3>
-                <p className="text-gray-600">
+                <h3 className="mb-2 text-xl font-semibold text-brand-blue">Custom Link Page</h3>
+                <p className="text-muted-foreground">
                   Create a beautiful, branded page that showcases all your
                   important links in one place.
                 </p>
               </div>
 
               {/* Feature 2 */}
-              <div className="rounded-xl border bg-white p-6 shadow-sm transition-all hover:shadow-md">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-100 to-purple-100">
+              <div className="rounded-xl border border-brand-blue/10 bg-white p-6 shadow-sm transition-all hover:shadow-lg hover:scale-105 hover:border-cyan-500/30">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500/10 to-purple-500/10">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-indigo-600"
+                    className="h-6 w-6 text-cyan-500"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -156,21 +160,21 @@ export default function LandingPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="mb-2 text-xl font-semibold">
+                <h3 className="mb-2 text-xl font-semibold text-brand-blue">
                   Analytics Dashboard
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-muted-foreground">
                   Track clicks, views, and engagement with detailed analytics to
                   optimize your content strategy.
                 </p>
               </div>
 
               {/* Feature 3 */}
-              <div className="rounded-xl border bg-white p-6 shadow-sm transition-all hover:shadow-md">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-100 to-purple-100">
+              <div className="rounded-xl border border-brand-blue/10 bg-white p-6 shadow-sm transition-all hover:shadow-lg hover:scale-105 hover:border-purple-500/30">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500/10 to-brand-orange/10">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-indigo-600"
+                    className="h-6 w-6 text-purple-500"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -183,19 +187,19 @@ export default function LandingPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="mb-2 text-xl font-semibold">Custom Themes</h3>
-                <p className="text-gray-600">
+                <h3 className="mb-2 text-xl font-semibold text-brand-blue">Custom Themes</h3>
+                <p className="text-muted-foreground">
                   Personalize your page with custom colors, fonts, and layouts
                   to match your brand identity.
                 </p>
               </div>
 
               {/* Feature 4 */}
-              <div className="rounded-xl border bg-white p-6 shadow-sm transition-all hover:shadow-md">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-100 to-purple-100">
+              <div className="rounded-xl border border-brand-blue/10 bg-white p-6 shadow-sm transition-all hover:shadow-lg hover:scale-105 hover:border-emerald-500/30">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500/10 to-cyan-500/10">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-indigo-600"
+                    className="h-6 w-6 text-emerald-500"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -208,44 +212,19 @@ export default function LandingPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="mb-2 text-xl font-semibold">Mobile Optimized</h3>
-                <p className="text-gray-600">
-                  Your page looks great on any device, ensuring a seamless
-                  experience for all visitors.
+                <h3 className="mb-2 text-xl font-semibold text-brand-blue">Mobile Optimized</h3>
+                <p className="text-muted-foreground">
+                  Your link page looks great on all devices, ensuring your
+                  audience can easily access your content anywhere.
                 </p>
               </div>
 
               {/* Feature 5 */}
-              <div className="rounded-xl border bg-white p-6 shadow-sm transition-all hover:shadow-md">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-100 to-purple-100">
+              <div className="rounded-xl border border-brand-blue/10 bg-white p-6 shadow-sm transition-all hover:shadow-lg hover:scale-105 hover:border-amber-500/30">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500/10 to-brand-orange/10">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-indigo-600"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="mb-2 text-xl font-semibold">Secure & Private</h3>
-                <p className="text-gray-600">
-                  Your data is always secure with enterprise-grade security and
-                  privacy controls.
-                </p>
-              </div>
-
-              {/* Feature 6 */}
-              <div className="rounded-xl border bg-white p-6 shadow-sm transition-all hover:shadow-md">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-100 to-purple-100">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-indigo-600"
+                    className="h-6 w-6 text-amber-500"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -258,12 +237,35 @@ export default function LandingPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="mb-2 text-xl font-semibold">
-                  Social Integration
-                </h3>
-                <p className="text-gray-600">
-                  Seamlessly connect your social media profiles and showcase
-                  your content from various platforms.
+                <h3 className="mb-2 text-xl font-semibold text-brand-blue">Fast & Reliable</h3>
+                <p className="text-muted-foreground">
+                  Built for speed and reliability, ensuring your links load
+                  quickly and work perfectly every time.
+                </p>
+              </div>
+
+              {/* Feature 6 */}
+              <div className="rounded-xl border border-brand-blue/10 bg-white p-6 shadow-sm transition-all hover:shadow-lg hover:scale-105 hover:border-brand-blue/30">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-brand-blue/10 to-cyan-500/10">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 text-brand-blue"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="mb-2 text-xl font-semibold text-brand-blue">Secure & Private</h3>
+                <p className="text-muted-foreground">
+                  Your data is protected with enterprise-grade security and
+                  privacy controls you can trust.
                 </p>
               </div>
             </div>
@@ -360,7 +362,7 @@ export default function LandingPage() {
                     href="/auth/register"
                     className="flex items-center justify-center"
                   >
-                    Get Started <ArrowRight className="ml-2 h-4 w-4" />
+                    Try for free <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
                 <Button

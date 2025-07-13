@@ -1,161 +1,145 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import Link from "next/link";
-import { Menu, X } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { useState } from "react"
+import Link from "next/link"
+import { Menu, X } from "lucide-react"
 
-import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/mode-toggle";
+import { Button } from "@/components/ui/button"
 
 export function LandingNavbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { data: session } = useSession();
-  const isLoggedIn = !!session?.user;
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b backdrop-blur-md" role="banner">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <div className="flex items-center gap-2">
-          <Link href="/" className="flex items-center gap-2" aria-label="Go to homepage">
-            <img
-              src="/logo.png"
-              alt="FoxLink Logo"
-              className="h-10 w-10 object-contain rounded-md"
-              style={{ background: 'white' }}
-            />
-            <span className="text-lg font-semibold">FoxLink</span>
-            <span className="text-xs text-muted-foreground">(beta)</span>
+    <nav className="bg-white/80 backdrop-blur-md border-b border-brand-blue/10 sticky top-0 z-50">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-2">
+            <img src="/logo.png" alt="FoxLink" className="h-8 w-8" />
+            <span className="text-xl font-bold text-brand-blue">FoxLink</span>
           </Link>
-        </div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex md:items-center md:gap-6" aria-label="Main menu">
-          <Link
-            href="#features"
-            className="text-sm font-medium text-gray-700 hover:text-indigo-600"
-          >
-            Features
-          </Link>
-          <Link
-            href="#pricing"
-            className="text-sm font-medium text-gray-700 hover:text-indigo-600"
-          >
-            Pricing
-          </Link>
-        </nav>
-
-        <div className="hidden md:flex items-center gap-4">
-          <ModeToggle />
-          {isLoggedIn ? (
-            <Button
-              variant="default"
-              className="text-white bg-indigo-600 hover:bg-indigo-400"
-              asChild
-            >
-              <Link href="/dashboard" aria-label="Go to dashboard">Dashboard</Link>
-            </Button>
-          ) : (
-            <>
-              <Button
-                variant="default"
-                className="text-white bg-indigo-600 hover:bg-indigo-400"
-                asChild
-              >
-                <Link href="/auth/signin" aria-label="Log in to your account">Log in</Link>
-              </Button>
-              <Button
-                variant="outline"
-                className="border-gray-500 bg-gray-100 text-indigo-600 hover:bg-white/10"
-                asChild
-              >
-                <Link href="/auth/register" aria-label="Create a new account">Sign up</Link>
-              </Button>
-            </>
-          )}
-        </div>
-
-        {/* Mobile Menu Button */}
-        <div className="flex items-center gap-4 md:hidden">
-          <ModeToggle />
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-            aria-expanded={isMenuOpen}
-            aria-controls="mobile-menu"
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          >
-            <span className="sr-only">{isMenuOpen ? "Close menu" : "Open menu"}</span>
-            {isMenuOpen ? (
-              <X className="h-6 w-6" aria-hidden="true" />
-            ) : (
-              <Menu className="h-6 w-6" aria-hidden="true" />
-            )}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden" id="mobile-menu" role="navigation" aria-label="Mobile menu">
-          <div className="space-y-1 px-2 pb-3 pt-2">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
             <Link
               href="#features"
-              className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-indigo-600"
-              onClick={() => setIsMenuOpen(false)}
+              className="text-sm font-medium text-muted-foreground hover:text-brand-orange transition-colors duration-300"
             >
               Features
             </Link>
             <Link
               href="#pricing"
-              className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-indigo-600"
-              onClick={() => setIsMenuOpen(false)}
+              className="text-sm font-medium text-muted-foreground hover:text-brand-orange transition-colors duration-300"
             >
               Pricing
             </Link>
             <Link
-              href="#"
-              className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-indigo-600"
-              onClick={() => setIsMenuOpen(false)}
+              href="/contact"
+              className="text-sm font-medium text-muted-foreground hover:text-brand-orange transition-colors duration-300"
             >
-              Blog
+              Contact
             </Link>
             <Link
-              href="#"
-              className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-indigo-600"
-              onClick={() => setIsMenuOpen(false)}
+              href="/faq"
+              className="text-sm font-medium text-muted-foreground hover:text-brand-orange transition-colors duration-300"
             >
-              Help
+              FAQ
             </Link>
-            <div className="mt-4 space-y-2">
-              {isLoggedIn ? (
-                <Button variant="default" asChild>
-                  <Link href="/dashboard" onClick={() => setIsMenuOpen(false)} aria-label="Go to dashboard">
-                    Dashboard
-                  </Link>
-                </Button>
+          </div>
+
+          {/* Desktop CTA Buttons */}
+          <div className="hidden md:flex items-center space-x-4">
+            <Button
+              variant="outline"
+              size="sm"
+              className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white transition-all duration-300"
+              asChild
+            >
+              <Link href="/auth/signin">Sign In</Link>
+            </Button>
+            <Button
+              size="sm"
+              className="bg-accent-gradient text-white hover:shadow-lg hover:scale-105 transition-all duration-300"
+              asChild
+            >
+              <Link href="/auth/register">Try for free</Link>
+            </Button>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="border-brand-blue/20 bg-brand-blue/5 text-brand-blue hover:bg-brand-blue hover:text-white transition-all duration-300"
+            >
+              {isMenuOpen ? (
+                <X className="h-5 w-5" />
               ) : (
-                <>
-                  <Button variant="default" asChild>
-                    <Link href="/auth/signin" onClick={() => setIsMenuOpen(false)} aria-label="Log in to your account">
-                      Log in
-                    </Link>
-                  </Button>
-                  <Button variant="ghost" asChild>
-                    <Link
-                      href="/auth/register"
-                      onClick={() => setIsMenuOpen(false)}
-                      aria-label="Create a new account"
-                    >
-                      Sign up
-                    </Link>
-                  </Button>
-                </>
+                <Menu className="h-5 w-5" />
               )}
-            </div>
+            </Button>
           </div>
         </div>
-      )}
-    </header>
-  );
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="md:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-white/95 backdrop-blur-md rounded-lg mt-2 border border-brand-blue/10 shadow-lg">
+              <Link
+                href="#features"
+                className="block rounded-md px-3 py-2 text-base font-medium text-muted-foreground hover:bg-brand-orange/10 hover:text-brand-orange transition-all duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Features
+              </Link>
+              <Link
+                href="/pricing"
+                className="block rounded-md px-3 py-2 text-base font-medium text-muted-foreground hover:bg-brand-orange/10 hover:text-brand-orange transition-all duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Pricing
+              </Link>
+              <Link
+                href="/contact"
+                className="block rounded-md px-3 py-2 text-base font-medium text-muted-foreground hover:bg-brand-orange/10 hover:text-brand-orange transition-all duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contact
+              </Link>
+              <Link
+                href="/faq"
+                className="block rounded-md px-3 py-2 text-base font-medium text-muted-foreground hover:bg-brand-orange/10 hover:text-brand-orange transition-all duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                FAQ
+              </Link>
+              <div className="pt-4 pb-2 border-t border-brand-blue/10">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full mb-2 border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white transition-all duration-300"
+                  asChild
+                >
+                  <Link href="/auth/signin" onClick={() => setIsMenuOpen(false)}>
+                    Sign In
+                  </Link>
+                </Button>
+                <Button
+                  size="sm"
+                  className="w-full bg-accent-gradient text-white hover:shadow-lg hover:scale-105 transition-all duration-300"
+                  asChild
+                >
+                  <Link href="/auth/register" onClick={() => setIsMenuOpen(false)}>
+                    Try for free
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
+  )
 }

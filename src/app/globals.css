@@ -43,71 +43,94 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  
+  /* New Brand Color Palette */
+  --background: #f8fafc; /* Light blue-gray instead of pure white */
+  --foreground: #142549; /* Brand blue for main text */
+  --card: #ffffff; /* Pure white for cards */
+  --card-foreground: #142549; /* Brand blue for card text */
+  --popover: #ffffff;
+  --popover-foreground: #142549;
+  
+  /* Primary Colors - Brand Colors */
+  --primary: #142549; /* Brand blue */
+  --primary-foreground: #ffffff; /* White text on blue */
+  --secondary: #f1f5f9; /* Light cool gray */
+  --secondary-foreground: #142549; /* Brand blue text */
+  
+  /* Accent Colors */
+  --accent: #fc5403; /* Brand orange */
+  --accent-foreground: #ffffff; /* White text on orange */
+  --muted: #f1f5f9; /* Light cool gray */
+  --muted-foreground: #64748b; /* Slate gray for muted text */
+  
+  /* Interactive Colors */
+  --destructive: #ef4444; /* Red for errors */
+  --border: #e2e8f0; /* Light blue-gray border */
+  --input: #ffffff; /* White input backgrounds */
+  --ring: #fc5403; /* Brand orange for focus rings */
+  
+  /* Vibrant Chart Colors for Creatives */
+  --chart-1: #fc5403; /* Brand orange */
+  --chart-2: #06b6d4; /* Cyan */
+  --chart-3: #8b5cf6; /* Purple */
+  --chart-4: #10b981; /* Emerald */
+  --chart-5: #f59e0b; /* Amber */
+  
+  /* Sidebar Colors */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #142549;
+  --sidebar-primary: #142549;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #fc5403;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #fc5403;
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  /* Dark Mode - Adjusted for brand colors */
+  --background: #0f172a; /* Dark blue-gray */
+  --foreground: #f8fafc; /* Light blue-gray text */
+  --card: #1e293b; /* Dark slate */
+  --card-foreground: #f8fafc;
+  --popover: #1e293b;
+  --popover-foreground: #f8fafc;
+  
+  /* Dark Mode Primary Colors */
+  --primary: #fc5403; /* Brand orange for dark mode primary */
+  --primary-foreground: #ffffff;
+  --secondary: #334155; /* Dark slate */
+  --secondary-foreground: #f8fafc;
+  
+  /* Dark Mode Accent Colors */
+  --accent: #142549; /* Brand blue for dark mode accent */
+  --accent-foreground: #ffffff;
+  --muted: #334155;
+  --muted-foreground: #94a3b8;
+  
+  /* Dark Mode Interactive Colors */
+  --destructive: #f87171; /* Lighter red for dark mode */
+  --border: #475569; /* Darker border */
+  --input: #1e293b; /* Dark input backgrounds */
+  --ring: #fc5403; /* Brand orange for focus rings */
+  
+  /* Dark Mode Chart Colors */
+  --chart-1: #fc5403; /* Brand orange */
+  --chart-2: #22d3ee; /* Bright cyan */
+  --chart-3: #a855f7; /* Bright purple */
+  --chart-4: #34d399; /* Bright emerald */
+  --chart-5: #fbbf24; /* Bright amber */
+  
+  /* Dark Mode Sidebar Colors */
+  --sidebar: #1e293b;
+  --sidebar-foreground: #f8fafc;
+  --sidebar-primary: #fc5403;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #142549;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #475569;
+  --sidebar-ring: #fc5403;
 }
 
 @layer base {
@@ -116,5 +139,55 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Add subtle gradient background */
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    min-height: 100vh;
+  }
+}
+
+/* Custom utility classes for the new color palette */
+@layer utilities {
+  .bg-brand-gradient {
+    background: linear-gradient(135deg, #142549 0%, #1e293b 100%);
+  }
+  
+  .bg-accent-gradient {
+    background: linear-gradient(135deg, #fc5403 0%, #f97316 100%);
+  }
+  
+  .bg-creative-gradient {
+    background: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 100%);
+  }
+  
+  .text-brand-blue {
+    color: #142549;
+  }
+  
+  .text-brand-orange {
+    color: #fc5403;
+  }
+  
+  .border-brand-blue {
+    border-color: #142549;
+  }
+  
+  .border-brand-orange {
+    border-color: #fc5403;
+  }
+  
+  .hover\:bg-brand-blue:hover {
+    background-color: #142549;
+  }
+  
+  .hover\:bg-brand-orange:hover {
+    background-color: #fc5403;
+  }
+  
+  .hover\:text-brand-orange:hover {
+    color: #fc5403;
+  }
+  
+  .hover\:text-brand-blue:hover {
+    color: #142549;
   }
 }
