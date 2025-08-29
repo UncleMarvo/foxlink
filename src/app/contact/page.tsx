@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Mail, MessageSquare, Phone, MapPin, Send, CheckCircle, Sparkles } from "lucide-react";
 import React from "react";
 import { BreadcrumbJsonLd } from "@/components/BreadcrumbJsonLd";
 
@@ -21,6 +21,37 @@ export default function ContactPage() {
   const breadcrumbItems = [
     { name: 'Home', path: '/' },
     { name: 'Contact', path: '/contact' },
+  ];
+
+  const contactMethods = [
+    {
+      icon: <Mail className="h-6 w-6 text-brand-orange" />,
+      title: "Email Support",
+      description: "Get help with your account or technical issues",
+      action: "support@foxlink.com",
+      href: "mailto:support@foxlink.com"
+    },
+    {
+      icon: <MessageSquare className="h-6 w-6 text-brand-blue" />,
+      title: "Live Chat",
+      description: "Chat with our support team in real-time",
+      action: "Start Chat",
+      href: "#"
+    },
+    {
+      icon: <Phone className="h-6 w-6 text-purple-500" />,
+      title: "Phone Support",
+      description: "Call us for urgent issues or complex questions",
+      action: "+1 (555) 123-4567",
+      href: "tel:+15551234567"
+    },
+    {
+      icon: <MapPin className="h-6 w-6 text-cyan-500" />,
+      title: "Office Hours",
+      description: "Monday - Friday, 9 AM - 6 PM EST",
+      action: "View Schedule",
+      href: "#"
+    }
   ];
 
   return (
@@ -49,28 +80,96 @@ export default function ContactPage() {
           </div>
           <ModeToggle />
         </header>
-        {/* Main content card */}
-        <main className="flex flex-1 p-4 md:p-8">
-          <div className="w-full max-w-full sm:max-w-md md:max-w-lg lg:max-w-full space-y-6">
 
-
-          <div className="flex flex-col items-center justify-center p-4">
-            <div className="w-full max-w-xl bg-white p-8 space-y-6">
-              <h1 className="text-2xl font-bold">Contact Us</h1>
-              <p className="mt-3 text-xl text-gray-500 sm:mt-4">
-                How to get in touch with us
-              </p>
-
-              {/* Contact form */}
-              <ContactForm initialSubject={subject} />
-
+        {/* Main content */}
+        <main className="flex-1 bg-gradient-to-br from-white via-brand-orange/3 to-purple-500/3">
+          {/* Hero Section */}
+          <div className="relative overflow-hidden py-12 md:py-16">
+            {/* Background decoration */}
+            <div className="absolute -top-32 left-1/2 h-[600px] w-[900px] -translate-x-1/2 bg-gradient-to-br from-brand-orange/10 via-purple-500/10 to-cyan-500/10 blur-3xl pointer-events-none animate-pulse" />
+            <div className="absolute top-1/3 right-0 h-64 w-64 bg-gradient-to-br from-brand-orange/15 to-purple-500/15 rounded-full blur-2xl pointer-events-none" />
+            
+            <div className="container relative z-10 mx-auto px-4 text-center">
+              <div className="mb-8">
+                <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl mb-4">
+                  <span className="text-brand-blue">Get in </span>
+                  <span className="text-brand-orange">Touch</span>
+                </h1>
+                <p className="text-lg text-muted-foreground md:text-xl max-w-2xl mx-auto">
+                  Have questions, feedback, or need help? We're here to support you every step of the way.
+                </p>
+              </div>
             </div>
           </div>
 
+          {/* Contact Methods Grid */}
+          <div className="container mx-auto px-4 pb-12">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                {contactMethods.map((method, index) => (
+                  <div key={index} className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <div className="flex items-center space-x-3 mb-4">
+                      <div className="flex-shrink-0">
+                        {method.icon}
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900">{method.title}</h3>
+                    </div>
+                    <p className="text-gray-600 mb-4">{method.description}</p>
+                    <a
+                      href={method.href}
+                      className="inline-flex items-center text-brand-orange font-medium hover:text-brand-orange/80 transition-colors"
+                    >
+                      {method.action}
+                      <Send className="ml-2 h-4 w-4" />
+                    </a>
+                  </div>
+                ))}
+              </div>
+
+              {/* Contact Form Section */}
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                <div className="bg-gradient-to-r from-brand-orange/10 to-purple-500/10 px-6 py-4 border-b border-gray-100">
+                  <h2 className="text-2xl font-semibold text-brand-blue">Send us a Message</h2>
+                  <p className="text-gray-600 mt-1">Fill out the form below and we'll get back to you as soon as possible.</p>
+                </div>
+                <div className="p-6 md:p-8">
+                  <ContactForm initialSubject={subject} />
+                </div>
+              </div>
+
+              {/* Additional Info */}
+              <div className="mt-12 text-center">
+                <div className="bg-gradient-to-r from-slate-800 via-brand-orange to-purple-600 rounded-2xl p-8 text-white shadow-xl">
+                  <div className="flex items-center justify-center mb-4">
+                    <Sparkles className="h-8 w-8 mr-3 drop-shadow-sm" />
+                    <h3 className="text-2xl font-bold drop-shadow-sm">We're Here to Help!</h3>
+                  </div>
+                  <p className="text-lg mb-6 opacity-95 max-w-2xl mx-auto drop-shadow-sm">
+                    Whether you're just getting started with FoxLink or need help with advanced features, 
+                    our support team is ready to assist you. We typically respond within 24 hours.
+                  </p>
+                  <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                    <div className="flex items-center justify-center">
+                      <CheckCircle className="h-5 w-5 mr-2 drop-shadow-sm" />
+                      <span className="drop-shadow-sm">24/7 Email Support</span>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <CheckCircle className="h-5 w-5 mr-2 drop-shadow-sm" />
+                      <span className="drop-shadow-sm">Quick Response Time</span>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <CheckCircle className="h-5 w-5 mr-2 drop-shadow-sm" />
+                      <span className="drop-shadow-sm">Expert Team</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </main>
+
         {/* Footer */}
-        <footer className="border-t py-4 text-center text-sm text-muted-foreground">
+        <footer className="border-t py-4 text-center text-sm text-muted-foreground bg-white">
           <p>&copy; {new Date().getFullYear()} FoxLink. All rights reserved.</p>
         </footer>
       </div>

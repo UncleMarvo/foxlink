@@ -69,7 +69,7 @@ export default function LandingPage({ freePlanLinkLimit }: LandingPageProps) {
                 <Button
                   size="xl"
                   variant="default"
-                  className="gsap-button bg-gradient-to-r from-brand-orange via-purple-500 to-cyan-500 text-white hover:shadow-lg hover:shadow-brand-orange/25 hover:scale-105 transition-all duration-300 relative overflow-hidden group"
+                  className="gsap-button bg-gradient-to-r from-slate-800 via-brand-orange to-purple-600 text-white hover:shadow-lg hover:shadow-brand-orange/25 hover:scale-105 transition-all duration-300 relative overflow-hidden group"
                   asChild
                 >
                   <Link
@@ -97,6 +97,7 @@ export default function LandingPage({ freePlanLinkLimit }: LandingPageProps) {
               </div>
               
               {/* Social proof */}
+              {/*               
               <div className="mt-8 flex items-center space-x-4 text-sm text-muted-foreground">
                 <div className="flex items-center space-x-1">
                   <Star className="h-4 w-4 text-yellow-500 fill-current" />
@@ -106,7 +107,8 @@ export default function LandingPage({ freePlanLinkLimit }: LandingPageProps) {
                   <Star className="h-4 w-4 text-yellow-500 fill-current" />
                 </div>
                 <span>Trusted by 10,000+ creators</span>
-              </div>
+              </div> 
+              */}
             </div>
             
             {/* Image (right on desktop) */}
@@ -325,7 +327,7 @@ export default function LandingPage({ freePlanLinkLimit }: LandingPageProps) {
               <Button
                 size="lg"
                 variant="default"
-                className="gsap-button bg-gradient-to-r from-brand-orange via-purple-500 to-cyan-500 text-white hover:shadow-lg hover:shadow-brand-orange/25 hover:scale-105 transition-all duration-300"
+                className="gsap-button bg-gradient-to-r from-slate-800 via-brand-orange to-purple-600 text-white hover:shadow-lg hover:shadow-brand-orange/25 hover:scale-105 transition-all duration-300"
                 asChild
               >
                 <Link
@@ -395,7 +397,7 @@ export default function LandingPage({ freePlanLinkLimit }: LandingPageProps) {
               <Button
                 size="lg"
                 variant="default"
-                className="gsap-button bg-gradient-to-r from-brand-orange via-purple-500 to-cyan-500 text-white hover:shadow-lg hover:shadow-brand-orange/25 hover:scale-105 transition-all duration-300"
+                className="gsap-button bg-gradient-to-r from-slate-800 via-brand-orange to-purple-600 text-white hover:shadow-lg hover:shadow-brand-orange/25 hover:scale-105 transition-all duration-300"
                 asChild
               >
                 <Link
@@ -428,7 +430,7 @@ export default function LandingPage({ freePlanLinkLimit }: LandingPageProps) {
         {/* CTA Section */}
         <section className="py-10 md:py-22">
           <div className="container mx-auto px-4">
-            <div className="mx-auto max-w-4xl rounded-3xl bg-gradient-to-br from-brand-orange via-purple-500 to-cyan-500 p-8 text-center shadow-2xl md:p-12 relative overflow-hidden">
+            <div className="mx-auto max-w-4xl rounded-3xl bg-gradient-to-r from-slate-800 via-brand-orange to-purple-600 p-8 text-center shadow-2xl md:p-12 relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
               <div className="relative z-10">
                 <h2 className="mb-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">

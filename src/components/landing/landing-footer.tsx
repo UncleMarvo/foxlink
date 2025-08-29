@@ -49,17 +49,17 @@ export function LandingFooter() {
                 </Link>
               </li>
               <li>
-                <Link href="/pricing" className="text-sm text-slate-200 hover:text-brand-orange transition-colors">
+                <Link href="#pricing" className="text-sm text-slate-200 hover:text-brand-orange transition-colors">
                   Pricing
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-slate-200 hover:text-brand-orange transition-colors">
+                <Link href="/api" className="text-sm text-slate-200 hover:text-brand-orange transition-colors">
                   API
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-slate-200 hover:text-brand-orange transition-colors">
+                <Link href="/integrations" className="text-sm text-slate-200 hover:text-brand-orange transition-colors">
                   Integrations
                 </Link>
               </li>
@@ -71,7 +71,7 @@ export function LandingFooter() {
             <h3 className="text-lg font-semibold mb-4 text-brand-orange">Support</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="text-sm text-slate-200 hover:text-brand-orange transition-colors">
+                <Link href="/help" className="text-sm text-slate-200 hover:text-brand-orange transition-colors">
                   Help Center
                 </Link>
               </li>
@@ -86,7 +86,7 @@ export function LandingFooter() {
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-slate-200 hover:text-brand-orange transition-colors">
+                <Link href="/community" className="text-sm text-slate-200 hover:text-brand-orange transition-colors">
                   Community
                 </Link>
               </li>
