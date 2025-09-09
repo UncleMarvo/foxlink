@@ -22,6 +22,18 @@ export const metadata = {
   description: "Create your personalized link in bio page with FoxLink. Share all your important links in one place.",
   metadataBase: new URL(baseUrl),
   
+  // Favicon and app icons
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
+  
   // Open Graph
   openGraph: {
     type: 'website',
