@@ -62,12 +62,34 @@ export default function APIPage() {
     }
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
-      setSubmitted(true);
-      // In a real implementation, you'd send this to your backend
-      console.log("API interest signup:", email);
+      try {
+        const response = await fetch('/api/waitlist', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email,
+            topic: 'api'
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setSubmitted(true);
+        } else {
+          // Handle error (e.g., already signed up)
+          console.error('Waitlist signup failed:', data.error);
+          // You could show an error message to the user here
+        }
+      } catch (error) {
+        console.error('Failed to submit to waitlist:', error);
+        // You could show an error message to the user here
+      }
     }
   };
 

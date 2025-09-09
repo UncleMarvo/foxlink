@@ -20,6 +20,11 @@ interface SendContactEmailParams {
   message: string;
 }
 
+interface SendWaitlistEmailParams {
+  email: string;
+  topic: string;
+}
+
 // Send verification email
 export async function sendVerificationEmail({ to, verificationUrl }: { to: string, verificationUrl: string }) {
   await resend.emails.send({
@@ -108,5 +113,55 @@ export async function sendContactEmail({ name, email, type, message }: SendConta
       </div>
     `,
     replyTo: email, // This allows you to reply directly to the sender
+  });
+}
+
+// Send waitlist confirmation email
+export async function sendWaitlistEmail({ email, topic }: SendWaitlistEmailParams) {
+  const topicNames: Record<string, string> = {
+    'community': 'Community Hub',
+    'help_center': 'Help Center',
+    'integrations': 'Integrations & Automation',
+    'api': 'API Access'
+  };
+
+  const topicName = topicNames[topic] || topic;
+  
+  await resend.emails.send({
+    from: FROM_ADDRESS,
+    to: email,
+    subject: `You're on the waitlist for ${topicName}!`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <div style="text-align: center; margin-bottom: 30px;">
+          <h1 style="color: #1e40af; margin-bottom: 10px;">Welcome to the FoxLink Waitlist!</h1>
+          <p style="color: #6b7280; font-size: 18px;">You're now on the waitlist for <strong>${topicName}</strong></p>
+        </div>
+        
+        <div style="background: #f8fafc; padding: 25px; border-radius: 12px; margin: 20px 0; border-left: 4px solid #f97316;">
+          <h2 style="color: #1e40af; margin-top: 0;">What happens next?</h2>
+          <ul style="color: #374151; line-height: 1.6;">
+            <li>We'll notify you as soon as this feature becomes available</li>
+            <li>You'll get early access before the general public</li>
+            <li>We may reach out for feedback during development</li>
+          </ul>
+        </div>
+
+        <div style="background: #fff; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px; margin: 20px 0;">
+          <h3 style="color: #1e40af; margin-top: 0;">In the meantime...</h3>
+          <p style="color: #374151; line-height: 1.6;">
+            Explore FoxLink's current features and start building your link page! 
+            <a href="https://foxlink.bio" style="color: #f97316; text-decoration: none;">Visit FoxLink →</a>
+          </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+          <p style="color: #6b7280; font-size: 14px;">
+            Thanks for your interest in FoxLink!<br>
+            The FoxLink Team
+          </p>
+        </div>
+      </div>
+    `,
   });
 } 
