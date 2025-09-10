@@ -1,19 +1,20 @@
 import { Metadata } from "next";
 
 export const landingMetadata: Metadata = {
-  title: "FoxLink - One Link to Share All Your Content",
-  description: "Create a stunning, customizable page that showcases your links, social profiles, and content in one place. Share a single link in your bio to connect your audience to everything you do.",
+  // Essential SEO - Updated with privacy-first messaging
+  title: "FoxLink - Privacy-First Bio Links | No Tracking, No Ads",
+  description: "Create beautiful bio link pages without tracking or ads. Free tier available, premium plans that won't break the bank. The privacy-first alternative to expensive bio link tools.",
   keywords: [
-    "bio link",
+    "bio links",
+    "linktree alternative", 
+    "privacy-first",
+    "no tracking",
     "link in bio",
-    "social media links",
     "creator tools",
-    "content creator",
-    "social media management",
-    "link page",
-    "social links",
-    "creator platform",
-    "social media bio"
+    "no ads",
+    "affordable bio links",
+    "privacy focused",
+    "clean interface"
   ],
   authors: [{ name: "FoxLink Team" }],
   creator: "FoxLink",
@@ -23,32 +24,36 @@ export const landingMetadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
+  // Updated to use foxlink.bio as the canonical URL
+  metadataBase: new URL("https://foxlink.bio"),
   alternates: {
-    canonical: "/",
+    canonical: "https://foxlink.bio",
   },
+  // Open Graph / Facebook - Updated with privacy-first messaging
   openGraph: {
-    title: "FoxLink - One Link to Share All Your Content",
-    description: "Create a stunning, customizable page that showcases your links, social profiles, and content in one place. Share a single link in your bio to connect your audience to everything you do.",
-    url: "/",
+    type: "website",
+    title: "FoxLink - Privacy-First Bio Links",
+    description: "Bio links without tracking. No ads, affordable pricing, clean interface. Free tier + premium plans that actually make sense.",
+    url: "https://foxlink.bio",
     siteName: "FoxLink",
     images: [
       {
-        url: "/logo_lg.png",
+        url: "https://foxlink.bio/social-preview.png",
         width: 1200,
         height: 630,
-        alt: "FoxLink - One Link to Share All Your Content",
+        alt: "FoxLink - Privacy-First Bio Links",
       },
     ],
     locale: "en_US",
-    type: "website",
   },
+  // Twitter Card - Updated with privacy-first messaging and correct handle
   twitter: {
     card: "summary_large_image",
-    title: "FoxLink - One Link to Share All Your Content",
-    description: "Create a stunning, customizable page that showcases your links, social profiles, and content in one place. Share a single link in your bio to connect your audience to everything you do.",
-    images: ["/logo_lg.png"],
-    creator: "@foxlink",
+    title: "FoxLink - Privacy-First Bio Links",
+    description: "Bio links without tracking. No ads, affordable pricing, clean interface.",
+    images: ["https://foxlink.bio/social-preview.png"],
+    site: "@foxlinkbio",
+    creator: "@foxlinkbio",
   },
   robots: {
     index: true,
