@@ -88,7 +88,7 @@ export default function PrivacyPage() {
             {/* Last Updated Badge */}
             <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-slate-800 via-brand-orange to-purple-600 text-white rounded-full text-sm font-semibold mb-8">
               <Sparkles className="h-4 w-4 mr-2" />
-              Last Updated: June 2025
+              Last Updated: June 2026
             </div>
           </div>
         </div>

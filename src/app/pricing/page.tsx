@@ -22,7 +22,7 @@ export default function PricingPage() {
     },
     features: [
       "Unlimited links",
-      "Advanced analytics",
+      "Comprehensive analytics",
       "Custom themes",
       "Remove FoxLink branding",
     ],
@@ -33,7 +33,7 @@ export default function PricingPage() {
     <>
       <BreadcrumbJsonLd items={breadcrumbItems} />
       <ProductJsonLd {...premiumPlan} />
-      <PricingCards freePlanLinkLimit={5} />
+      <PricingCards freePlanLinkLimit={parseInt(process.env.FREE_PLAN_LINK_LIMIT || '10', 10)} />
     </>
   );
 } 

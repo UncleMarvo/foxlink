@@ -13,6 +13,13 @@ interface SendPasswordResetEmailParams {
   expires: Date;
 }
 
+interface SendContactEmailParams {
+  name: string;
+  email: string;
+  type: string;
+  message: string;
+}
+
 // Send verification email
 export async function sendVerificationEmail({ to, verificationUrl }: { to: string, verificationUrl: string }) {
   await resend.emails.send({
@@ -70,4 +77,36 @@ export async function sendPasswordResetEmail({ to, username, resetUrl, expires }
     html: `<p>Click <a href="${resetUrl}">here</a> to reset your password. This link expires at ${expiryString}.</p>`,
   });
   */
+}
+
+// Send contact form email
+export async function sendContactEmail({ name, email, type, message }: SendContactEmailParams) {
+  const supportEmail = process.env.SUPPORT_EMAIL || 'support@foxlink.com';
+  
+  await resend.emails.send({
+    from: FROM_ADDRESS,
+    to: supportEmail,
+    subject: `New ${type} from ${name}`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #333; border-bottom: 2px solid #f97316; padding-bottom: 10px;">
+          New ${type} Received
+        </h2>
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Type:</strong> ${type}</p>
+        </div>
+        <div style="background: #fff; padding: 20px; border: 1px solid #e9ecef; border-radius: 8px;">
+          <h3 style="color: #333; margin-top: 0;">Message:</h3>
+          <p style="white-space: pre-wrap; line-height: 1.6;">${message}</p>
+        </div>
+        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e9ecef; color: #6c757d; font-size: 14px;">
+          <p>This message was sent from the FoxLink contact form.</p>
+          <p>Reply directly to this email to respond to ${name}.</p>
+        </div>
+      </div>
+    `,
+    replyTo: email, // This allows you to reply directly to the sender
+  });
 } 

@@ -47,7 +47,7 @@ export function PricingCards({ freePlanLinkLimit }: PricingCardsProps) {
       },
       features: [
         "Unlimited links",
-        "Advanced analytics",
+        "Comprehensive analytics",
         "Custom themes",
         "Remove FoxLink branding",
       ],

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowLeft, Mail, MessageSquare, Phone, MapPin, Send, CheckCircle, Sparkles } from "lucide-react";
+import { ArrowLeft, CheckCircle, Sparkles } from "lucide-react";
 import React from "react";
 import { BreadcrumbJsonLd } from "@/components/BreadcrumbJsonLd";
 
@@ -23,36 +23,7 @@ export default function ContactPage() {
     { name: 'Contact', path: '/contact' },
   ];
 
-  const contactMethods = [
-    {
-      icon: <Mail className="h-6 w-6 text-brand-orange" />,
-      title: "Email Support",
-      description: "Get help with your account or technical issues",
-      action: "support@foxlink.com",
-      href: "mailto:support@foxlink.com"
-    },
-    {
-      icon: <MessageSquare className="h-6 w-6 text-brand-blue" />,
-      title: "Live Chat",
-      description: "Chat with our support team in real-time",
-      action: "Start Chat",
-      href: "#"
-    },
-    {
-      icon: <Phone className="h-6 w-6 text-purple-500" />,
-      title: "Phone Support",
-      description: "Call us for urgent issues or complex questions",
-      action: "+1 (555) 123-4567",
-      href: "tel:+15551234567"
-    },
-    {
-      icon: <MapPin className="h-6 w-6 text-cyan-500" />,
-      title: "Office Hours",
-      description: "Monday - Friday, 9 AM - 6 PM EST",
-      action: "View Schedule",
-      href: "#"
-    }
-  ];
+  const contactMethods: any[] = [];
 
   return (
     <>
@@ -102,31 +73,9 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Contact Methods Grid */}
+          {/* Contact Form Section */}
           <div className="container mx-auto px-4 pb-12">
             <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                {contactMethods.map((method, index) => (
-                  <div key={index} className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    <div className="flex items-center space-x-3 mb-4">
-                      <div className="flex-shrink-0">
-                        {method.icon}
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900">{method.title}</h3>
-                    </div>
-                    <p className="text-gray-600 mb-4">{method.description}</p>
-                    <a
-                      href={method.href}
-                      className="inline-flex items-center text-brand-orange font-medium hover:text-brand-orange/80 transition-colors"
-                    >
-                      {method.action}
-                      <Send className="ml-2 h-4 w-4" />
-                    </a>
-                  </div>
-                ))}
-              </div>
-
-              {/* Contact Form Section */}
               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                 <div className="bg-gradient-to-r from-brand-orange/10 to-purple-500/10 px-6 py-4 border-b border-gray-100">
                   <h2 className="text-2xl font-semibold text-brand-blue">Send us a Message</h2>

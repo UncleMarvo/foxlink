@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/authOptions';
+import { sendContactEmail } from '@/lib/email';
 
 // POST /api/contact
 // Accepts contact/feedback form submissions and saves them to the Feedback table.
@@ -41,6 +42,19 @@ export async function POST(req: NextRequest) {
     await prisma.feedback.create({
       data: feedbackData,
     });
+
+    // Send email notification
+    try {
+      await sendContactEmail({
+        name: feedbackData.name || 'Anonymous',
+        email: feedbackData.email || 'no-email@example.com',
+        type,
+        message,
+      });
+    } catch (emailError) {
+      // Log email error but don't fail the request
+      console.error('Failed to send contact email:', emailError);
+    }
 
     // Respond with success
     return NextResponse.json({ success: true });

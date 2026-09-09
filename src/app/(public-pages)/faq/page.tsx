@@ -29,7 +29,7 @@ export default function FAQPage() {
     },
     {
       question: "How much does FoxLink cost?",
-      answer: "FoxLink offers a free plan with basic features and a Premium plan at $3.99/month or $39.99/year. The Premium plan includes unlimited links, advanced analytics, custom themes, and the ability to remove FoxLink branding.",
+      answer: "FoxLink offers a free plan with up to 10 links and basic features, and a Premium plan at $3.99/month or $39.99/year. The Premium plan includes unlimited links, comprehensive analytics, custom themes, and the ability to remove FoxLink branding.",
       category: "Pricing",
       icon: <DollarSign className="h-5 w-5 text-brand-blue" />
     },
@@ -41,13 +41,13 @@ export default function FAQPage() {
     },
     {
       question: "Can I customize my FoxLink page?",
-      answer: "Yes! FoxLink offers various customization options including custom themes, colors, and layouts. Premium users get access to advanced customization features and can remove FoxLink branding.",
+      answer: "Yes! FoxLink offers various customization options including custom themes, colors, and layouts. Premium users get access to comprehensive customization features and can remove FoxLink branding.",
       category: "Features",
       icon: <Settings className="h-5 w-5 text-cyan-500" />
     },
     {
       question: "What kind of analytics does FoxLink provide?",
-      answer: "FoxLink provides detailed analytics including click counts, view statistics, and engagement metrics. Premium users get access to advanced analytics features to better understand their audience's behavior.",
+      answer: "FoxLink provides detailed analytics including click counts, view statistics, and engagement metrics. Premium users get access to comprehensive analytics features to better understand their audience's behavior.",
       category: "Features",
       icon: <BarChart3 className="h-5 w-5 text-emerald-500" />
     },
